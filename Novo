@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Bate-Bola da Rodada</title>
+
+<style>
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #050505;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.estadio {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(ellipse at center top,
+        #35434c 0%, #182128 35%, #080b0e 75%);
+}
+
+/* ARQUIBANCADA */
+.arquibancada {
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    right: 5%;
+    height: 42%;
+    border-radius: 50% 50% 15% 15%;
+    background:
+        repeating-linear-gradient(
+        0deg,
+        #28343b 0px,
+        #28343b 5px,
+        #1b252b 6px,
+        #1b252b 13px);
+    box-shadow:
+        inset 0 0 80px #000,
+        0 20px 80px #000;
+}
+
+/* ILUMINAÇÃO */
+.luzes {
+    position: absolute;
+    top: 9%;
+    left: 10%;
+    right: 10%;
+    height: 5px;
+    background: white;
+    box-shadow:
+        0 0 15px white,
+        0 0 35px rgba(255,255,255,.5);
+}
+
+/* CAMPO */
+.gramado {
+    position: absolute;
+    left: -15%;
+    right: -15%;
+    bottom: -30%;
+    height: 70%;
+    transform: perspective(600px) rotateX(45deg);
+    background:
+        repeating-linear-gradient(
+        90deg,
+        #155d2c 0px,
+        #155d2c 100px,
+        #176b33 101px,
+        #176b33 200px);
+    border: 3px solid rgba(255,255,255,.3);
+}
+
+.linha {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: rgba(255,255,255,.35);
+}
+
+.circulo {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 180px;
+    height: 180px;
+    transform: translate(-50%, -50%);
+    border: 3px solid rgba(255,255,255,.35);
+    border-radius: 50%;
+}
+
+.vinheta {
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle,
+        transparent 30%,
+        rgba(0,0,0,.75) 100%);
+}
+
+/* CONTEÚDO */
+.conteudo {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.titulo {
+    font-size: 20px;
+    letter-spacing: 6px;
+    font-weight: bold;
+    opacity: .8;
+    margin-bottom: 25px;
+}
+
+.confronto {
+    font-size: 70px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    text-shadow: 0 5px 25px black;
+    animation: aparecer 1.2s ease-out;
+}
+
+.x {
+    opacity: .5;
+    margin: 0 20px;
+}
+
+/* ÁREA DOS PALPITES */
+.palpites {
+    display: flex;
+    gap: 80px;
+    margin-top: 55px;
+}
+
+.palpite {
+    min-width: 300px;
+    padding: 22px 35px;
+    border-radius: 16px;
+
+    background: rgba(0,0,0,.60);
+    border: 1px solid rgba(255,255,255,.25);
+
+    opacity: 0;
+    transform: translateY(35px) scale(.9);
+
+    box-shadow: 0 10px 35px rgba(0,0,0,.45);
+}
+
+.palpite.visivel {
+    animation: revelar .7s ease-out forwards;
+}
+
+.nome {
+    font-size: 17px;
+    letter-spacing: 4px;
+    font-weight: bold;
+    opacity: .75;
+}
+
+.placar {
+    margin-top: 8px;
+    font-size: 55px;
+    font-weight: 900;
+}
+
+/* BOTÕES — apenas para nosso teste */
+.controles {
+    position: absolute;
+    bottom: 30px;
+    z-index: 20;
+    display: flex;
+    gap: 15px;
+}
+
+button {
+    padding: 13px 20px;
+    border: 0;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: scale(.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes revelar {
+    from {
+        opacity: 0;
+        transform: translateY(35px) scale(.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="estadio">
+
+    <div class="arquibancada"></div>
+    <div class="luzes"></div>
+
+    <div class="gramado">
+        <div class="linha"></div>
+        <div class="circulo"></div>
+    </div>
+
+    <div class="vinheta"></div>
+
+    <div class="conteudo">
+
+        <div class="titulo">
+            BATE-BOLA DA RODADA
+        </div>
+
+        <div class="confronto">
+            FLAMENGO
+            <span class="x">×</span>
+            VASCO
+        </div>
+
+        <div class="palpites">
+
+            <div class="palpite" id="palpiteMts">
+                <div class="nome">PALPITE DO MTS</div>
+                <div class="placar">2 × 1</div>
+            </div>
+
+            <div class="palpite" id="palpiteAmigo">
+                <div class="nome">PALPITE DO AMIGO</div>
+                <div class="placar">1 × 1</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="controles">
+        <button onclick="revelarMts()">
+            REVELAR MTS
+        </button>
+
+        <button onclick="revelarAmigo()">
+            REVELAR AMIGO
+        </button>
+
+        <button onclick="reiniciar()">
+            REINICIAR
+        </button>
+    </div>
+
+</div>
+
+<script>
+function revelarMts() {
+    document
+        .getElementById("palpiteMts")
+        .classList.add("visivel");
+}
+
+function revelarAmigo() {
+    document
+        .getElementById("palpiteAmigo")
+        .classList.add("visivel");
+}
+
+function reiniciar() {
+    document
+        .getElementById("palpiteMts")
+        .classList.remove("visivel");
+
+    document
+        .getElementById("palpiteAmigo")
+        .classList.remove("visivel");
+}
+</script>
+
+</body>
+</html>
