@@ -49,13 +49,10 @@ input,
 select {
     width: 100%;
     padding: 12px;
-
     border: 1px solid #45525c;
     border-radius: 7px;
-
     background: #0e1419;
     color: white;
-
     font-size: 17px;
 }
 
@@ -66,26 +63,15 @@ select {
 input[readonly] {
     background: #182027;
     color: #d7e0e6;
-    cursor: default;
 }
 
-/* =========================
-   LISTA DE JOGOS
-========================= */
+/* LISTA */
 
 .jogoConfig {
     display: grid;
-
-    grid-template-columns:
-        55px
-        minmax(0, 1fr)
-        35px
-        minmax(0, 1fr)
-        45px;
-
+    grid-template-columns: 55px 1fr 35px 1fr 45px;
     gap: 10px;
     align-items: center;
-
     margin-top: 12px;
 }
 
@@ -101,66 +87,34 @@ input[readonly] {
     font-weight: bold;
 }
 
-.remover {
-    margin: 0;
-    padding: 10px;
-
-    background: #b92d3a;
-    color: white;
-
-    font-size: 17px;
-}
-
-.adicionar {
-    width: 100%;
-    margin-top: 20px;
-
-    background: #555f68;
-    color: white;
-}
-
-/* =========================
-   JOGO ATUAL
-========================= */
+/* JOGO ATUAL */
 
 .statusJogo {
     text-align: center;
-
-    padding: 10px;
+    padding: 16px;
     margin-bottom: 20px;
-
     background: #111820;
     border-radius: 8px;
-
-    color: #9dacb7;
+    color: white;
+    font-size: 18px;
     font-weight: bold;
 }
 
 .confrontoAtual {
     display: grid;
-
-    grid-template-columns:
-        1fr 50px 1fr;
-
+    grid-template-columns: 1fr 50px 1fr;
     gap: 10px;
     align-items: end;
-}
-
-.timeAtual label {
-    margin-top: 0;
 }
 
 .xAtual {
     text-align: center;
     font-size: 27px;
     font-weight: bold;
-
     padding-bottom: 10px;
 }
 
-/* =========================
-   PLACARES
-========================= */
+/* PLACAR */
 
 .placar {
     display: flex;
@@ -170,9 +124,7 @@ input[readonly] {
 
 .placar input {
     width: 80px;
-
     text-align: center;
-
     font-size: 24px;
     font-weight: bold;
 }
@@ -181,37 +133,48 @@ input[readonly] {
     font-size: 24px;
 }
 
-/* =========================
-   BOTÕES
-========================= */
+/* BOTÕES */
 
 button {
     margin-top: 15px;
     padding: 13px 18px;
-
     border: none;
     border-radius: 8px;
-
     font-size: 15px;
     font-weight: bold;
-
     cursor: pointer;
 }
 
-button:hover {
+button:hover:not(:disabled) {
     filter: brightness(1.1);
+}
+
+button:disabled {
+    opacity: .35;
+    cursor: not-allowed;
+}
+
+.adicionar {
+    width: 100%;
+    background: #555f68;
+    color: white;
+}
+
+.remover {
+    margin: 0;
+    padding: 10px;
+    background: #b92d3a;
+    color: white;
 }
 
 .iniciar {
     width: 100%;
-
     background: #6f42c1;
     color: white;
 }
 
 .salvar {
     width: 100%;
-
     background: #28a745;
     color: white;
 }
@@ -219,57 +182,55 @@ button:hover {
 .revelar {
     background: white;
     color: black;
+}
 
-    margin-right: 8px;
+.revelado {
+    background: #28a745 !important;
+    color: white !important;
+}
+
+.navegacao {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.anterior {
+    width: 100%;
+    background: #555f68;
+    color: white;
+    margin-top: 0;
 }
 
 .proximo {
     width: 100%;
-
     background: #2675d8;
     color: white;
-
-    margin-top: 25px;
+    margin-top: 0;
 }
 
 .finalizar {
     width: 100%;
-
     background: #d58b19;
     color: white;
-
-    margin-top: 15px;
 }
 
 .novaRodada {
     width: 100%;
-
     background: #b92d3a;
     color: white;
-
-    margin-top: 15px;
 }
 
-.avisoSalvo {
-    margin-top: 15px;
-
+.aviso {
     text-align: center;
-
-    color: #7fcf96;
-
+    margin-top: 12px;
+    color: #9dacb7;
     font-size: 14px;
-
-    opacity: 0;
-    transition: opacity .3s;
-}
-
-.avisoSalvo.visivel {
-    opacity: 1;
 }
 
 </style>
 </head>
-
 
 <body>
 
@@ -277,10 +238,6 @@ button:hover {
 
 <h1>⚽ BATE-BOLA DA RODADA</h1>
 
-
-<!-- =========================
-     APRESENTADORES
-========================= -->
 
 <div class="caixa">
 
@@ -305,20 +262,15 @@ button:hover {
 </div>
 
 
-<!-- =========================
-     JOGOS DA RODADA
-========================= -->
-
 <div class="caixa">
 
 <h2>Jogos da rodada</h2>
 
 <p style="color:#9dacb7;">
-Escolha os confrontos antes de iniciar a rodada.
+Escolha todos os confrontos antes da gravação.
 </p>
 
 <div id="listaJogos"></div>
-
 
 <button
     class="adicionar"
@@ -327,7 +279,6 @@ Escolha os confrontos antes de iniciar a rodada.
 + ADICIONAR CONFRONTO
 </button>
 
-
 <button
     class="iniciar"
     onclick="iniciarRodada()"
@@ -335,24 +286,12 @@ Escolha os confrontos antes de iniciar a rodada.
 INICIAR / CARREGAR RODADA
 </button>
 
-<div
-    class="avisoSalvo"
-    id="avisoSalvo"
->
-Rodada salva automaticamente ✓
 </div>
 
-</div>
-
-
-<!-- =========================
-     CONFRONTO ATUAL
-========================= -->
 
 <div class="caixa">
 
 <h2>Confronto atual</h2>
-
 
 <div
     class="statusJogo"
@@ -361,10 +300,9 @@ Rodada salva automaticamente ✓
 JOGO 1
 </div>
 
-
 <div class="confrontoAtual">
 
-<div class="timeAtual">
+<div>
 
 <label>Mandante</label>
 
@@ -375,13 +313,11 @@ JOGO 1
 
 </div>
 
-
 <div class="xAtual">
 ×
 </div>
 
-
-<div class="timeAtual">
+<div>
 
 <label>Visitante</label>
 
@@ -397,16 +333,11 @@ JOGO 1
 </div>
 
 
-<!-- =========================
-     PALPITE MATHEUS
-========================= -->
-
 <div class="caixa">
 
 <h2 id="tituloPalpite1">
 Palpite - MATHEUS
 </h2>
-
 
 <div class="placar">
 
@@ -414,24 +345,22 @@ Palpite - MATHEUS
     id="p1casa"
     type="number"
     min="0"
-    oninput="salvarEstado()"
+    oninput="alterouPalpite()"
 >
 
-<span class="x">
-×
-</span>
+<span class="x">×</span>
 
 <input
     id="p1fora"
     type="number"
     min="0"
-    oninput="salvarEstado()"
+    oninput="alterouPalpite()"
 >
 
 </div>
 
-
 <button
+    id="btnRevelar1"
     class="revelar"
     onclick="revelar1()"
 >
@@ -441,16 +370,11 @@ REVELAR PALPITE MATHEUS
 </div>
 
 
-<!-- =========================
-     PALPITE THALYSON
-========================= -->
-
 <div class="caixa">
 
 <h2 id="tituloPalpite2">
 Palpite - THALYSON
 </h2>
-
 
 <div class="placar">
 
@@ -458,24 +382,22 @@ Palpite - THALYSON
     id="p2casa"
     type="number"
     min="0"
-    oninput="salvarEstado()"
+    oninput="alterouPalpite()"
 >
 
-<span class="x">
-×
-</span>
+<span class="x">×</span>
 
 <input
     id="p2fora"
     type="number"
     min="0"
-    oninput="salvarEstado()"
+    oninput="alterouPalpite()"
 >
 
 </div>
 
-
 <button
+    id="btnRevelar2"
     class="revelar"
     onclick="revelar2()"
 >
@@ -493,16 +415,38 @@ ATUALIZAR CONFRONTO
 </button>
 
 
+<div class="navegacao">
+
+<button
+    class="anterior"
+    id="btnAnterior"
+    onclick="anterior()"
+>
+◀ JOGO ANTERIOR
+</button>
+
 <button
     class="proximo"
+    id="btnProximo"
     onclick="proximo()"
 >
 PRÓXIMO JOGO ▶
 </button>
 
+</div>
+
+
+<div
+    class="aviso"
+    id="avisoProximo"
+>
+Revele os dois palpites para liberar o próximo jogo.
+</div>
+
 
 <button
     class="finalizar"
+    id="btnFinalizar"
     onclick="finalizar()"
 >
 FINALIZAR RODADA
@@ -516,23 +460,14 @@ FINALIZAR RODADA
 NOVA RODADA
 </button>
 
-
 </div>
 
 
 <script>
 
-/* =========================
-   CONFIGURAÇÃO
-========================= */
-
 const CHAVE_SALVAMENTO =
-    "metreacts_batebola_estado_v1";
+    "metreacts_batebola_estado_v2";
 
-
-/* =========================
-   20 CLUBES
-========================= */
 
 const clubes = [
 
@@ -559,10 +494,6 @@ const clubes = [
 
 ];
 
-
-/* =========================
-   JOGOS PADRÃO
-========================= */
 
 function jogosPadrao() {
 
@@ -591,14 +522,72 @@ function jogosPadrao() {
 let jogos =
     jogosPadrao();
 
-
 let jogoAtual = 0;
 
 let resultados = [];
 
+/*
+Cada jogo possui seu próprio estado.
+Isso permite voltar para jogos anteriores.
+*/
+
+let estadosJogos = [];
+
 
 /* =========================
-   CRIA OPÇÕES
+   ESTADO DE UM JOGO
+========================= */
+
+function novoEstadoJogo() {
+
+    return {
+
+        p1casa: "",
+        p1fora: "",
+
+        p2casa: "",
+        p2fora: "",
+
+        revelou1: false,
+        revelou2: false
+
+    };
+
+}
+
+
+function garantirEstados() {
+
+    while (
+        estadosJogos.length <
+        jogos.length
+    ) {
+
+        estadosJogos.push(
+            novoEstadoJogo()
+        );
+
+    }
+
+
+    if (
+        estadosJogos.length >
+        jogos.length
+    ) {
+
+        estadosJogos =
+            estadosJogos.slice(
+                0,
+                jogos.length
+            );
+
+    }
+
+}
+
+
+/* =========================
+   CLUBES
 ========================= */
 
 function criarOpcoes(
@@ -606,9 +595,7 @@ function criarOpcoes(
 ) {
 
     let html =
-        `<option value="">
-            Selecione...
-        </option>`;
+        `<option value="">Selecione...</option>`;
 
 
     clubes.forEach(
@@ -641,7 +628,7 @@ function criarOpcoes(
 
 
 /* =========================
-   DESENHA JOGOS
+   LISTA DE JOGOS
 ========================= */
 
 function desenharListaJogos() {
@@ -678,9 +665,11 @@ function desenharListaJogos() {
                     id="configCasa${indice}"
                     onchange="mudouListaJogos()"
                 >
+
                     ${criarOpcoes(
                         jogo.casa
                     )}
+
                 </select>
 
                 <div class="versus">
@@ -691,15 +680,16 @@ function desenharListaJogos() {
                     id="configVisitante${indice}"
                     onchange="mudouListaJogos()"
                 >
+
                     ${criarOpcoes(
                         jogo.visitante
                     )}
+
                 </select>
 
                 <button
                     class="remover"
                     onclick="removerJogo(${indice})"
-                    title="Remover confronto"
                 >
                     ×
                 </button>
@@ -718,7 +708,7 @@ function desenharListaJogos() {
 
 
 /* =========================
-   LÊ JOGOS DA TELA
+   LÊ JOGOS
 ========================= */
 
 function lerJogosDaTela() {
@@ -732,28 +722,21 @@ function lerJogosDaTela() {
         i++
     ) {
 
-        const casa =
-            document
-                .getElementById(
-                    "configCasa" + i
-                )
-                .value;
-
-
-        const visitante =
-            document
-                .getElementById(
-                    "configVisitante" + i
-                )
-                .value;
-
-
         novosJogos.push({
 
-            casa: casa,
+            casa:
+                document
+                    .getElementById(
+                        "configCasa" + i
+                    )
+                    .value,
 
             visitante:
-                visitante
+                document
+                    .getElementById(
+                        "configVisitante" + i
+                    )
+                    .value
 
         });
 
@@ -766,13 +749,11 @@ function lerJogosDaTela() {
 }
 
 
-/* =========================
-   ALTERAÇÃO DA LISTA
-========================= */
-
 function mudouListaJogos() {
 
     lerJogosDaTela();
+
+    garantirEstados();
 
     salvarEstado();
 
@@ -780,7 +761,7 @@ function mudouListaJogos() {
 
 
 /* =========================
-   ADICIONAR JOGO
+   ADICIONAR / REMOVER
 ========================= */
 
 function adicionarJogo() {
@@ -791,10 +772,14 @@ function adicionarJogo() {
     jogos.push({
 
         casa: "",
-
         visitante: ""
 
     });
+
+
+    estadosJogos.push(
+        novoEstadoJogo()
+    );
 
 
     desenharListaJogos();
@@ -803,10 +788,6 @@ function adicionarJogo() {
 
 }
 
-
-/* =========================
-   REMOVER JOGO
-========================= */
 
 function removerJogo(indice) {
 
@@ -832,6 +813,18 @@ function removerJogo(indice) {
     );
 
 
+    estadosJogos.splice(
+        indice,
+        1
+    );
+
+
+    resultados.splice(
+        indice,
+        1
+    );
+
+
     if (
         jogoAtual >=
         jogos.length
@@ -844,6 +837,8 @@ function removerJogo(indice) {
 
 
     desenharListaJogos();
+
+    carregarJogo();
 
     salvarEstado();
 
@@ -884,7 +879,7 @@ function validarRodada() {
             alert(
                 "O jogo " +
                 (i + 1) +
-                " está com o mesmo clube dos dois lados."
+                " possui o mesmo clube dos dois lados."
             );
 
             return false;
@@ -900,7 +895,7 @@ function validarRodada() {
 
 
 /* =========================
-   INICIAR RODADA
+   INICIAR
 ========================= */
 
 async function iniciarRodada() {
@@ -921,11 +916,17 @@ async function iniciarRodada() {
 
     resultados = [];
 
+    estadosJogos =
+        jogos.map(
+            function() {
 
-    carregarJogo(
-        true
-    );
+                return novoEstadoJogo();
 
+            }
+        );
+
+
+    carregarJogo();
 
     salvarEstado();
 
@@ -938,19 +939,80 @@ async function iniciarRodada() {
 
 
 /* =========================
+   SALVA JOGO ATUAL
+========================= */
+
+function salvarEstadoJogoAtual() {
+
+    garantirEstados();
+
+
+    const estado =
+        estadosJogos[
+            jogoAtual
+        ];
+
+
+    estado.p1casa =
+        document
+            .getElementById(
+                "p1casa"
+            )
+            .value;
+
+
+    estado.p1fora =
+        document
+            .getElementById(
+                "p1fora"
+            )
+            .value;
+
+
+    estado.p2casa =
+        document
+            .getElementById(
+                "p2casa"
+            )
+            .value;
+
+
+    estado.p2fora =
+        document
+            .getElementById(
+                "p2fora"
+            )
+            .value;
+
+}
+
+
+/* =========================
    CARREGA JOGO
 ========================= */
 
-function carregarJogo(
-    limparPalpites = true
-) {
+function carregarJogo() {
+
+    garantirEstados();
+
 
     const jogo =
         jogos[jogoAtual];
 
 
-    if (!jogo) {
+    const estado =
+        estadosJogos[
+            jogoAtual
+        ];
+
+
+    if (
+        !jogo ||
+        !estado
+    ) {
+
         return;
+
     }
 
 
@@ -970,38 +1032,36 @@ function carregarJogo(
             jogo.visitante;
 
 
-    if (
-        limparPalpites
-    ) {
-
-        document
-            .getElementById(
-                "p1casa"
-            )
-            .value = "";
+    document
+        .getElementById(
+            "p1casa"
+        )
+        .value =
+            estado.p1casa;
 
 
-        document
-            .getElementById(
-                "p1fora"
-            )
-            .value = "";
+    document
+        .getElementById(
+            "p1fora"
+        )
+        .value =
+            estado.p1fora;
 
 
-        document
-            .getElementById(
-                "p2casa"
-            )
-            .value = "";
+    document
+        .getElementById(
+            "p2casa"
+        )
+        .value =
+            estado.p2casa;
 
 
-        document
-            .getElementById(
-                "p2fora"
-            )
-            .value = "";
-
-    }
+    document
+        .getElementById(
+            "p2fora"
+        )
+        .value =
+            estado.p2fora;
 
 
     document
@@ -1013,10 +1073,16 @@ function carregarJogo(
             "JOGO " +
             (jogoAtual + 1) +
             " DE " +
-            jogos.length;
+            jogos.length +
+            " — " +
+            jogo.casa +
+            " × " +
+            jogo.visitante;
 
 
     atualizarNomesPalpites();
+
+    atualizarBotoes();
 
 }
 
@@ -1075,11 +1141,192 @@ function atualizarNomesPalpites() {
             "Palpite - " +
             nome2;
 
+
+    atualizarBotoes();
+
 }
 
 
 /* =========================
-   DADOS DO JOGO
+   PALPITE ALTERADO
+========================= */
+
+function alterouPalpite() {
+
+    salvarEstadoJogoAtual();
+
+    salvarEstado();
+
+}
+
+
+/* =========================
+   BOTÕES DE REVELAÇÃO
+========================= */
+
+function atualizarBotoes() {
+
+    garantirEstados();
+
+
+    const estado =
+        estadosJogos[
+            jogoAtual
+        ];
+
+
+    if (!estado) {
+        return;
+    }
+
+
+    const nome1 =
+        document
+            .getElementById(
+                "nome1"
+            )
+            .value
+            .trim()
+            .toUpperCase() ||
+            "MATHEUS";
+
+
+    const nome2 =
+        document
+            .getElementById(
+                "nome2"
+            )
+            .value
+            .trim()
+            .toUpperCase() ||
+            "THALYSON";
+
+
+    const btn1 =
+        document.getElementById(
+            "btnRevelar1"
+        );
+
+
+    const btn2 =
+        document.getElementById(
+            "btnRevelar2"
+        );
+
+
+    if (
+        estado.revelou1
+    ) {
+
+        btn1.textContent =
+            "✓ " +
+            nome1 +
+            " REVELADO";
+
+        btn1.classList.add(
+            "revelado"
+        );
+
+    }
+
+    else {
+
+        btn1.textContent =
+            "REVELAR PALPITE " +
+            nome1;
+
+        btn1.classList.remove(
+            "revelado"
+        );
+
+    }
+
+
+    if (
+        estado.revelou2
+    ) {
+
+        btn2.textContent =
+            "✓ " +
+            nome2 +
+            " REVELADO";
+
+        btn2.classList.add(
+            "revelado"
+        );
+
+    }
+
+    else {
+
+        btn2.textContent =
+            "REVELAR PALPITE " +
+            nome2;
+
+        btn2.classList.remove(
+            "revelado"
+        );
+
+    }
+
+
+    const ambosRevelados =
+        estado.revelou1 &&
+        estado.revelou2;
+
+
+    document
+        .getElementById(
+            "btnProximo"
+        )
+        .disabled =
+            !ambosRevelados;
+
+
+    document
+        .getElementById(
+            "btnAnterior"
+        )
+        .disabled =
+            jogoAtual === 0;
+
+
+    /*
+    FINALIZAR SÓ NO ÚLTIMO JOGO
+    E COM OS DOIS REVELADOS
+    */
+
+    document
+        .getElementById(
+            "btnFinalizar"
+        )
+        .disabled = !(
+
+            jogoAtual ===
+            jogos.length - 1
+
+            &&
+
+            ambosRevelados
+
+        );
+
+
+    document
+        .getElementById(
+            "avisoProximo"
+        )
+        .style
+        .display =
+            ambosRevelados
+            ? "none"
+            : "block";
+
+}
+
+
+/* =========================
+   DADOS
 ========================= */
 
 function dados() {
@@ -1109,16 +1356,14 @@ function dados() {
                 .getElementById(
                     "casa"
                 )
-                .value
-                .trim(),
+                .value,
 
         visitante:
             document
                 .getElementById(
                     "visitante"
                 )
-                .value
-                .trim(),
+                .value,
 
         p1casa:
             document
@@ -1149,6 +1394,452 @@ function dados() {
                 .value
 
     };
+
+}
+
+
+/* =========================
+   PALPITES PREENCHIDOS
+========================= */
+
+function palpite1Preenchido() {
+
+    const d =
+        dados();
+
+
+    return (
+
+        d.p1casa !== "" &&
+        d.p1fora !== ""
+
+    );
+
+}
+
+
+function palpite2Preenchido() {
+
+    const d =
+        dados();
+
+
+    return (
+
+        d.p2casa !== "" &&
+        d.p2fora !== ""
+
+    );
+
+}
+
+
+function palpitesPreenchidos() {
+
+    return (
+
+        palpite1Preenchido() &&
+        palpite2Preenchido()
+
+    );
+
+}
+
+
+/* =========================
+   ENVIA SERVIDOR
+========================= */
+
+async function enviar(acao) {
+
+    const pacote = {
+
+        acao: acao,
+
+        dados: dados(),
+
+        resultados:
+            resultados
+
+    };
+
+
+    try {
+
+        const resposta =
+            await fetch(
+
+                "/api/comando",
+
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            pacote
+                        )
+
+                }
+
+            );
+
+
+        const resultado =
+            await resposta.json();
+
+
+        if (
+            !resultado.ok
+        ) {
+
+            alert(
+                "Erro ao enviar comando."
+            );
+
+        }
+
+
+    } catch (erro) {
+
+        alert(
+            "Não foi possível comunicar com o servidor."
+        );
+
+        console.error(
+            erro
+        );
+
+    }
+
+}
+
+
+/* =========================
+   ATUALIZAR
+========================= */
+
+function salvar() {
+
+    salvarEstadoJogoAtual();
+
+    salvarEstado();
+
+    enviar(
+        "atualizar"
+    );
+
+}
+
+
+/* =========================
+   REVELAR MATHEUS
+========================= */
+
+async function revelar1() {
+
+    if (
+        !palpite1Preenchido()
+    ) {
+
+        alert(
+            "Preencha o palpite do MATHEUS antes de revelar."
+        );
+
+        return;
+
+    }
+
+
+    salvarEstadoJogoAtual();
+
+
+    estadosJogos[
+        jogoAtual
+    ].revelou1 =
+        true;
+
+
+    salvarEstado();
+
+    atualizarBotoes();
+
+
+    await enviar(
+        "revelar1"
+    );
+
+}
+
+
+/* =========================
+   REVELAR THALYSON
+========================= */
+
+async function revelar2() {
+
+    if (
+        !palpite2Preenchido()
+    ) {
+
+        alert(
+            "Preencha o palpite do THALYSON antes de revelar."
+        );
+
+        return;
+
+    }
+
+
+    salvarEstadoJogoAtual();
+
+
+    estadosJogos[
+        jogoAtual
+    ].revelou2 =
+        true;
+
+
+    salvarEstado();
+
+    atualizarBotoes();
+
+
+    await enviar(
+        "revelar2"
+    );
+
+}
+
+
+/* =========================
+   GUARDA RESULTADO
+========================= */
+
+function guardarResultadoAtual() {
+
+    salvarEstadoJogoAtual();
+
+
+    const d =
+        dados();
+
+
+    resultados[
+        jogoAtual
+    ] = {
+
+        casa:
+            d.casa,
+
+        visitante:
+            d.visitante,
+
+        nome1:
+            d.nome1,
+
+        nome2:
+            d.nome2,
+
+        palpite1:
+            d.p1casa +
+            " × " +
+            d.p1fora,
+
+        palpite2:
+            d.p2casa +
+            " × " +
+            d.p2fora
+
+    };
+
+
+    salvarEstado();
+
+}
+
+
+/* =========================
+   PRÓXIMO
+========================= */
+
+async function proximo() {
+
+    const estado =
+        estadosJogos[
+            jogoAtual
+        ];
+
+
+    if (
+        !palpitesPreenchidos() ||
+        !estado.revelou1 ||
+        !estado.revelou2
+    ) {
+
+        alert(
+            "Preencha e revele os dois palpites antes de continuar."
+        );
+
+        return;
+
+    }
+
+
+    guardarResultadoAtual();
+
+
+    await enviar(
+        "proximo"
+    );
+
+
+    if (
+        jogoAtual <
+        jogos.length - 1
+    ) {
+
+        jogoAtual++;
+
+
+        carregarJogo();
+
+        salvarEstado();
+
+
+        await enviar(
+            "atualizar"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   JOGO ANTERIOR
+========================= */
+
+async function anterior() {
+
+    if (
+        jogoAtual === 0
+    ) {
+
+        return;
+
+    }
+
+
+    salvarEstadoJogoAtual();
+
+
+    jogoAtual--;
+
+
+    carregarJogo();
+
+    salvarEstado();
+
+
+    await enviar(
+        "atualizar"
+    );
+
+
+    /*
+    Se os palpites desse jogo
+    já tinham sido revelados,
+    revela novamente no overlay.
+    */
+
+    const estado =
+        estadosJogos[
+            jogoAtual
+        ];
+
+
+    if (
+        estado.revelou1
+    ) {
+
+        await enviar(
+            "revelar1"
+        );
+
+    }
+
+
+    if (
+        estado.revelou2
+    ) {
+
+        await enviar(
+            "revelar2"
+        );
+
+    }
+
+}
+
+
+/* =========================
+   FINALIZAR
+========================= */
+
+async function finalizar() {
+
+    const estado =
+        estadosJogos[
+            jogoAtual
+        ];
+
+
+    if (
+        jogoAtual !==
+        jogos.length - 1
+    ) {
+
+        alert(
+            "A rodada só pode ser finalizada no último jogo."
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !palpitesPreenchidos() ||
+        !estado.revelou1 ||
+        !estado.revelou2
+    ) {
+
+        alert(
+            "Preencha e revele os dois palpites antes de finalizar."
+        );
+
+        return;
+
+    }
+
+
+    guardarResultadoAtual();
+
+
+    await enviar(
+        "finalizar"
+    );
+
+
+    salvarEstado();
 
 }
 
@@ -1186,37 +1877,8 @@ function salvarEstado() {
             resultados:
                 resultados,
 
-            palpiteAtual: {
-
-                p1casa:
-                    document
-                        .getElementById(
-                            "p1casa"
-                        )
-                        .value,
-
-                p1fora:
-                    document
-                        .getElementById(
-                            "p1fora"
-                        )
-                        .value,
-
-                p2casa:
-                    document
-                        .getElementById(
-                            "p2casa"
-                        )
-                        .value,
-
-                p2fora:
-                    document
-                        .getElementById(
-                            "p2fora"
-                        )
-                        .value
-
-            }
+            estadosJogos:
+                estadosJogos
 
         };
 
@@ -1232,13 +1894,10 @@ function salvarEstado() {
         );
 
 
-        mostrarAvisoSalvo();
-
-
     } catch (erro) {
 
         console.error(
-            "Erro ao salvar rodada:",
+            "Erro ao salvar:",
             erro
         );
 
@@ -1248,49 +1907,7 @@ function salvarEstado() {
 
 
 /* =========================
-   AVISO SALVO
-========================= */
-
-let temporizadorAviso;
-
-
-function mostrarAvisoSalvo() {
-
-    const aviso =
-        document.getElementById(
-            "avisoSalvo"
-        );
-
-
-    aviso.classList.add(
-        "visivel"
-    );
-
-
-    clearTimeout(
-        temporizadorAviso
-    );
-
-
-    temporizadorAviso =
-        setTimeout(
-            function() {
-
-                aviso
-                    .classList
-                    .remove(
-                        "visivel"
-                    );
-
-            },
-            1200
-        );
-
-}
-
-
-/* =========================
-   RECUPERA ESTADO
+   RECUPERA SALVAMENTO
 ========================= */
 
 function recuperarEstado() {
@@ -1320,7 +1937,7 @@ function recuperarEstado() {
             Array.isArray(
                 estado.jogos
             ) &&
-            estado.jogos.length > 0
+            estado.jogos.length
         ) {
 
             jogos =
@@ -1342,20 +1959,29 @@ function recuperarEstado() {
 
 
         if (
-            Number.isInteger(
-                estado.jogoAtual
+            Array.isArray(
+                estado.estadosJogos
             )
         ) {
 
-            jogoAtual =
-                estado.jogoAtual;
+            estadosJogos =
+                estado.estadosJogos;
 
         }
 
 
+        jogoAtual =
+            Number.isInteger(
+                estado.jogoAtual
+            )
+            ? estado.jogoAtual
+            : 0;
+
+
         if (
             jogoAtual < 0 ||
-            jogoAtual >= jogos.length
+            jogoAtual >=
+            jogos.length
         ) {
 
             jogoAtual = 0;
@@ -1381,61 +2007,7 @@ function recuperarEstado() {
                 "THALYSON";
 
 
-        desenharListaJogos();
-
-
-        carregarJogo(
-            true
-        );
-
-
-        if (
-            estado.palpiteAtual
-        ) {
-
-            document
-                .getElementById(
-                    "p1casa"
-                )
-                .value =
-                    estado
-                    .palpiteAtual
-                    .p1casa || "";
-
-
-            document
-                .getElementById(
-                    "p1fora"
-                )
-                .value =
-                    estado
-                    .palpiteAtual
-                    .p1fora || "";
-
-
-            document
-                .getElementById(
-                    "p2casa"
-                )
-                .value =
-                    estado
-                    .palpiteAtual
-                    .p2casa || "";
-
-
-            document
-                .getElementById(
-                    "p2fora"
-                )
-                .value =
-                    estado
-                    .palpiteAtual
-                    .p2fora || "";
-
-        }
-
-
-        atualizarNomesPalpites();
+        garantirEstados();
 
 
         return true;
@@ -1444,7 +2016,7 @@ function recuperarEstado() {
     } catch (erro) {
 
         console.error(
-            "Erro ao recuperar rodada:",
+            "Erro ao recuperar:",
             erro
         );
 
@@ -1457,280 +2029,6 @@ function recuperarEstado() {
 
 
 /* =========================
-   ENVIA AO SERVIDOR
-========================= */
-
-async function enviar(acao) {
-
-    const pacote = {
-
-        acao:
-            acao,
-
-        dados:
-            dados(),
-
-        resultados:
-            resultados
-
-    };
-
-
-    try {
-
-        const resposta =
-            await fetch(
-
-                "/api/comando",
-
-                {
-                    method:
-                        "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json"
-
-                    },
-
-                    body:
-                        JSON.stringify(
-                            pacote
-                        )
-                }
-
-            );
-
-
-        const resultado =
-            await resposta.json();
-
-
-        if (
-            !resultado.ok
-        ) {
-
-            alert(
-                "Erro ao enviar comando."
-            );
-
-        }
-
-
-    } catch (erro) {
-
-        alert(
-            "Não foi possível comunicar com o servidor."
-        );
-
-
-        console.error(
-            erro
-        );
-
-    }
-
-}
-
-
-/* =========================
-   COMANDOS
-========================= */
-
-function salvar() {
-
-    salvarEstado();
-
-    enviar(
-        "atualizar"
-    );
-
-}
-
-
-function revelar1() {
-
-    salvarEstado();
-
-    enviar(
-        "revelar1"
-    );
-
-}
-
-
-function revelar2() {
-
-    salvarEstado();
-
-    enviar(
-        "revelar2"
-    );
-
-}
-
-
-/* =========================
-   GUARDA RESULTADO
-========================= */
-
-function guardarResultadoAtual() {
-
-    const d =
-        dados();
-
-
-    resultados[jogoAtual] = {
-
-        casa:
-            d.casa,
-
-        visitante:
-            d.visitante,
-
-        nome1:
-            d.nome1,
-
-        nome2:
-            d.nome2,
-
-        palpite1:
-            d.p1casa +
-            " × " +
-            d.p1fora,
-
-        palpite2:
-            d.p2casa +
-            " × " +
-            d.p2fora
-
-    };
-
-
-    salvarEstado();
-
-}
-
-
-/* =========================
-   VALIDA PALPITES
-========================= */
-
-function palpitesPreenchidos() {
-
-    const d =
-        dados();
-
-
-    return !(
-
-        d.p1casa === "" ||
-
-        d.p1fora === "" ||
-
-        d.p2casa === "" ||
-
-        d.p2fora === ""
-
-    );
-
-}
-
-
-/* =========================
-   PRÓXIMO
-========================= */
-
-async function proximo() {
-
-    if (
-        !palpitesPreenchidos()
-    ) {
-
-        alert(
-            "Preencha os dois palpites antes de continuar."
-        );
-
-        return;
-
-    }
-
-
-    guardarResultadoAtual();
-
-
-    await enviar(
-        "proximo"
-    );
-
-
-    if (
-        jogoAtual <
-        jogos.length - 1
-    ) {
-
-        jogoAtual++;
-
-
-        carregarJogo(
-            true
-        );
-
-
-        salvarEstado();
-
-
-        await enviar(
-            "atualizar"
-        );
-
-    }
-
-    else {
-
-        alert(
-            "Este é o último jogo. Clique em FINALIZAR RODADA para mostrar o quadro final."
-        );
-
-    }
-
-}
-
-
-/* =========================
-   FINALIZAR
-========================= */
-
-async function finalizar() {
-
-    if (
-        !palpitesPreenchidos()
-    ) {
-
-        alert(
-            "Preencha os dois palpites antes de finalizar."
-        );
-
-        return;
-
-    }
-
-
-    guardarResultadoAtual();
-
-
-    salvarEstado();
-
-
-    await enviar(
-        "finalizar"
-    );
-
-}
-
-
-/* =========================
    NOVA RODADA
 ========================= */
 
@@ -1738,7 +2036,7 @@ async function novaRodada() {
 
     const confirmar =
         confirm(
-            "Deseja realmente iniciar uma NOVA RODADA? Os confrontos e palpites salvos serão apagados."
+            "Deseja iniciar uma nova rodada? Todos os confrontos e palpites salvos serão apagados."
         );
 
 
@@ -1765,6 +2063,16 @@ async function novaRodada() {
     resultados = [];
 
 
+    estadosJogos =
+        jogos.map(
+            function() {
+
+                return novoEstadoJogo();
+
+            }
+        );
+
+
     document
         .getElementById(
             "nome1"
@@ -1783,11 +2091,7 @@ async function novaRodada() {
 
     desenharListaJogos();
 
-
-    carregarJogo(
-        true
-    );
-
+    carregarJogo();
 
     salvarEstado();
 
@@ -1800,7 +2104,7 @@ async function novaRodada() {
 
 
 /* =========================
-   INÍCIO
+   INICIALIZAÇÃO
 ========================= */
 
 const recuperou =
@@ -1811,14 +2115,21 @@ if (
     !recuperou
 ) {
 
-    desenharListaJogos();
+    estadosJogos =
+        jogos.map(
+            function() {
 
-    carregarJogo(
-        true
-    );
+                return novoEstadoJogo();
+
+            }
+        );
 
 }
 
+
+desenharListaJogos();
+
+carregarJogo();
 
 atualizarNomesPalpites();
 
