@@ -17,31 +17,38 @@ os.chdir(PASTA_PROJETO)
 
 
 # ==========================================
-# ESTADO INICIAL DO 11x11
+# ESTADO INICIAL
 # ==========================================
 
-estado = {
+def criar_estado_inicial():
 
-    "posicao": "GOLEIRO",
+    return {
 
-    "numeroPosicao": 1,
+        "posicao": "GOLEIRO",
 
-    "jogador1": "Verbruggen",
-    "time1": "Holanda",
+        "numeroPosicao": 1,
 
-    "jogador2": "Ter Stegen",
-    "time2": "Alemanha",
+        "jogador1": "Verbruggen",
+        "time1": "Holanda",
+        "foto1": "verbruggen.png",
 
-    "placar1": 0,
-    "placar2": 0,
+        "jogador2": "Ter Stegen",
+        "time2": "Alemanha",
+        "foto2": "ter-stegen.png",
 
-    "vencedor": None,
+        "placar1": 0,
+        "placar2": 0,
 
-    "ladoVencedor": None,
+        "vencedor": None,
 
-    "timeIdeal": []
+        "ladoVencedor": None,
 
-}
+        "timeIdeal": []
+
+    }
+
+
+estado = criar_estado_inicial()
 
 
 # ==========================================
@@ -51,9 +58,9 @@ estado = {
 class Servidor11x11(SimpleHTTPRequestHandler):
 
 
-    # --------------------------------------
-    # CABEÇALHOS
-    # --------------------------------------
+    # ======================================
+    # ENVIAR JSON
+    # ======================================
 
     def enviar_json(self, dados, status=200):
 
@@ -61,6 +68,7 @@ class Servidor11x11(SimpleHTTPRequestHandler):
             dados,
             ensure_ascii=False
         ).encode("utf-8")
+
 
         self.send_response(status)
 
@@ -84,16 +92,14 @@ class Servidor11x11(SimpleHTTPRequestHandler):
         self.wfile.write(resposta)
 
 
-    # --------------------------------------
+    # ======================================
     # GET
-    # --------------------------------------
+    # ======================================
 
     def do_GET(self):
 
         global estado
 
-
-        # API DO ESTADO
 
         if self.path.startswith("/api/estado"):
 
@@ -102,20 +108,21 @@ class Servidor11x11(SimpleHTTPRequestHandler):
             return
 
 
-        # ARQUIVOS NORMAIS
-        # painel / overlay / imagens etc.
-
         super().do_GET()
 
 
-    # --------------------------------------
+    # ======================================
     # POST
-    # --------------------------------------
+    # ======================================
 
     def do_POST(self):
 
         global estado
 
+
+        # ----------------------------------
+        # ATUALIZAR ESTADO
+        # ----------------------------------
 
         if self.path == "/api/estado":
 
@@ -128,16 +135,16 @@ class Servidor11x11(SimpleHTTPRequestHandler):
                     )
                 )
 
+
                 corpo = self.rfile.read(
                     tamanho
                 )
+
 
                 novos_dados = json.loads(
                     corpo.decode("utf-8")
                 )
 
-
-                # Atualiza apenas os dados enviados
 
                 estado.update(
                     novos_dados
@@ -167,6 +174,31 @@ class Servidor11x11(SimpleHTTPRequestHandler):
             return
 
 
+        # ----------------------------------
+        # RESETAR 11x11
+        # ----------------------------------
+
+        if self.path == "/api/reset":
+
+            estado = criar_estado_inicial()
+
+
+            self.enviar_json({
+
+                "ok": True,
+
+                "estado": estado
+
+            })
+
+
+            return
+
+
+        # ----------------------------------
+        # ROTA NÃO ENCONTRADA
+        # ----------------------------------
+
         self.enviar_json({
 
             "ok": False,
@@ -177,7 +209,7 @@ class Servidor11x11(SimpleHTTPRequestHandler):
 
 
 # ==========================================
-# INICIAR
+# INICIAR SERVIDOR
 # ==========================================
 
 if __name__ == "__main__":
@@ -193,18 +225,25 @@ if __name__ == "__main__":
     print("       11x11 METREACTS V2")
     print("====================================")
     print("")
+
     print(
         f"Painel:  http://localhost:{PORTA}/painel/"
     )
+
     print(
         f"Overlay: http://localhost:{PORTA}/overlay/"
     )
+
     print(
         f"API:     http://localhost:{PORTA}/api/estado"
     )
+
     print("")
+
     print("Servidor funcionando.")
+
     print("Para encerrar: CTRL + C")
+
     print("")
 
 
