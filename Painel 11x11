@@ -164,6 +164,10 @@ input:focus {
     border-color: #795cff;
 }
 
+#proximo:hover {
+    background: #7555ff;
+}
+
 .reset-area {
     margin-top: 25px;
     padding-top: 25px;
@@ -212,7 +216,7 @@ input:focus {
         </div>
 
         <div id="posicaoAtual">
-            GOLEIRO
+            CARREGANDO...
         </div>
 
     </div>
@@ -230,7 +234,6 @@ input:focus {
             <input
                 type="text"
                 id="jogador1"
-                value="Verbruggen"
             >
 
             <label>TIME / SELEÇÃO</label>
@@ -238,7 +241,6 @@ input:focus {
             <input
                 type="text"
                 id="time1"
-                value="Holanda"
             >
 
             <label>ARQUIVO DA FOTO</label>
@@ -246,14 +248,12 @@ input:focus {
             <input
                 type="text"
                 id="foto1"
-                value="verbruggen.png"
-                placeholder="exemplo.png"
             >
 
             <button
                 class="escolher escolher1"
                 onclick="escolherJogador(1)">
-                ESCOLHER VERBRUGGEN
+                ESCOLHER
             </button>
 
         </div>
@@ -268,7 +268,6 @@ input:focus {
             <input
                 type="text"
                 id="jogador2"
-                value="Ter Stegen"
             >
 
             <label>TIME / SELEÇÃO</label>
@@ -276,7 +275,6 @@ input:focus {
             <input
                 type="text"
                 id="time2"
-                value="Alemanha"
             >
 
             <label>ARQUIVO DA FOTO</label>
@@ -284,14 +282,12 @@ input:focus {
             <input
                 type="text"
                 id="foto2"
-                value="ter-stegen.png"
-                placeholder="exemplo.png"
             >
 
             <button
                 class="escolher escolher2"
                 onclick="escolherJogador(2)">
-                ESCOLHER TER STEGEN
+                ESCOLHER
             </button>
 
         </div>
@@ -331,7 +327,7 @@ input:focus {
 
 
     <div id="statusServidor">
-        SERVIDOR CONECTADO
+        CARREGANDO...
     </div>
 
 </div>
@@ -340,22 +336,10 @@ input:focus {
 <script>
 
 /* =========================================
-   POSIÇÕES
+   VARIÁVEIS
 ========================================= */
 
-const posicoes = [
-    "GOLEIRO",
-    "LATERAL DIREITO",
-    "ZAGUEIRO 1",
-    "ZAGUEIRO 2",
-    "LATERAL ESQUERDO",
-    "VOLANTE",
-    "MEIA 1",
-    "MEIA 2",
-    "PONTA DIREITA",
-    "CENTROAVANTE",
-    "PONTA ESQUERDA"
-];
+let confrontos = [];
 
 let indice = 0;
 
@@ -366,28 +350,50 @@ let timeIdeal = [];
 
 
 /* =========================================
-   POST
+   STATUS
+========================================= */
+
+function statusServidor(texto, cor) {
+
+    const status =
+        document.getElementById(
+            "statusServidor"
+        );
+
+    status.innerText = texto;
+    status.style.color = cor;
+
+}
+
+
+/* =========================================
+   ENVIAR ESTADO
 ========================================= */
 
 async function enviarEstado(dados) {
 
     try {
 
-        const resposta = await fetch(
-            "/api/estado",
-            {
-                method: "POST",
+        const resposta =
+            await fetch(
+                "/api/estado",
+                {
+                    method: "POST",
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-                body: JSON.stringify(dados)
-            }
-        );
+                    body:
+                        JSON.stringify(dados)
+                }
+            );
+
 
         const resultado =
             await resposta.json();
+
 
         if (resultado.ok) {
 
@@ -415,24 +421,222 @@ async function enviarEstado(dados) {
 
 
 /* =========================================
-   STATUS
+   CARREGAR JSON DOS CONFRONTOS
 ========================================= */
 
-function statusServidor(texto, cor) {
+async function carregarConfrontos() {
 
-    const status =
-        document.getElementById(
-            "statusServidor"
+    try {
+
+        const resposta =
+            await fetch(
+                "/dados/confrontos.json?tempo=" +
+                Date.now()
+            );
+
+
+        const dados =
+            await resposta.json();
+
+
+        confrontos =
+            dados.confrontos || [];
+
+
+        if (confrontos.length === 0) {
+
+            throw new Error(
+                "Nenhum confronto cadastrado."
+            );
+
+        }
+
+
+        await carregarEstado();
+
+
+        carregarConfronto(
+            indice,
+            false
         );
 
-    status.innerText = texto;
-    status.style.color = cor;
+
+        statusServidor(
+            "SERVIDOR CONECTADO",
+            "#6cff9d"
+        );
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        statusServidor(
+            "ERRO AO CARREGAR CONFRONTOS",
+            "#ff5c5c"
+        );
+
+    }
 
 }
 
 
 /* =========================================
-   PEGAR DADOS DOS CAMPOS
+   CARREGAR ESTADO ATUAL
+========================================= */
+
+async function carregarEstado() {
+
+    try {
+
+        const resposta =
+            await fetch(
+                "/api/estado?tempo=" +
+                Date.now()
+            );
+
+
+        const estado =
+            await resposta.json();
+
+
+        indice =
+            Math.max(
+                0,
+                (estado.numeroPosicao || 1)
+                - 1
+            );
+
+
+        if (
+            indice >= confrontos.length
+        ) {
+
+            indice = 0;
+
+        }
+
+
+        placar1 =
+            estado.placar1 || 0;
+
+
+        placar2 =
+            estado.placar2 || 0;
+
+
+        timeIdeal =
+            estado.timeIdeal || [];
+
+    }
+
+    catch (erro) {
+
+        console.error(erro);
+
+        indice = 0;
+        placar1 = 0;
+        placar2 = 0;
+        timeIdeal = [];
+
+    }
+
+}
+
+
+/* =========================================
+   CARREGAR UM CONFRONTO
+========================================= */
+
+function carregarConfronto(
+    numero,
+    enviar = true
+) {
+
+    const confronto =
+        confrontos[numero];
+
+
+    if (!confronto) {
+
+        return;
+
+    }
+
+
+    /* POSIÇÃO */
+
+    document.getElementById(
+        "numeroPosicao"
+    ).innerText =
+        (numero + 1) +
+        " / " +
+        confrontos.length;
+
+
+    document.getElementById(
+        "posicaoAtual"
+    ).innerText =
+        confronto.posicao;
+
+
+    /* JOGADOR 1 */
+
+    document.getElementById(
+        "jogador1"
+    ).value =
+        confronto.jogador1.nome;
+
+
+    document.getElementById(
+        "time1"
+    ).value =
+        confronto.jogador1.time;
+
+
+    document.getElementById(
+        "foto1"
+    ).value =
+        confronto.jogador1.foto;
+
+
+    /* JOGADOR 2 */
+
+    document.getElementById(
+        "jogador2"
+    ).value =
+        confronto.jogador2.nome;
+
+
+    document.getElementById(
+        "time2"
+    ).value =
+        confronto.jogador2.time;
+
+
+    document.getElementById(
+        "foto2"
+    ).value =
+        confronto.jogador2.foto;
+
+
+    atualizarBotoes();
+
+    mostrarEscolhaDaPosicao();
+
+
+    if (enviar) {
+
+        enviarConfrontoAtual();
+
+    }
+
+}
+
+
+/* =========================================
+   PEGAR CAMPOS
 ========================================= */
 
 function pegarDadosJogadores() {
@@ -475,14 +679,36 @@ function pegarDadosJogadores() {
 
 
 /* =========================================
-   ENVIAR JOGADORES
+   ENVIAR CONFRONTO ATUAL AO OVERLAY
 ========================================= */
 
-function enviarJogadores() {
+function enviarConfrontoAtual() {
 
-    enviarEstado(
-        pegarDadosJogadores()
-    );
+    const confronto =
+        confrontos[indice];
+
+
+    const dados =
+        pegarDadosJogadores();
+
+
+    enviarEstado({
+
+        posicao:
+            confronto.posicao,
+
+        numeroPosicao:
+            indice + 1,
+
+        ...dados,
+
+        vencedor:
+            null,
+
+        ladoVencedor:
+            null
+
+    });
 
 }
 
@@ -497,6 +723,7 @@ function atualizarBotoes() {
         document.getElementById(
             "jogador1"
         ).value;
+
 
     const nome2 =
         document.getElementById(
@@ -521,34 +748,55 @@ function atualizarBotoes() {
 
 
 /* =========================================
-   POSIÇÃO
+   MOSTRAR ESCOLHA EXISTENTE
 ========================================= */
 
-function atualizarPosicao() {
+function mostrarEscolhaDaPosicao() {
 
-    document.getElementById(
-        "numeroPosicao"
-    ).innerText =
-        (indice + 1) +
-        " / " +
-        posicoes.length;
+    const confronto =
+        confrontos[indice];
 
 
-    document.getElementById(
-        "posicaoAtual"
-    ).innerText =
-        posicoes[indice];
+    const escolha =
+        timeIdeal.find(
+            item =>
+                item.posicao ===
+                confronto.posicao
+        );
 
 
-    enviarEstado({
+    const vencedor =
+        document.getElementById(
+            "vencedor"
+        );
 
-        posicao:
-            posicoes[indice],
 
-        numeroPosicao:
-            indice + 1
+    if (escolha) {
 
-    });
+        vencedor.innerText =
+            "ESCOLHIDO: " +
+            escolha.jogador.toUpperCase() +
+            " — " +
+            escolha.time.toUpperCase();
+
+
+        vencedor.classList.add(
+            "escolhido"
+        );
+
+    }
+
+    else {
+
+        vencedor.innerText =
+            "Nenhum jogador escolhido";
+
+
+        vencedor.classList.remove(
+            "escolhido"
+        );
+
+    }
 
 }
 
@@ -558,6 +806,10 @@ function atualizarPosicao() {
 ========================================= */
 
 function escolherJogador(lado) {
+
+    const confronto =
+        confrontos[indice];
+
 
     const dados =
         pegarDadosJogadores();
@@ -596,21 +848,20 @@ function escolherJogador(lado) {
 
 
     /*
-       Se já existe vencedor nessa posição,
-       remove antes de salvar novamente.
+       VERIFICA SE ESSA POSIÇÃO
+       JÁ POSSUÍA UM VENCEDOR
     */
 
     const existente =
         timeIdeal.find(
             item =>
                 item.posicao ===
-                posicoes[indice]
+                confronto.posicao
         );
 
 
     /*
-       Se não havia vencedor,
-       soma o ponto.
+       PRIMEIRA ESCOLHA
     */
 
     if (!existente) {
@@ -629,50 +880,55 @@ function escolherJogador(lado) {
 
     }
 
-    else {
 
-        /*
-           Se trocou o vencedor de lado,
-           corrige o placar.
-        */
+    /*
+       TROCA DO VENCEDOR
+    */
+
+    else if (
+        existente.lado !== lado
+    ) {
 
         if (
-            existente.lado !== lado
+            existente.lado === 1
         ) {
 
-            if (
-                existente.lado === 1
-            ) {
+            placar1--;
+            placar2++;
 
-                placar1--;
-                placar2++;
+        }
 
-            }
+        else {
 
-            else {
-
-                placar2--;
-                placar1++;
-
-            }
+            placar2--;
+            placar1++;
 
         }
 
     }
 
 
+    /*
+       REMOVE A ESCOLHA ANTIGA
+       DESSA POSIÇÃO
+    */
+
     timeIdeal =
         timeIdeal.filter(
             item =>
                 item.posicao !==
-                posicoes[indice]
+                confronto.posicao
         );
 
+
+    /*
+       SALVA NOVO VENCEDOR
+    */
 
     timeIdeal.push({
 
         posicao:
-            posicoes[indice],
+            confronto.posicao,
 
         jogador:
             jogadorEscolhido,
@@ -692,33 +948,36 @@ function escolherJogador(lado) {
     });
 
 
-    const vencedor =
-        document.getElementById(
-            "vencedor"
-        );
+    /*
+       ORDENA PELA POSIÇÃO
+    */
 
-
-    vencedor.innerText =
-        "ESCOLHIDO: " +
-        jogadorEscolhido.toUpperCase() +
-        " — " +
-        timeEscolhido.toUpperCase();
-
-
-    vencedor.classList.add(
-        "escolhido"
+    timeIdeal.sort(
+        (a, b) =>
+            a.indice - b.indice
     );
 
 
+    /*
+       MOSTRA NO PAINEL
+    */
+
+    mostrarEscolhaDaPosicao();
+
+
+    /*
+       ENVIA PARA O SERVIDOR
+    */
+
     enviarEstado({
 
-        ...dados,
-
         posicao:
-            posicoes[indice],
+            confronto.posicao,
 
         numeroPosicao:
             indice + 1,
+
+        ...dados,
 
         vencedor:
             jogadorEscolhido,
@@ -748,14 +1007,15 @@ function proximo() {
 
     if (
         indice <
-        posicoes.length - 1
+        confrontos.length - 1
     ) {
 
         indice++;
 
-        atualizarPosicao();
-
-        limparVencedor();
+        carregarConfronto(
+            indice,
+            true
+        );
 
     }
 
@@ -772,9 +1032,10 @@ function anterior() {
 
         indice--;
 
-        atualizarPosicao();
-
-        limparVencedor();
+        carregarConfronto(
+            indice,
+            true
+        );
 
     }
 
@@ -782,28 +1043,45 @@ function anterior() {
 
 
 /* =========================================
-   LIMPAR VENCEDOR VISUAL
+   CAMPOS EDITÁVEIS
 ========================================= */
 
-function limparVencedor() {
+function campoAlterado() {
 
-    const vencedor =
-        document.getElementById(
-            "vencedor"
-        );
+    atualizarBotoes();
 
-    vencedor.innerText =
-        "Nenhum jogador escolhido";
+    /*
+       Alteração manual no painel
+       também vai para o OBS.
+    */
 
-    vencedor.classList.remove(
-        "escolhido"
-    );
+    enviarConfrontoAtual();
 
 }
 
 
+[
+    "jogador1",
+    "time1",
+    "foto1",
+    "jogador2",
+    "time2",
+    "foto2"
+
+].forEach(id => {
+
+    document
+        .getElementById(id)
+        .addEventListener(
+            "input",
+            campoAlterado
+        );
+
+});
+
+
 /* =========================================
-   RESET
+   RESETAR
 ========================================= */
 
 async function resetar11x11() {
@@ -836,32 +1114,39 @@ async function resetar11x11() {
             await resposta.json();
 
 
-        if (resultado.ok) {
+        if (!resultado.ok) {
 
-            indice = 0;
-
-            placar1 = 0;
-            placar2 = 0;
-
-            timeIdeal = [];
-
-
-            carregarEstado();
-
-
-            limparVencedor();
-
-
-            statusServidor(
-                "11x11 RESETADO",
-                "#6cff9d"
+            throw new Error(
+                "Não foi possível resetar."
             );
 
         }
 
+
+        indice = 0;
+
+        placar1 = 0;
+        placar2 = 0;
+
+        timeIdeal = [];
+
+
+        carregarConfronto(
+            0,
+            true
+        );
+
+
+        statusServidor(
+            "11x11 RESETADO",
+            "#6cff9d"
+        );
+
     }
 
     catch (erro) {
+
+        console.error(erro);
 
         statusServidor(
             "ERRO AO RESETAR",
@@ -874,151 +1159,10 @@ async function resetar11x11() {
 
 
 /* =========================================
-   CARREGAR ESTADO
-========================================= */
-
-async function carregarEstado() {
-
-    try {
-
-        const resposta =
-            await fetch(
-                "/api/estado?tempo=" +
-                Date.now()
-            );
-
-
-        const estado =
-            await resposta.json();
-
-
-        document.getElementById(
-            "jogador1"
-        ).value =
-            estado.jogador1 || "";
-
-
-        document.getElementById(
-            "time1"
-        ).value =
-            estado.time1 || "";
-
-
-        document.getElementById(
-            "foto1"
-        ).value =
-            estado.foto1 || "";
-
-
-        document.getElementById(
-            "jogador2"
-        ).value =
-            estado.jogador2 || "";
-
-
-        document.getElementById(
-            "time2"
-        ).value =
-            estado.time2 || "";
-
-
-        document.getElementById(
-            "foto2"
-        ).value =
-            estado.foto2 || "";
-
-
-        indice =
-            Math.max(
-                0,
-                (estado.numeroPosicao || 1)
-                - 1
-            );
-
-
-        placar1 =
-            estado.placar1 || 0;
-
-
-        placar2 =
-            estado.placar2 || 0;
-
-
-        timeIdeal =
-            estado.timeIdeal || [];
-
-
-        document.getElementById(
-            "numeroPosicao"
-        ).innerText =
-            (indice + 1) +
-            " / " +
-            posicoes.length;
-
-
-        document.getElementById(
-            "posicaoAtual"
-        ).innerText =
-            posicoes[indice];
-
-
-        atualizarBotoes();
-
-
-        statusServidor(
-            "SERVIDOR CONECTADO",
-            "#6cff9d"
-        );
-
-    }
-
-    catch (erro) {
-
-        statusServidor(
-            "ERRO DE CONEXÃO",
-            "#ff5c5c"
-        );
-
-    }
-
-}
-
-
-/* =========================================
-   EVENTOS
-========================================= */
-
-[
-    "jogador1",
-    "time1",
-    "foto1",
-    "jogador2",
-    "time2",
-    "foto2"
-
-].forEach(id => {
-
-    document
-        .getElementById(id)
-        .addEventListener(
-            "input",
-            function() {
-
-                atualizarBotoes();
-
-                enviarJogadores();
-
-            }
-        );
-
-});
-
-
-/* =========================================
    INICIAR
 ========================================= */
 
-carregarEstado();
+carregarConfrontos();
 
 </script>
 
