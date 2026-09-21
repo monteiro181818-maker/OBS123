@@ -36,26 +36,22 @@ html, body {
 }
 
 
-/* =====================================
-   ESPAÇOS DAS CÂMERAS
-===================================== */
+/* =========================
+   CÂMERAS
+========================= */
 
 .camera {
     position: absolute;
-
     left: 45px;
-
     width: 420px;
     height: 330px;
-
     background: transparent;
-
     border: 4px solid #633cff;
-
     border-radius: 18px;
 
     box-shadow:
-        0 0 20px rgba(100, 50, 255, 0.75);
+        0 0 20px
+        rgba(100, 50, 255, 0.75);
 
     pointer-events: none;
 }
@@ -69,13 +65,12 @@ html, body {
 }
 
 
-/* =====================================
-   ÁREA CENTRAL
-===================================== */
+/* =========================
+   COMPARAÇÃO
+========================= */
 
 #comparacao {
     position: absolute;
-
     left: 510px;
     top: 145px;
 
@@ -83,7 +78,6 @@ html, body {
     height: 700px;
 
     border: 3px solid #683cff;
-
     border-radius: 22px;
 
     background:
@@ -94,15 +88,16 @@ html, body {
         );
 
     box-shadow:
-        0 0 30px rgba(105,50,255,0.50);
+        0 0 30px
+        rgba(105,50,255,0.50);
 
     overflow: hidden;
 }
 
 
-/* =====================================
+/* =========================
    POSIÇÃO
-===================================== */
+========================= */
 
 #posicao {
     position: absolute;
@@ -110,18 +105,19 @@ html, body {
     top: 20px;
     left: 50%;
 
-    transform: translateX(-50%);
+    transform:
+        translateX(-50%);
 
     padding: 8px 40px;
 
     background: #080812;
 
-    border: 2px solid #704cff;
+    border:
+        2px solid #704cff;
 
     border-radius: 10px;
 
     font-size: 29px;
-
     font-weight: 900;
 
     z-index: 20;
@@ -130,9 +126,9 @@ html, body {
 }
 
 
-/* =====================================
-   ÁREA DOS DOIS JOGADORES
-===================================== */
+/* =========================
+   JOGADORES
+========================= */
 
 #jogadores {
     position: absolute;
@@ -146,11 +142,6 @@ html, body {
     display: flex;
 }
 
-
-/* =====================================
-   CADA JOGADOR
-===================================== */
-
 .jogador {
     position: relative;
 
@@ -158,7 +149,6 @@ html, body {
     height: 100%;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
@@ -166,19 +156,15 @@ html, body {
 }
 
 
-/* =====================================
-   FOTO PADRONIZADA
-
-   As duas fotos ocupam exatamente
-   o mesmo espaço: 300 x 410.
-===================================== */
+/* =========================
+   FOTOS
+========================= */
 
 .foto-jogador {
     width: 300px;
     height: 410px;
 
     object-fit: cover;
-
     object-position: center top;
 
     display: block;
@@ -189,9 +175,9 @@ html, body {
 }
 
 
-/* =====================================
+/* =========================
    X CENTRAL
-===================================== */
+========================= */
 
 #versus {
     position: absolute;
@@ -203,7 +189,6 @@ html, body {
         translate(-50%, -50%);
 
     font-size: 82px;
-
     font-weight: 900;
 
     z-index: 30;
@@ -214,9 +199,9 @@ html, body {
 }
 
 
-/* =====================================
-   NOMES DOS JOGADORES
-===================================== */
+/* =========================
+   NOMES
+========================= */
 
 .nome-jogador {
     position: absolute;
@@ -227,7 +212,6 @@ html, body {
     height: 65px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
@@ -235,7 +219,6 @@ html, body {
         rgba(5,5,12,0.96);
 
     font-size: 25px;
-
     font-weight: 900;
 
     border-radius: 8px;
@@ -247,12 +230,10 @@ html, body {
     z-index: 5;
 }
 
-
 .esquerda .nome-jogador {
     border:
         2px solid #168cff;
 }
-
 
 .direita .nome-jogador {
     border:
@@ -260,9 +241,9 @@ html, body {
 }
 
 
-/* =====================================
+/* =========================
    PLACAR
-===================================== */
+========================= */
 
 #placar {
     position: absolute;
@@ -280,26 +261,23 @@ html, body {
     gap: 28px;
 
     font-size: 30px;
-
     font-weight: 900;
 
     white-space: nowrap;
 }
 
-
 .numero {
     font-size: 42px;
 }
-
 
 .vs-placar {
     color: #9b6cff;
 }
 
 
-/* =====================================
-   CONTAINER DO 11 IDEAL
-===================================== */
+/* =========================
+   CAMPO
+========================= */
 
 #campo-container {
     position: absolute;
@@ -325,11 +303,6 @@ html, body {
     overflow: hidden;
 }
 
-
-/* =====================================
-   TÍTULO 11 IDEAL
-===================================== */
-
 #campo-titulo {
     position: absolute;
 
@@ -340,18 +313,12 @@ html, body {
         translateX(-50%);
 
     font-size: 28px;
-
     font-weight: 900;
 
     white-space: nowrap;
 
     z-index: 20;
 }
-
-
-/* =====================================
-   CAMPO
-===================================== */
 
 #campo {
     position: absolute;
@@ -376,9 +343,6 @@ html, body {
         );
 }
 
-
-/* LINHA CENTRAL */
-
 #campo::before {
     content: "";
 
@@ -393,9 +357,6 @@ html, body {
     background:
         rgba(255,255,255,0.70);
 }
-
-
-/* CÍRCULO CENTRAL */
 
 #campo::after {
     content: "";
@@ -419,9 +380,9 @@ html, body {
 }
 
 
-/* =====================================
+/* =========================
    JOGADORES DO 11 IDEAL
-===================================== */
+========================= */
 
 .jogador-campo {
     position: absolute;
@@ -445,7 +406,6 @@ html, body {
     text-align: center;
 
     font-size: 12px;
-
     font-weight: 900;
 
     z-index: 10;
@@ -455,103 +415,68 @@ html, body {
         rgba(0,0,0,0.50);
 }
 
-
 .jogador-campo.lado1 {
     border-color: #168cff;
 }
-
 
 .jogador-campo.lado2 {
     border-color: #ad24ff;
 }
 
 
-/* =====================================
-   POSIÇÕES DO 11 IDEAL
-===================================== */
-
-
-/* GOLEIRO */
+/* =========================
+   POSIÇÕES DO CAMPO
+========================= */
 
 .pos-0 {
     left: 50%;
     top: 91%;
 }
 
-
-/* LATERAL DIREITO */
-
 .pos-1 {
     left: 86%;
     top: 72%;
 }
-
-
-/* ZAGUEIRO DIREITO */
 
 .pos-2 {
     left: 65%;
     top: 78%;
 }
 
-
-/* ZAGUEIRO ESQUERDO */
-
 .pos-3 {
     left: 35%;
     top: 78%;
 }
-
-
-/* LATERAL ESQUERDO */
 
 .pos-4 {
     left: 14%;
     top: 72%;
 }
 
-
-/* VOLANTE */
-
 .pos-5 {
     left: 50%;
     top: 61%;
 }
-
-
-/* MEIA DIREITO */
 
 .pos-6 {
     left: 68%;
     top: 48%;
 }
 
-
-/* MEIA ESQUERDO */
-
 .pos-7 {
     left: 32%;
     top: 48%;
 }
-
-
-/* PONTA DIREITA */
 
 .pos-8 {
     left: 82%;
     top: 25%;
 }
 
-
-/* CENTROAVANTE */
-
 .pos-9 {
     left: 50%;
     top: 16%;
 }
-
-
-/* PONTA ESQUERDA */
 
 .pos-10 {
     left: 18%;
@@ -559,9 +484,9 @@ html, body {
 }
 
 
-/* =====================================
+/* =========================
    RODAPÉ
-===================================== */
+========================= */
 
 #rodape {
     position: absolute;
@@ -585,22 +510,17 @@ html, body {
 
 </head>
 
-
 <body>
-
 
 <div id="layout">
 
 
-    <!-- =================================
-         ESPAÇOS DAS CÂMERAS
-    ================================== -->
+    <!-- CÂMERAS -->
 
     <div
         id="camera1"
         class="camera">
     </div>
-
 
     <div
         id="camera2"
@@ -608,32 +528,22 @@ html, body {
     </div>
 
 
-    <!-- =================================
-         COMPARAÇÃO
-    ================================== -->
+    <!-- COMPARAÇÃO -->
 
     <div id="comparacao">
-
-
-        <!-- POSIÇÃO -->
 
         <div id="posicao">
             GOLEIRO
         </div>
 
 
-        <!-- JOGADORES -->
-
         <div id="jogadores">
 
 
-            <!-- ==========================
-                 JOGADOR 1
-            =========================== -->
+            <!-- JOGADOR 1 -->
 
             <div
                 class="jogador esquerda">
-
 
                 <img
                     id="fotoJogador1"
@@ -641,7 +551,6 @@ html, body {
                     src="/imagens/verbruggen.png"
                     alt="Jogador 1"
                 >
-
 
                 <div
                     class="nome-jogador"
@@ -651,17 +560,13 @@ html, body {
 
                 </div>
 
-
             </div>
 
 
-            <!-- ==========================
-                 JOGADOR 2
-            =========================== -->
+            <!-- JOGADOR 2 -->
 
             <div
                 class="jogador direita">
-
 
                 <img
                     id="fotoJogador2"
@@ -669,7 +574,6 @@ html, body {
                     src="/imagens/ter-stegen.png"
                     alt="Jogador 2"
                 >
-
 
                 <div
                     class="nome-jogador"
@@ -679,88 +583,64 @@ html, body {
 
                 </div>
 
-
             </div>
-
 
         </div>
 
-
-        <!-- X -->
 
         <div id="versus">
             X
         </div>
 
 
-        <!-- =================================
-             PLACAR
-        ================================== -->
+        <!-- PLACAR -->
 
         <div id="placar">
-
 
             <span id="nomeTime1">
                 HOLANDA
             </span>
 
-
             <span
                 class="numero"
                 id="placar1">
-
                 0
-
             </span>
-
 
             <span class="vs-placar">
                 ×
             </span>
 
-
             <span
                 class="numero"
                 id="placar2">
-
                 0
-
             </span>
-
 
             <span id="nomeTime2">
                 ALEMANHA
             </span>
 
-
         </div>
-
 
     </div>
 
 
-    <!-- =================================
-         11 IDEAL
-    ================================== -->
+    <!-- 11 IDEAL -->
 
     <div id="campo-container">
-
 
         <div id="campo-titulo">
             11 IDEAL
         </div>
 
-
         <div id="campo">
         </div>
-
 
     </div>
 
 
-    <!-- =================================
-         RODAPÉ
-    ================================== -->
+    <!-- RODAPÉ -->
 
     <div id="rodape">
 
@@ -768,11 +648,73 @@ html, body {
 
     </div>
 
-
 </div>
 
 
 <script>
+
+
+/* =========================================
+   ATUALIZAR FOTO
+========================================= */
+
+function atualizarFoto(
+    elemento,
+    nomeArquivo
+) {
+
+    /*
+       Se não existir foto cadastrada,
+       escondemos a imagem.
+    */
+
+    if (
+        !nomeArquivo ||
+        nomeArquivo.trim() === ""
+    ) {
+
+        elemento.style.display =
+            "none";
+
+        elemento.removeAttribute(
+            "src"
+        );
+
+        elemento.dataset.foto = "";
+
+        return;
+
+    }
+
+
+    /*
+       Se existe foto, mostramos.
+    */
+
+    elemento.style.display =
+        "block";
+
+
+    /*
+       Só troca o SRC se realmente
+       mudou de arquivo.
+    */
+
+    if (
+        elemento.dataset.foto !==
+        nomeArquivo
+    ) {
+
+        elemento.src =
+            "/imagens/" +
+            nomeArquivo;
+
+        elemento.dataset.foto =
+            nomeArquivo;
+
+    }
+
+}
 
 
 /* =========================================
@@ -783,13 +725,10 @@ async function atualizarOverlay() {
 
     try {
 
-
         const resposta =
             await fetch(
-
                 "/api/estado?tempo=" +
                 Date.now()
-
             );
 
 
@@ -797,10 +736,7 @@ async function atualizarOverlay() {
             await resposta.json();
 
 
-        /* =================================
-           POSIÇÃO
-        ================================= */
-
+        /* POSIÇÃO */
 
         document.getElementById(
             "posicao"
@@ -810,10 +746,7 @@ async function atualizarOverlay() {
             "GOLEIRO";
 
 
-        /* =================================
-           NOMES
-        ================================= */
-
+        /* NOMES */
 
         document.getElementById(
             "nomeJogador1"
@@ -835,20 +768,7 @@ async function atualizarOverlay() {
             ).toUpperCase();
 
 
-        /* =================================
-           FOTOS
-        ================================= */
-
-
-        const foto1 =
-            estado.foto1 ||
-            "verbruggen.png";
-
-
-        const foto2 =
-            estado.foto2 ||
-            "ter-stegen.png";
-
+        /* FOTOS */
 
         const imagem1 =
             document.getElementById(
@@ -862,53 +782,19 @@ async function atualizarOverlay() {
             );
 
 
-        const caminhoFoto1 =
-            "/imagens/" +
-            foto1;
+        atualizarFoto(
+            imagem1,
+            estado.foto1
+        );
 
 
-        const caminhoFoto2 =
-            "/imagens/" +
-            foto2;
+        atualizarFoto(
+            imagem2,
+            estado.foto2
+        );
 
 
-        /*
-           Só altera o SRC quando
-           a foto realmente mudou.
-        */
-
-        if (
-            imagem1.dataset.foto !==
-            foto1
-        ) {
-
-            imagem1.src =
-                caminhoFoto1;
-
-            imagem1.dataset.foto =
-                foto1;
-
-        }
-
-
-        if (
-            imagem2.dataset.foto !==
-            foto2
-        ) {
-
-            imagem2.src =
-                caminhoFoto2;
-
-            imagem2.dataset.foto =
-                foto2;
-
-        }
-
-
-        /* =================================
-           TIMES
-        ================================= */
-
+        /* TIMES */
 
         document.getElementById(
             "nomeTime1"
@@ -930,10 +816,7 @@ async function atualizarOverlay() {
             ).toUpperCase();
 
 
-        /* =================================
-           PLACAR
-        ================================= */
-
+        /* PLACAR */
 
         document.getElementById(
             "placar1"
@@ -949,10 +832,7 @@ async function atualizarOverlay() {
             estado.placar2 || 0;
 
 
-        /* =================================
-           11 IDEAL
-        ================================= */
-
+        /* 11 IDEAL */
 
         atualizarTimeIdeal(
 
@@ -960,16 +840,13 @@ async function atualizarOverlay() {
 
         );
 
-
     }
 
     catch (erro) {
 
-
         console.log(
             "Aguardando servidor..."
         );
-
 
     }
 
@@ -984,17 +861,11 @@ function atualizarTimeIdeal(
     timeIdeal
 ) {
 
-
     const campo =
         document.getElementById(
             "campo"
         );
 
-
-    /*
-       REMOVE OS JOGADORES
-       DA ATUALIZAÇÃO ANTERIOR
-    */
 
     campo
         .querySelectorAll(
@@ -1008,11 +879,6 @@ function atualizarTimeIdeal(
         );
 
 
-    /*
-       CRIA OS JOGADORES
-       ESCOLHIDOS
-    */
-
     timeIdeal.forEach(
 
         (item, ordem) => {
@@ -1023,11 +889,6 @@ function atualizarTimeIdeal(
                     "div"
                 );
 
-
-            /*
-               Usa o índice real da posição
-               quando estiver disponível.
-            */
 
             const posicaoCampo =
 
@@ -1068,7 +929,6 @@ function atualizarTimeIdeal(
                 jogador
             );
 
-
         }
 
     );
@@ -1077,17 +937,11 @@ function atualizarTimeIdeal(
 
 
 /* =========================================
-   INICIAR OVERLAY
+   INICIAR
 ========================================= */
-
 
 atualizarOverlay();
 
-
-/*
-   Atualização automática:
-   4 vezes por segundo.
-*/
 
 setInterval(
 
@@ -1097,9 +951,7 @@ setInterval(
 
 );
 
-
 </script>
-
 
 </body>
 
