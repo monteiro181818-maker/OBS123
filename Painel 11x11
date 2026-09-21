@@ -159,23 +159,38 @@ input:focus {
     cursor: pointer;
 }
 
-.navegacao button:hover {
-    background: #303548;
-}
-
 #proximo {
     background: #633cff;
     border-color: #795cff;
 }
 
-#proximo:hover {
-    background: #7555ff;
+.reset-area {
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #2d3140;
+}
+
+#resetar {
+    width: 100%;
+    height: 52px;
+    background: #9e2633;
+    color: white;
+    border: 1px solid #d23a4a;
+    border-radius: 9px;
+    font-size: 17px;
+    font-weight: 900;
+    cursor: pointer;
+}
+
+#resetar:hover {
+    background: #ba2d3d;
 }
 
 #statusServidor {
     margin-top: 20px;
     text-align: center;
     font-size: 13px;
+    font-weight: bold;
     color: #6cff9d;
 }
 
@@ -205,6 +220,7 @@ input:focus {
 
     <div class="comparacao">
 
+
         <!-- JOGADOR 1 -->
 
         <div class="jogador jogador1">
@@ -223,6 +239,15 @@ input:focus {
                 type="text"
                 id="time1"
                 value="Holanda"
+            >
+
+            <label>ARQUIVO DA FOTO</label>
+
+            <input
+                type="text"
+                id="foto1"
+                value="verbruggen.png"
+                placeholder="exemplo.png"
             >
 
             <button
@@ -252,6 +277,15 @@ input:focus {
                 type="text"
                 id="time2"
                 value="Alemanha"
+            >
+
+            <label>ARQUIVO DA FOTO</label>
+
+            <input
+                type="text"
+                id="foto2"
+                value="ter-stegen.png"
+                placeholder="exemplo.png"
             >
 
             <button
@@ -285,6 +319,17 @@ input:focus {
     </div>
 
 
+    <div class="reset-area">
+
+        <button
+            id="resetar"
+            onclick="resetar11x11()">
+            RESETAR 11x11
+        </button>
+
+    </div>
+
+
     <div id="statusServidor">
         SERVIDOR CONECTADO
     </div>
@@ -299,7 +344,6 @@ input:focus {
 ========================================= */
 
 const posicoes = [
-
     "GOLEIRO",
     "LATERAL DIREITO",
     "ZAGUEIRO 1",
@@ -311,9 +355,7 @@ const posicoes = [
     "PONTA DIREITA",
     "CENTROAVANTE",
     "PONTA ESQUERDA"
-
 ];
-
 
 let indice = 0;
 
@@ -324,7 +366,7 @@ let timeIdeal = [];
 
 
 /* =========================================
-   ENVIAR PARA O SERVIDOR
+   POST
 ========================================= */
 
 async function enviarEstado(dados) {
@@ -344,22 +386,15 @@ async function enviarEstado(dados) {
             }
         );
 
-
         const resultado =
             await resposta.json();
 
-
         if (resultado.ok) {
 
-            document.getElementById(
-                "statusServidor"
-            ).innerText =
-                "SERVIDOR CONECTADO";
-
-            document.getElementById(
-                "statusServidor"
-            ).style.color =
-                "#6cff9d";
+            statusServidor(
+                "SERVIDOR CONECTADO",
+                "#6cff9d"
+            );
 
         }
 
@@ -367,15 +402,10 @@ async function enviarEstado(dados) {
 
     catch (erro) {
 
-        document.getElementById(
-            "statusServidor"
-        ).innerText =
-            "ERRO DE CONEXÃO";
-
-        document.getElementById(
-            "statusServidor"
-        ).style.color =
-            "#ff5c5c";
+        statusServidor(
+            "ERRO DE CONEXÃO",
+            "#ff5c5c"
+        );
 
         console.error(erro);
 
@@ -385,7 +415,113 @@ async function enviarEstado(dados) {
 
 
 /* =========================================
-   ATUALIZAR POSIÇÃO
+   STATUS
+========================================= */
+
+function statusServidor(texto, cor) {
+
+    const status =
+        document.getElementById(
+            "statusServidor"
+        );
+
+    status.innerText = texto;
+    status.style.color = cor;
+
+}
+
+
+/* =========================================
+   PEGAR DADOS DOS CAMPOS
+========================================= */
+
+function pegarDadosJogadores() {
+
+    return {
+
+        jogador1:
+            document.getElementById(
+                "jogador1"
+            ).value.trim(),
+
+        time1:
+            document.getElementById(
+                "time1"
+            ).value.trim(),
+
+        foto1:
+            document.getElementById(
+                "foto1"
+            ).value.trim(),
+
+        jogador2:
+            document.getElementById(
+                "jogador2"
+            ).value.trim(),
+
+        time2:
+            document.getElementById(
+                "time2"
+            ).value.trim(),
+
+        foto2:
+            document.getElementById(
+                "foto2"
+            ).value.trim()
+
+    };
+
+}
+
+
+/* =========================================
+   ENVIAR JOGADORES
+========================================= */
+
+function enviarJogadores() {
+
+    enviarEstado(
+        pegarDadosJogadores()
+    );
+
+}
+
+
+/* =========================================
+   ATUALIZAR BOTÕES
+========================================= */
+
+function atualizarBotoes() {
+
+    const nome1 =
+        document.getElementById(
+            "jogador1"
+        ).value;
+
+    const nome2 =
+        document.getElementById(
+            "jogador2"
+        ).value;
+
+
+    document.querySelector(
+        ".escolher1"
+    ).innerText =
+        "ESCOLHER " +
+        nome1.toUpperCase();
+
+
+    document.querySelector(
+        ".escolher2"
+    ).innerText =
+        "ESCOLHER " +
+        nome2.toUpperCase();
+
+}
+
+
+/* =========================================
+   POSIÇÃO
 ========================================= */
 
 function atualizarPosicao() {
@@ -418,90 +554,112 @@ function atualizarPosicao() {
 
 
 /* =========================================
-   ENVIAR NOMES
-========================================= */
-
-function enviarJogadores() {
-
-    enviarEstado({
-
-        jogador1:
-            document.getElementById(
-                "jogador1"
-            ).value,
-
-        time1:
-            document.getElementById(
-                "time1"
-            ).value,
-
-        jogador2:
-            document.getElementById(
-                "jogador2"
-            ).value,
-
-        time2:
-            document.getElementById(
-                "time2"
-            ).value
-
-    });
-
-}
-
-
-/* =========================================
    ESCOLHER JOGADOR
 ========================================= */
 
 function escolherJogador(lado) {
 
-    const jogador1 =
-        document.getElementById(
-            "jogador1"
-        ).value.trim();
-
-    const time1 =
-        document.getElementById(
-            "time1"
-        ).value.trim();
-
-
-    const jogador2 =
-        document.getElementById(
-            "jogador2"
-        ).value.trim();
-
-    const time2 =
-        document.getElementById(
-            "time2"
-        ).value.trim();
+    const dados =
+        pegarDadosJogadores();
 
 
     let jogadorEscolhido;
     let timeEscolhido;
+    let fotoEscolhida;
 
 
     if (lado === 1) {
 
-        jogadorEscolhido = jogador1;
-        timeEscolhido = time1;
+        jogadorEscolhido =
+            dados.jogador1;
 
-        placar1++;
+        timeEscolhido =
+            dados.time1;
+
+        fotoEscolhida =
+            dados.foto1;
 
     }
 
     else {
 
-        jogadorEscolhido = jogador2;
-        timeEscolhido = time2;
+        jogadorEscolhido =
+            dados.jogador2;
 
-        placar2++;
+        timeEscolhido =
+            dados.time2;
+
+        fotoEscolhida =
+            dados.foto2;
 
     }
 
 
-    /* EVITA DUPLICAR A MESMA POSIÇÃO */
+    /*
+       Se já existe vencedor nessa posição,
+       remove antes de salvar novamente.
+    */
+
+    const existente =
+        timeIdeal.find(
+            item =>
+                item.posicao ===
+                posicoes[indice]
+        );
+
+
+    /*
+       Se não havia vencedor,
+       soma o ponto.
+    */
+
+    if (!existente) {
+
+        if (lado === 1) {
+
+            placar1++;
+
+        }
+
+        else {
+
+            placar2++;
+
+        }
+
+    }
+
+    else {
+
+        /*
+           Se trocou o vencedor de lado,
+           corrige o placar.
+        */
+
+        if (
+            existente.lado !== lado
+        ) {
+
+            if (
+                existente.lado === 1
+            ) {
+
+                placar1--;
+                placar2++;
+
+            }
+
+            else {
+
+                placar2--;
+                placar1++;
+
+            }
+
+        }
+
+    }
+
 
     timeIdeal =
         timeIdeal.filter(
@@ -510,8 +668,6 @@ function escolherJogador(lado) {
                 posicoes[indice]
         );
 
-
-    /* SALVA NO 11 IDEAL */
 
     timeIdeal.push({
 
@@ -524,13 +680,17 @@ function escolherJogador(lado) {
         time:
             timeEscolhido,
 
+        foto:
+            fotoEscolhida,
+
         lado:
-            lado
+            lado,
+
+        indice:
+            indice
 
     });
 
-
-    /* MOSTRA NO PAINEL */
 
     const vencedor =
         document.getElementById(
@@ -550,27 +710,15 @@ function escolherJogador(lado) {
     );
 
 
-    /* ENVIA TUDO */
-
     enviarEstado({
+
+        ...dados,
 
         posicao:
             posicoes[indice],
 
         numeroPosicao:
             indice + 1,
-
-        jogador1:
-            jogador1,
-
-        time1:
-            time1,
-
-        jogador2:
-            jogador2,
-
-        time2:
-            time2,
 
         vencedor:
             jogadorEscolhido,
@@ -634,7 +782,7 @@ function anterior() {
 
 
 /* =========================================
-   LIMPAR TEXTO DO VENCEDOR
+   LIMPAR VENCEDOR VISUAL
 ========================================= */
 
 function limparVencedor() {
@@ -655,71 +803,78 @@ function limparVencedor() {
 
 
 /* =========================================
-   ATUALIZAR BOTÃO JOGADOR 1
+   RESET
 ========================================= */
 
-document
-.getElementById("jogador1")
-.addEventListener(
-    "input",
-    function() {
+async function resetar11x11() {
 
-        document.querySelector(
-            ".escolher1"
-        ).innerText =
-            "ESCOLHER " +
-            this.value.toUpperCase();
+    const confirmar =
+        confirm(
+            "Deseja realmente resetar o 11x11?"
+        );
 
-        enviarJogadores();
+
+    if (!confirmar) {
+
+        return;
 
     }
-);
 
 
-/* =========================================
-   ATUALIZAR BOTÃO JOGADOR 2
-========================================= */
+    try {
 
-document
-.getElementById("jogador2")
-.addEventListener(
-    "input",
-    function() {
+        const resposta =
+            await fetch(
+                "/api/reset",
+                {
+                    method: "POST"
+                }
+            );
 
-        document.querySelector(
-            ".escolher2"
-        ).innerText =
-            "ESCOLHER " +
-            this.value.toUpperCase();
 
-        enviarJogadores();
+        const resultado =
+            await resposta.json();
+
+
+        if (resultado.ok) {
+
+            indice = 0;
+
+            placar1 = 0;
+            placar2 = 0;
+
+            timeIdeal = [];
+
+
+            carregarEstado();
+
+
+            limparVencedor();
+
+
+            statusServidor(
+                "11x11 RESETADO",
+                "#6cff9d"
+            );
+
+        }
 
     }
-);
+
+    catch (erro) {
+
+        statusServidor(
+            "ERRO AO RESETAR",
+            "#ff5c5c"
+        );
+
+    }
+
+}
 
 
 /* =========================================
-   TIMES
-========================================= */
-
-document
-.getElementById("time1")
-.addEventListener(
-    "input",
-    enviarJogadores
-);
-
-
-document
-.getElementById("time2")
-.addEventListener(
-    "input",
-    enviarJogadores
-);
-
-
-/* =========================================
-   CARREGAR ESTADO DO SERVIDOR
+   CARREGAR ESTADO
 ========================================= */
 
 async function carregarEstado() {
@@ -728,7 +883,8 @@ async function carregarEstado() {
 
         const resposta =
             await fetch(
-                "/api/estado"
+                "/api/estado?tempo=" +
+                Date.now()
             );
 
 
@@ -739,25 +895,37 @@ async function carregarEstado() {
         document.getElementById(
             "jogador1"
         ).value =
-            estado.jogador1;
+            estado.jogador1 || "";
 
 
         document.getElementById(
             "time1"
         ).value =
-            estado.time1;
+            estado.time1 || "";
+
+
+        document.getElementById(
+            "foto1"
+        ).value =
+            estado.foto1 || "";
 
 
         document.getElementById(
             "jogador2"
         ).value =
-            estado.jogador2;
+            estado.jogador2 || "";
 
 
         document.getElementById(
             "time2"
         ).value =
-            estado.time2;
+            estado.time2 || "";
+
+
+        document.getElementById(
+            "foto2"
+        ).value =
+            estado.foto2 || "";
 
 
         indice =
@@ -780,47 +948,80 @@ async function carregarEstado() {
             estado.timeIdeal || [];
 
 
-        atualizarPosicao();
-
-
-        document.querySelector(
-            ".escolher1"
+        document.getElementById(
+            "numeroPosicao"
         ).innerText =
-            "ESCOLHER " +
-            estado.jogador1.toUpperCase();
+            (indice + 1) +
+            " / " +
+            posicoes.length;
 
 
-        document.querySelector(
-            ".escolher2"
+        document.getElementById(
+            "posicaoAtual"
         ).innerText =
-            "ESCOLHER " +
-            estado.jogador2.toUpperCase();
+            posicoes[indice];
 
+
+        atualizarBotoes();
+
+
+        statusServidor(
+            "SERVIDOR CONECTADO",
+            "#6cff9d"
+        );
 
     }
 
     catch (erro) {
 
-        document.getElementById(
-            "statusServidor"
-        ).innerText =
-            "ERRO DE CONEXÃO";
-
-        document.getElementById(
-            "statusServidor"
-        ).style.color =
-            "#ff5c5c";
+        statusServidor(
+            "ERRO DE CONEXÃO",
+            "#ff5c5c"
+        );
 
     }
 
 }
 
 
-/* INICIAR */
+/* =========================================
+   EVENTOS
+========================================= */
+
+[
+    "jogador1",
+    "time1",
+    "foto1",
+    "jogador2",
+    "time2",
+    "foto2"
+
+].forEach(id => {
+
+    document
+        .getElementById(id)
+        .addEventListener(
+            "input",
+            function() {
+
+                atualizarBotoes();
+
+                enviarJogadores();
+
+            }
+        );
+
+});
+
+
+/* =========================================
+   INICIAR
+========================================= */
 
 carregarEstado();
 
 </script>
 
 </body>
+
 </html>
