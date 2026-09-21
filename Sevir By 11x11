@@ -1,0 +1,260 @@
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+import json
+import os
+
+
+# ==========================================
+# CONFIGURAÇÃO
+# ==========================================
+
+PORTA = 8000
+
+PASTA_PROJETO = os.path.dirname(
+    os.path.abspath(__file__)
+)
+
+os.chdir(PASTA_PROJETO)
+
+
+# ==========================================
+# ESTADO INICIAL
+# ==========================================
+
+def criar_estado_inicial():
+
+    return {
+
+        "posicao": "GOLEIRO",
+
+        "numeroPosicao": 1,
+
+        "jogador1": "Verbruggen",
+        "time1": "Holanda",
+        "foto1": "verbruggen.png",
+
+        "jogador2": "Ter Stegen",
+        "time2": "Alemanha",
+        "foto2": "ter-stegen.png",
+
+        "placar1": 0,
+        "placar2": 0,
+
+        "vencedor": None,
+
+        "ladoVencedor": None,
+
+        "timeIdeal": []
+
+    }
+
+
+estado = criar_estado_inicial()
+
+
+# ==========================================
+# SERVIDOR
+# ==========================================
+
+class Servidor11x11(SimpleHTTPRequestHandler):
+
+
+    # ======================================
+    # ENVIAR JSON
+    # ======================================
+
+    def enviar_json(self, dados, status=200):
+
+        resposta = json.dumps(
+            dados,
+            ensure_ascii=False
+        ).encode("utf-8")
+
+
+        self.send_response(status)
+
+        self.send_header(
+            "Content-Type",
+            "application/json; charset=utf-8"
+        )
+
+        self.send_header(
+            "Content-Length",
+            len(resposta)
+        )
+
+        self.send_header(
+            "Cache-Control",
+            "no-store"
+        )
+
+        self.end_headers()
+
+        self.wfile.write(resposta)
+
+
+    # ======================================
+    # GET
+    # ======================================
+
+    def do_GET(self):
+
+        global estado
+
+
+        if self.path.startswith("/api/estado"):
+
+            self.enviar_json(estado)
+
+            return
+
+
+        super().do_GET()
+
+
+    # ======================================
+    # POST
+    # ======================================
+
+    def do_POST(self):
+
+        global estado
+
+
+        # ----------------------------------
+        # ATUALIZAR ESTADO
+        # ----------------------------------
+
+        if self.path == "/api/estado":
+
+            try:
+
+                tamanho = int(
+                    self.headers.get(
+                        "Content-Length",
+                        0
+                    )
+                )
+
+
+                corpo = self.rfile.read(
+                    tamanho
+                )
+
+
+                novos_dados = json.loads(
+                    corpo.decode("utf-8")
+                )
+
+
+                estado.update(
+                    novos_dados
+                )
+
+
+                self.enviar_json({
+
+                    "ok": True,
+
+                    "estado": estado
+
+                })
+
+
+            except Exception as erro:
+
+                self.enviar_json({
+
+                    "ok": False,
+
+                    "erro": str(erro)
+
+                }, 400)
+
+
+            return
+
+
+        # ----------------------------------
+        # RESETAR 11x11
+        # ----------------------------------
+
+        if self.path == "/api/reset":
+
+            estado = criar_estado_inicial()
+
+
+            self.enviar_json({
+
+                "ok": True,
+
+                "estado": estado
+
+            })
+
+
+            return
+
+
+        # ----------------------------------
+        # ROTA NÃO ENCONTRADA
+        # ----------------------------------
+
+        self.enviar_json({
+
+            "ok": False,
+
+            "erro": "Rota não encontrada"
+
+        }, 404)
+
+
+# ==========================================
+# INICIAR SERVIDOR
+# ==========================================
+
+if __name__ == "__main__":
+
+    servidor = ThreadingHTTPServer(
+        ("0.0.0.0", PORTA),
+        Servidor11x11
+    )
+
+
+    print("")
+    print("====================================")
+    print("       11x11 METREACTS V2")
+    print("====================================")
+    print("")
+
+    print(
+        f"Painel:  http://localhost:{PORTA}/painel/"
+    )
+
+    print(
+        f"Overlay: http://localhost:{PORTA}/overlay/"
+    )
+
+    print(
+        f"API:     http://localhost:{PORTA}/api/estado"
+    )
+
+    print("")
+
+    print("Servidor funcionando.")
+
+    print("Para encerrar: CTRL + C")
+
+    print("")
+
+
+    try:
+
+        servidor.serve_forever()
+
+
+    except KeyboardInterrupt:
+
+        print("")
+        print("Servidor encerrado.")
+
+        servidor.server_close()
