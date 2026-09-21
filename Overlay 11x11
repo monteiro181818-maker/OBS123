@@ -16,9 +16,7 @@ html, body {
     height: 100%;
     margin: 0;
     overflow: hidden;
-
     background: transparent;
-
     font-family: Arial, sans-serif;
     color: white;
 }
@@ -30,10 +28,8 @@ html, body {
 
 #layout {
     position: relative;
-
     width: 1920px;
     height: 1080px;
-
     overflow: hidden;
 
     background:
@@ -46,63 +42,30 @@ html, body {
 
 
 /* =====================================
-   TÍTULO
-===================================== */
-
-#titulo {
-    position: absolute;
-
-    top: 25px;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    font-size: 42px;
-    font-weight: 900;
-    letter-spacing: 3px;
-
-    text-shadow:
-        0 0 15px #7b2cff,
-        0 0 30px #168cff;
-}
-
-
-/* =====================================
    ESPAÇOS DAS CÂMERAS
 ===================================== */
 
 .camera {
     position: absolute;
-
     left: 45px;
 
     width: 420px;
     height: 330px;
 
-    /* INTERIOR TRANSPARENTE */
     background: transparent;
 
-    /* MANTÉM BORDA ROXA */
     border: 4px solid #633cff;
-
     border-radius: 18px;
 
-    /* MANTÉM BRILHO */
     box-shadow:
         0 0 20px rgba(100, 50, 255, 0.75);
 
     pointer-events: none;
 }
 
-
-/* CÂMERA SUPERIOR */
-
 #camera1 {
     top: 145px;
 }
-
-
-/* CÂMERA INFERIOR */
 
 #camera2 {
     top: 575px;
@@ -123,7 +86,6 @@ html, body {
     height: 700px;
 
     border: 3px solid #683cff;
-
     border-radius: 22px;
 
     background:
@@ -157,7 +119,6 @@ html, body {
     background: #080812;
 
     border: 2px solid #704cff;
-
     border-radius: 10px;
 
     font-size: 29px;
@@ -185,7 +146,6 @@ html, body {
     display: flex;
 }
 
-
 .jogador {
     position: relative;
 
@@ -200,7 +160,7 @@ html, body {
 
 
 /* =====================================
-   ÁREA TEMPORÁRIA DOS JOGADORES
+   ÁREA TEMPORÁRIA DAS FOTOS
 ===================================== */
 
 .placeholder-jogador {
@@ -269,11 +229,9 @@ html, body {
     border-radius: 8px;
 }
 
-
 .esquerda .nome-jogador {
     border: 2px solid #168cff;
 }
-
 
 .direita .nome-jogador {
     border: 2px solid #ad24ff;
@@ -293,7 +251,6 @@ html, body {
     transform: translateX(-50%);
 
     display: flex;
-
     align-items: center;
 
     gap: 28px;
@@ -304,11 +261,9 @@ html, body {
     white-space: nowrap;
 }
 
-
 .numero {
     font-size: 42px;
 }
-
 
 .vs-placar {
     color: #9b6cff;
@@ -329,7 +284,6 @@ html, body {
     height: 760px;
 
     border: 3px solid #2ecf72;
-
     border-radius: 22px;
 
     background: rgba(5,25,18,0.93);
@@ -376,7 +330,6 @@ html, body {
     height: 650px;
 
     border: 3px solid rgba(255,255,255,0.75);
-
     border-radius: 12px;
 
     background:
@@ -421,7 +374,6 @@ html, body {
     transform: translate(-50%, -50%);
 
     border: 2px solid rgba(255,255,255,0.70);
-
     border-radius: 50%;
 }
 
@@ -448,7 +400,6 @@ html, body {
 }
 
 </style>
-
 </head>
 
 
@@ -457,39 +408,14 @@ html, body {
 <div id="layout">
 
 
-    <!-- =====================================
-         TÍTULO
-    ====================================== -->
+    <!-- CÂMERA SUPERIOR -->
 
-    <div id="titulo">
-        11x11 METREACTS
-    </div>
+    <div id="camera1" class="camera"></div>
 
 
-    <!-- =====================================
-         ESPAÇO CÂMERA SUPERIOR
-         
-         SEM NOME
-         SEM CONTEÚDO
-    ====================================== -->
+    <!-- CÂMERA INFERIOR -->
 
-    <div
-        id="camera1"
-        class="camera">
-    </div>
-
-
-    <!-- =====================================
-         ESPAÇO CÂMERA INFERIOR
-         
-         SEM NOME
-         SEM CONTEÚDO
-    ====================================== -->
-
-    <div
-        id="camera2"
-        class="camera">
-    </div>
+    <div id="camera2" class="camera"></div>
 
 
     <!-- =====================================
@@ -499,14 +425,10 @@ html, body {
     <div id="comparacao">
 
 
-        <!-- POSIÇÃO -->
-
         <div id="posicao">
             GOLEIRO
         </div>
 
-
-        <!-- JOGADORES -->
 
         <div id="jogadores">
 
@@ -587,29 +509,16 @@ html, body {
 
     <div id="campo-container">
 
-
         <div id="campo-titulo">
             11 IDEAL
         </div>
 
-
-        <div id="campo">
-
-            <!--
-                OS JOGADORES ESCOLHIDOS
-                VÃO APARECER AQUI
-                AUTOMATICAMENTE
-            -->
-
-        </div>
-
+        <div id="campo"></div>
 
     </div>
 
 
-    <!-- =====================================
-         RODAPÉ
-    ====================================== -->
+    <!-- RODAPÉ -->
 
     <div id="rodape">
         ESCOLHA POSIÇÃO POR POSIÇÃO
