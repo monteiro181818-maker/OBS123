@@ -56,7 +56,7 @@ html, body {
 
     transition:
         opacity .8s ease,
-        transform 8s ease;
+        transform 10s ease;
 
     z-index: 1;
 }
@@ -184,7 +184,6 @@ html, body {
         );
 
     z-index: 2;
-
     pointer-events: none;
 }
 
@@ -200,8 +199,31 @@ html, body {
         );
 
     z-index: 3;
+    pointer-events: none;
+}
+
+/* =========================
+   TRANSIÇÃO ENTRE JOGOS
+========================= */
+
+.transicao {
+    position: absolute;
+    inset: 0;
+
+    background: #050505;
+
+    opacity: 0;
 
     pointer-events: none;
+
+    z-index: 50;
+
+    transition:
+        opacity .42s ease;
+}
+
+.transicao.ativa {
+    opacity: 1;
 }
 
 /* =========================
@@ -221,6 +243,23 @@ html, body {
     color: white;
 
     z-index: 10;
+
+    opacity: 1;
+
+    transition:
+        opacity .35s ease,
+        transform .35s ease;
+}
+
+.conteudo.saindo {
+    opacity: 0;
+    transform: scale(.97);
+}
+
+.conteudo.entrando {
+    animation:
+        entradaConteudo
+        .85s ease-out;
 }
 
 .titulo {
@@ -256,9 +295,6 @@ html, body {
     text-shadow:
         0 5px 25px black,
         0 2px 5px black;
-
-    animation:
-        aparecer 1.2s ease-out;
 }
 
 .timeConfronto {
@@ -359,16 +395,16 @@ html, body {
    ANIMAÇÕES
 ========================= */
 
-@keyframes aparecer {
+@keyframes entradaConteudo {
 
     from {
         opacity: 0;
-        transform: scale(.8);
+        transform: translateY(18px) scale(.94);
     }
 
     to {
         opacity: 1;
-        transform: scale(1);
+        transform: translateY(0) scale(1);
     }
 }
 
@@ -430,7 +466,7 @@ html, body {
     font-weight: 900;
     letter-spacing: 6px;
 
-    margin-bottom: 45px;
+    margin-bottom: 35px;
 
     text-shadow:
         0 5px 25px black;
@@ -470,7 +506,7 @@ html, body {
 
 .cabecalhoResumo {
     padding:
-        20px 25px;
+        16px 25px;
 
     font-size: 18px;
 
@@ -484,9 +520,9 @@ html, body {
 
 .linhaResumo {
     padding:
-        23px 25px;
+        14px 25px;
 
-    font-size: 25px;
+    font-size: 22px;
 
     border-top:
         1px solid
@@ -499,7 +535,7 @@ html, body {
 }
 
 .placarResumo {
-    font-size: 29px;
+    font-size: 26px;
     font-weight: 900;
 }
 
@@ -536,19 +572,18 @@ html, body {
     <div class="luzes"></div>
 
     <div class="gramado">
-
         <div class="linha"></div>
-
         <div class="circulo"></div>
-
     </div>
 
     <div class="escurecerEstadio"></div>
-
     <div class="vinheta"></div>
 
 
-    <div class="conteudo">
+    <div
+        class="conteudo"
+        id="conteudo"
+    >
 
         <div class="titulo">
             BATE-BOLA DA RODADA
@@ -608,7 +643,7 @@ html, body {
             >
 
                 <div class="nome">
-                    PALPITE DO MTS
+                    PALPITE DO MATHEUS
                 </div>
 
                 <div class="placar">
@@ -624,7 +659,7 @@ html, body {
             >
 
                 <div class="nome">
-                    PALPITE DO AMIGO
+                    PALPITE DO THALYSON
                 </div>
 
                 <div class="placar">
@@ -636,6 +671,12 @@ html, body {
         </div>
 
     </div>
+
+
+    <div
+        class="transicao"
+        id="transicao"
+    ></div>
 
 </div>
 
@@ -663,11 +704,11 @@ html, body {
             </div>
 
             <div id="cabNome1">
-                MTS
+                MATHEUS
             </div>
 
             <div id="cabNome2">
-                AMIGO
+                THALYSON
             </div>
 
         </div>
@@ -687,6 +728,10 @@ html, body {
 ========================= */
 
 let ultimaVersao = -1;
+
+let primeiraAtualizacao = true;
+
+let transicaoEmAndamento = false;
 
 
 /* =========================
@@ -729,7 +774,6 @@ const clubes = {
             "/estadios/arena-da-baixada.jpg"
     },
 
-
     "ATLETICO-MINEIRO": {
         escudo:
             "/escudos/atletico-mineiro.png",
@@ -737,7 +781,6 @@ const clubes = {
         estadio:
             "/estadios/arena-mrv.jpg"
     },
-
 
     "BAHIA": {
         escudo:
@@ -747,7 +790,6 @@ const clubes = {
             "/estadios/fonte-nova.jpg"
     },
 
-
     "BOTAFOGO": {
         escudo:
             "/escudos/botafogo.png",
@@ -755,7 +797,6 @@ const clubes = {
         estadio:
             "/estadios/nilton-santos.jpg"
     },
-
 
     "CHAPECOENSE": {
         escudo:
@@ -765,7 +806,6 @@ const clubes = {
             "/estadios/arena-conda.jpg"
     },
 
-
     "CORINTHIANS": {
         escudo:
             "/escudos/corinthians.png",
@@ -773,7 +813,6 @@ const clubes = {
         estadio:
             "/estadios/neo-quimica-arena.jpg"
     },
-
 
     "CORITIBA": {
         escudo:
@@ -783,7 +822,6 @@ const clubes = {
             "/estadios/couto-pereira.jpg"
     },
 
-
     "CRUZEIRO": {
         escudo:
             "/escudos/cruzeiro.png",
@@ -791,7 +829,6 @@ const clubes = {
         estadio:
             "/estadios/mineirao.jpg"
     },
-
 
     "FLAMENGO": {
         escudo:
@@ -801,7 +838,6 @@ const clubes = {
             "/estadios/maracana.jpg"
     },
 
-
     "FLUMINENSE": {
         escudo:
             "/escudos/fluminense.png",
@@ -809,7 +845,6 @@ const clubes = {
         estadio:
             "/estadios/maracana.jpg"
     },
-
 
     "GREMIO": {
         escudo:
@@ -819,7 +854,6 @@ const clubes = {
             "/estadios/arena-do-gremio.jpg"
     },
 
-
     "INTERNACIONAL": {
         escudo:
             "/escudos/internacional.png",
@@ -827,7 +861,6 @@ const clubes = {
         estadio:
             "/estadios/beira-rio.jpg"
     },
-
 
     "MIRASSOL": {
         escudo:
@@ -837,7 +870,6 @@ const clubes = {
             "/estadios/jose-maria-de-campos-maia.jpg"
     },
 
-
     "PALMEIRAS": {
         escudo:
             "/escudos/palmeiras.png",
@@ -845,7 +877,6 @@ const clubes = {
         estadio:
             "/estadios/allianz-parque.jpg"
     },
-
 
     "RED-BULL-BRAGANTINO": {
         escudo:
@@ -855,7 +886,6 @@ const clubes = {
             "/estadios/cicero-de-souza-marques.jpg"
     },
 
-
     "REMO": {
         escudo:
             "/escudos/remo.png",
@@ -863,7 +893,6 @@ const clubes = {
         estadio:
             "/estadios/mangueirao.jpg"
     },
-
 
     "SANTOS": {
         escudo:
@@ -873,7 +902,6 @@ const clubes = {
             "/estadios/vila-belmiro.jpg"
     },
 
-
     "SAO-PAULO": {
         escudo:
             "/escudos/sao-paulo.png",
@@ -882,7 +910,6 @@ const clubes = {
             "/estadios/morumbis.jpg"
     },
 
-
     "VASCO": {
         escudo:
             "/escudos/vasco.png",
@@ -890,7 +917,6 @@ const clubes = {
         estadio:
             "/estadios/sao-januario.jpg"
     },
-
 
     "VITORIA": {
         escudo:
@@ -904,7 +930,7 @@ const clubes = {
 
 
 /* =========================
-   APELIDOS / FORMAS DE DIGITAR
+   APELIDOS
 ========================= */
 
 const apelidos = {
@@ -946,7 +972,7 @@ const apelidos = {
 
 
 /* =========================
-   LOCALIZA O CLUBE
+   LOCALIZA CLUBE
 ========================= */
 
 function identificarClube(nome) {
@@ -1043,11 +1069,6 @@ function atualizarEstadio(casa) {
         identificarClube(casa);
 
 
-    /*
-    SE NÃO RECONHECER O CLUBE
-    USA O FUNDO GENÉRICO
-    */
-
     if (
         !clubeCasa ||
         !clubeCasa.estadio
@@ -1069,20 +1090,33 @@ function atualizarEstadio(casa) {
         clubeCasa.estadio;
 
 
-    /*
-    PREPARA A NOVA FOTO
-    */
-
     fundo.classList.remove(
         "visivel"
     );
 
 
+    /*
+    Reinicia o zoom mesmo quando
+    o estádio for o mesmo.
+    */
+
+    fundo.style.transform =
+        "scale(1.04)";
+
+
     fundo.onload =
         function() {
 
-            fundo.classList.add(
-                "visivel"
+            requestAnimationFrame(
+                function() {
+
+                    fundo.classList.add(
+                        "visivel"
+                    );
+
+                    fundo.style.transform = "";
+
+                }
             );
 
         };
@@ -1103,8 +1137,33 @@ function atualizarEstadio(casa) {
         };
 
 
-    fundo.src =
-        imagemEstadio;
+    /*
+    Força atualização quando a
+    imagem já estiver em cache.
+    */
+
+    if (
+        fundo.getAttribute("src") ===
+        imagemEstadio
+    ) {
+
+        fundo.src = "";
+
+        requestAnimationFrame(
+            function() {
+
+                fundo.src =
+                    imagemEstadio;
+
+            }
+        );
+
+    } else {
+
+        fundo.src =
+            imagemEstadio;
+
+    }
 
 }
 
@@ -1159,6 +1218,7 @@ function reiniciar() {
         .remove(
             "visivel"
         );
+
 }
 
 
@@ -1201,7 +1261,8 @@ function atualizarDados(d) {
     ).textContent =
         "PALPITE DO " +
         String(
-            d.nome1 || "MTS"
+            d.nome1 ||
+            "MATHEUS"
         ).toUpperCase();
 
 
@@ -1210,7 +1271,8 @@ function atualizarDados(d) {
     ).textContent =
         "PALPITE DO " +
         String(
-            d.nome2 || "AMIGO"
+            d.nome2 ||
+            "THALYSON"
         ).toUpperCase();
 
 
@@ -1228,6 +1290,145 @@ function atualizarDados(d) {
         (d.p2casa || "0") +
         " × " +
         (d.p2fora || "0");
+
+}
+
+
+/* =========================
+   ANIMA CONFRONTO
+========================= */
+
+function animarEntradaConteudo() {
+
+    const conteudo =
+        document.getElementById(
+            "conteudo"
+        );
+
+
+    conteudo.classList.remove(
+        "entrando"
+    );
+
+
+    void conteudo.offsetWidth;
+
+
+    conteudo.classList.add(
+        "entrando"
+    );
+
+}
+
+
+/* =========================
+   TROCA CINEMATOGRÁFICA
+========================= */
+
+function trocarConfronto(d) {
+
+    if (
+        transicaoEmAndamento
+    ) {
+
+        atualizarDados(d);
+
+        return;
+    }
+
+
+    transicaoEmAndamento =
+        true;
+
+
+    const transicao =
+        document.getElementById(
+            "transicao"
+        );
+
+
+    const conteudo =
+        document.getElementById(
+            "conteudo"
+        );
+
+
+    conteudo.classList.add(
+        "saindo"
+    );
+
+
+    transicao.classList.add(
+        "ativa"
+    );
+
+
+    /*
+    Quando a tela já estiver
+    escura, troca estádio,
+    escudos e nomes.
+    */
+
+    setTimeout(
+        function() {
+
+            reiniciar();
+
+            atualizarDados(d);
+
+            document
+                .getElementById(
+                    "resumo"
+                )
+                .classList
+                .remove(
+                    "visivel"
+                );
+
+
+            conteudo.classList.remove(
+                "saindo"
+            );
+
+
+            animarEntradaConteudo();
+
+
+            /*
+            Revela novamente o
+            novo estádio.
+            */
+
+            setTimeout(
+                function() {
+
+                    transicao
+                        .classList
+                        .remove(
+                            "ativa"
+                        );
+
+
+                    setTimeout(
+                        function() {
+
+                            transicaoEmAndamento =
+                                false;
+
+                        },
+
+                        450
+                    );
+
+                },
+
+                180
+            );
+
+        },
+
+        430
+    );
 
 }
 
@@ -1260,7 +1461,7 @@ function mostrarResumo(pacote) {
     ).textContent =
         String(
             primeiro.nome1 ||
-            "MTS"
+            "MATHEUS"
         ).toUpperCase();
 
 
@@ -1269,7 +1470,7 @@ function mostrarResumo(pacote) {
     ).textContent =
         String(
             primeiro.nome2 ||
-            "AMIGO"
+            "THALYSON"
         ).toUpperCase();
 
 
@@ -1422,50 +1623,118 @@ async function verificarServidor() {
                 pacote.versao;
 
 
-            atualizarDados(
-                pacote.dados
-            );
+            /*
+            PRIMEIRO CARREGAMENTO:
+            sem tela preta.
+            */
 
+            if (
+                primeiraAtualizacao
+            ) {
+
+                primeiraAtualizacao =
+                    false;
+
+
+                atualizarDados(
+                    pacote.dados
+                );
+
+
+                if (
+                    pacote.acao ===
+                    "revelar1"
+                ) {
+
+                    revelarMts();
+
+                }
+
+
+                if (
+                    pacote.acao ===
+                    "revelar2"
+                ) {
+
+                    revelarAmigo();
+
+                }
+
+
+                if (
+                    pacote.acao ===
+                    "finalizar"
+                ) {
+
+                    mostrarResumo(
+                        pacote
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+
+            /*
+            ATUALIZAÇÃO / NOVO JOGO
+            */
 
             if (
                 pacote.acao ===
                 "atualizar"
             ) {
 
-                reiniciar();
-
-
-                document
-                    .getElementById(
-                        "resumo"
-                    )
-                    .classList
-                    .remove(
-                        "visivel"
-                    );
+                trocarConfronto(
+                    pacote.dados
+                );
 
             }
 
+
+            /*
+            REVELA MATHEUS
+            */
 
             if (
                 pacote.acao ===
                 "revelar1"
             ) {
 
+                atualizarDados(
+                    pacote.dados
+                );
+
                 revelarMts();
 
             }
 
+
+            /*
+            REVELA THALYSON
+            */
 
             if (
                 pacote.acao ===
                 "revelar2"
             ) {
 
+                atualizarDados(
+                    pacote.dados
+                );
+
                 revelarAmigo();
 
             }
 
+
+            /*
+            PROXIMO apenas esconde
+            palpites. O "atualizar"
+            seguinte fará a troca.
+            */
 
             if (
                 pacote.acao ===
@@ -1474,23 +1743,22 @@ async function verificarServidor() {
 
                 reiniciar();
 
-
-                document
-                    .getElementById(
-                        "resumo"
-                    )
-                    .classList
-                    .remove(
-                        "visivel"
-                    );
-
             }
 
+
+            /*
+            RESUMO FINAL
+            */
 
             if (
                 pacote.acao ===
                 "finalizar"
             ) {
+
+                atualizarDados(
+                    pacote.dados
+                );
+
 
                 mostrarResumo(
                     pacote
