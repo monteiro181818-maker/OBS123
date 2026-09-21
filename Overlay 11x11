@@ -151,23 +151,26 @@ html, body {
 
     align-items: center;
     justify-content: center;
+
+    overflow: hidden;
 }
 
-.placeholder-jogador {
-    width: 270px;
-    height: 390px;
 
-    display: flex;
+/* =====================================
+   FOTO DO JOGADOR
+===================================== */
 
-    align-items: center;
-    justify-content: center;
+.foto-jogador {
+    width: 300px;
+    height: 410px;
 
-    border: 2px dashed rgba(255,255,255,0.25);
+    object-fit: contain;
 
-    color: rgba(255,255,255,0.35);
+    object-position: center bottom;
 
-    font-size: 23px;
-    font-weight: 900;
+    display: block;
+
+    z-index: 1;
 }
 
 
@@ -221,6 +224,8 @@ html, body {
     text-align: center;
 
     padding: 8px;
+
+    z-index: 5;
 }
 
 .esquerda .nome-jogador {
@@ -402,7 +407,7 @@ html, body {
 
 
 /* =====================================
-   POSIÇÕES NO CAMPO
+   POSIÇÕES DO 11 IDEAL
 ===================================== */
 
 .pos-0 {
@@ -489,6 +494,7 @@ html, body {
 
 <div id="layout">
 
+
     <!-- CÂMERAS -->
 
     <div id="camera1" class="camera"></div>
@@ -500,6 +506,7 @@ html, body {
 
     <div id="comparacao">
 
+
         <div id="posicao">
             GOLEIRO
         </div>
@@ -507,11 +514,17 @@ html, body {
 
         <div id="jogadores">
 
+
+            <!-- JOGADOR 1 -->
+
             <div class="jogador esquerda">
 
-                <div class="placeholder-jogador">
-                    JOGADOR 1
-                </div>
+                <img
+                    id="fotoJogador1"
+                    class="foto-jogador"
+                    src="/imagens/verbruggen.png"
+                    alt="Jogador 1"
+                >
 
                 <div
                     class="nome-jogador"
@@ -522,11 +535,16 @@ html, body {
             </div>
 
 
+            <!-- JOGADOR 2 -->
+
             <div class="jogador direita">
 
-                <div class="placeholder-jogador">
-                    JOGADOR 2
-                </div>
+                <img
+                    id="fotoJogador2"
+                    class="foto-jogador"
+                    src="/imagens/ter-stegen.png"
+                    alt="Jogador 2"
+                >
 
                 <div
                     class="nome-jogador"
@@ -536,13 +554,18 @@ html, body {
 
             </div>
 
+
         </div>
 
+
+        <!-- X -->
 
         <div id="versus">
             X
         </div>
 
+
+        <!-- PLACAR -->
 
         <div id="placar">
 
@@ -572,6 +595,7 @@ html, body {
 
         </div>
 
+
     </div>
 
 
@@ -591,6 +615,7 @@ html, body {
     <div id="rodape">
         ESCOLHA POSIÇÃO POR POSIÇÃO
     </div>
+
 
 </div>
 
@@ -624,7 +649,7 @@ async function atualizarOverlay() {
             estado.posicao || "GOLEIRO";
 
 
-        /* JOGADORES */
+        /* NOMES */
 
         document.getElementById(
             "nomeJogador1"
@@ -709,8 +734,6 @@ function atualizarTimeIdeal(timeIdeal) {
         );
 
 
-    /* REMOVE APENAS OS JOGADORES ANTIGOS */
-
     campo
         .querySelectorAll(
             ".jogador-campo"
@@ -720,8 +743,6 @@ function atualizarTimeIdeal(timeIdeal) {
                 jogador.remove()
         );
 
-
-    /* CRIA OS JOGADORES */
 
     timeIdeal.forEach(
         (item, indice) => {
@@ -766,9 +787,6 @@ function atualizarTimeIdeal(timeIdeal) {
 ========================================= */
 
 atualizarOverlay();
-
-
-/* Atualiza 4 vezes por segundo */
 
 setInterval(
     atualizarOverlay,
