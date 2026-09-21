@@ -7,10 +7,6 @@
 
 <style>
 
-/* =========================
-   CONFIGURAÇÃO GERAL
-========================= */
-
 * {
     box-sizing: border-box;
 }
@@ -20,11 +16,8 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-
     overflow: hidden;
-
     background: transparent;
-
     font-family: Arial, sans-serif;
 }
 
@@ -34,7 +27,6 @@ html, body {
 ========================= */
 
 #comparacao {
-
     position: absolute;
 
     width: 720px;
@@ -49,13 +41,10 @@ html, body {
 
 /* =========================
    FUNDO PRETO
-
-   Esconde o X azul/roxo
-   original do layout
+   ESCONDE O X ORIGINAL
 ========================= */
 
 #fundo-comparacao {
-
     position: absolute;
 
     top: 55px;
@@ -75,7 +64,6 @@ html, body {
 ========================= */
 
 #posicao {
-
     position: absolute;
 
     top: 0;
@@ -86,7 +74,6 @@ html, body {
     padding: 7px 35px;
 
     color: white;
-
     background: #080810;
 
     border: 2px solid #704cff;
@@ -106,7 +93,6 @@ html, body {
 ========================= */
 
 #jogadores {
-
     position: absolute;
 
     top: 55px;
@@ -126,7 +112,6 @@ html, body {
 ========================= */
 
 .jogador {
-
     position: relative;
 
     width: 50%;
@@ -141,7 +126,6 @@ html, body {
 ========================= */
 
 .foto {
-
     position: absolute;
 
     width: 100%;
@@ -155,11 +139,10 @@ html, body {
 
 
 /* =========================
-   IMAGEM DO JOGADOR
+   TAMANHO GERAL DAS FOTOS
 ========================= */
 
 .foto img {
-
     position: absolute;
 
     width: auto;
@@ -167,10 +150,7 @@ html, body {
 
     max-width: none;
 
-    left: 50%;
     bottom: -15px;
-
-    transform: translateX(-50%);
 
     object-fit: contain;
 
@@ -179,29 +159,32 @@ html, body {
 
 
 /* =========================
-   FOTO TEMPORÁRIA ALEMANHA
+   VERBRUGGEN
 ========================= */
 
-.placeholder {
+.esquerda .foto img {
+    left: 50%;
 
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    color: rgba(255,255,255,0.30);
-
-    font-size: 24px;
-    font-weight: 900;
+    transform: translateX(-50%);
 }
 
 
 /* =========================
-   SOMBRA SOBRE JOGADORES
+   TER STEGEN
+========================= */
+
+.direita .foto img {
+    left: 50%;
+
+    transform: translateX(-50%);
+}
+
+
+/* =========================
+   SOMBRA INFERIOR
 ========================= */
 
 .jogador::after {
-
     content: "";
 
     position: absolute;
@@ -223,11 +206,10 @@ html, body {
 
 
 /* =========================
-   PLACA DOS NOMES
+   PLACAS
 ========================= */
 
 .nome-box {
-
     position: absolute;
 
     bottom: 0;
@@ -238,7 +220,6 @@ html, body {
     background: rgba(5,5,10,0.96);
 
     display: flex;
-
     align-items: center;
 
     z-index: 10;
@@ -248,7 +229,6 @@ html, body {
 /* HOLANDA */
 
 .esquerda .nome-box {
-
     left: 0;
 
     border: 2px solid #008cff;
@@ -260,7 +240,6 @@ html, body {
 /* ALEMANHA */
 
 .direita .nome-box {
-
     right: 0;
 
     border: 2px solid #b400ff;
@@ -270,17 +249,15 @@ html, body {
 
 
 /* =========================
-   TEXTO DOS NOMES
+   NOMES
 ========================= */
 
 .conteudo {
-
     width: 100%;
 
     padding: 0 15px;
 
     display: flex;
-
     align-items: center;
     justify-content: center;
 
@@ -296,11 +273,10 @@ html, body {
 }
 
 
-/* CORRIGE INCLINAÇÃO */
-
 .esquerda .conteudo {
     transform: skewX(-12deg);
 }
+
 
 .direita .conteudo {
     transform: skewX(12deg);
@@ -308,11 +284,10 @@ html, body {
 
 
 /* =========================
-   X BRANCO NOVO
+   X BRANCO
 ========================= */
 
 #versus {
-
     position: absolute;
 
     left: 50%;
@@ -333,17 +308,15 @@ html, body {
 }
 
 </style>
-
 </head>
 
 
 <body>
 
-
 <div id="comparacao">
 
 
-    <!-- FUNDO QUE ESCONDE O X ORIGINAL -->
+    <!-- ESCONDE O X ORIGINAL -->
 
     <div id="fundo-comparacao"></div>
 
@@ -366,7 +339,6 @@ html, body {
 
         <div class="jogador esquerda">
 
-
             <div class="foto">
 
                 <img
@@ -385,7 +357,6 @@ html, body {
 
             </div>
 
-
         </div>
 
 
@@ -396,10 +367,12 @@ html, body {
 
         <div class="jogador direita">
 
+            <div class="foto">
 
-            <div class="foto placeholder">
-
-                FOTO 2
+                <img
+                    src="../dados/fotos/alemanha/terstegen.png"
+                    alt="Ter Stegen"
+                >
 
             </div>
 
@@ -407,11 +380,10 @@ html, body {
             <div class="nome-box">
 
                 <div class="conteudo">
-                    GOLEIRO ALEMANHA
+                    TER STEGEN
                 </div>
 
             </div>
-
 
         </div>
 
@@ -419,9 +391,7 @@ html, body {
     </div>
 
 
-    <!-- =========================
-         X BRANCO
-    ========================== -->
+    <!-- X CENTRAL -->
 
     <div id="versus">
         X
@@ -429,7 +399,6 @@ html, body {
 
 
 </div>
-
 
 </body>
 
