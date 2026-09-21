@@ -21,11 +21,6 @@ html, body {
     color: white;
 }
 
-
-/* =====================================
-   TELA 1920x1080
-===================================== */
-
 #layout {
     position: relative;
     width: 1920px;
@@ -42,7 +37,7 @@ html, body {
 
 
 /* =====================================
-   ESPAÇOS DAS CÂMERAS
+   CÂMERAS
 ===================================== */
 
 .camera {
@@ -73,7 +68,7 @@ html, body {
 
 
 /* =====================================
-   COMPARAÇÃO CENTRAL
+   COMPARAÇÃO
 ===================================== */
 
 #comparacao {
@@ -131,7 +126,7 @@ html, body {
 
 
 /* =====================================
-   ÁREA DOS JOGADORES
+   JOGADORES
 ===================================== */
 
 #jogadores {
@@ -158,11 +153,6 @@ html, body {
     justify-content: center;
 }
 
-
-/* =====================================
-   ÁREA TEMPORÁRIA DAS FOTOS
-===================================== */
-
 .placeholder-jogador {
     width: 270px;
     height: 390px;
@@ -182,7 +172,7 @@ html, body {
 
 
 /* =====================================
-   X CENTRAL
+   X
 ===================================== */
 
 #versus {
@@ -205,7 +195,7 @@ html, body {
 
 
 /* =====================================
-   NOMES DOS JOGADORES
+   NOMES
 ===================================== */
 
 .nome-jogador {
@@ -227,6 +217,10 @@ html, body {
     font-weight: 900;
 
     border-radius: 8px;
+
+    text-align: center;
+
+    padding: 8px;
 }
 
 .esquerda .nome-jogador {
@@ -271,7 +265,7 @@ html, body {
 
 
 /* =====================================
-   CAMPO DO 11 IDEAL
+   11 IDEAL
 ===================================== */
 
 #campo-container {
@@ -293,11 +287,6 @@ html, body {
 
     overflow: hidden;
 }
-
-
-/* =====================================
-   TÍTULO DO CAMPO
-===================================== */
 
 #campo-titulo {
     position: absolute;
@@ -340,9 +329,6 @@ html, body {
         );
 }
 
-
-/* LINHA DO MEIO */
-
 #campo::before {
     content: "";
 
@@ -356,9 +342,6 @@ html, body {
 
     background: rgba(255,255,255,0.70);
 }
-
-
-/* CÍRCULO CENTRAL */
 
 #campo::after {
     content: "";
@@ -375,6 +358,106 @@ html, body {
 
     border: 2px solid rgba(255,255,255,0.70);
     border-radius: 50%;
+}
+
+
+/* =====================================
+   JOGADORES NO 11 IDEAL
+===================================== */
+
+.jogador-campo {
+    position: absolute;
+
+    transform: translate(-50%, -50%);
+
+    min-width: 90px;
+    max-width: 125px;
+
+    padding: 7px 9px;
+
+    background: rgba(7,8,14,0.94);
+
+    border: 2px solid #ffffff;
+
+    border-radius: 9px;
+
+    text-align: center;
+
+    font-size: 12px;
+    font-weight: 900;
+
+    z-index: 10;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,0.50);
+}
+
+.jogador-campo.lado1 {
+    border-color: #168cff;
+}
+
+.jogador-campo.lado2 {
+    border-color: #ad24ff;
+}
+
+
+/* =====================================
+   POSIÇÕES NO CAMPO
+===================================== */
+
+.pos-0 {
+    left: 50%;
+    top: 91%;
+}
+
+.pos-1 {
+    left: 86%;
+    top: 72%;
+}
+
+.pos-2 {
+    left: 65%;
+    top: 78%;
+}
+
+.pos-3 {
+    left: 35%;
+    top: 78%;
+}
+
+.pos-4 {
+    left: 14%;
+    top: 72%;
+}
+
+.pos-5 {
+    left: 50%;
+    top: 61%;
+}
+
+.pos-6 {
+    left: 68%;
+    top: 48%;
+}
+
+.pos-7 {
+    left: 32%;
+    top: 48%;
+}
+
+.pos-8 {
+    left: 82%;
+    top: 25%;
+}
+
+.pos-9 {
+    left: 50%;
+    top: 16%;
+}
+
+.pos-10 {
+    left: 18%;
+    top: 25%;
 }
 
 
@@ -402,28 +485,20 @@ html, body {
 </style>
 </head>
 
-
 <body>
 
 <div id="layout">
 
-
-    <!-- CÂMERA SUPERIOR -->
+    <!-- CÂMERAS -->
 
     <div id="camera1" class="camera"></div>
-
-
-    <!-- CÂMERA INFERIOR -->
 
     <div id="camera2" class="camera"></div>
 
 
-    <!-- =====================================
-         COMPARAÇÃO
-    ====================================== -->
+    <!-- COMPARAÇÃO -->
 
     <div id="comparacao">
-
 
         <div id="posicao">
             GOLEIRO
@@ -432,23 +507,20 @@ html, body {
 
         <div id="jogadores">
 
-
-            <!-- JOGADOR 1 -->
-
             <div class="jogador esquerda">
 
                 <div class="placeholder-jogador">
                     JOGADOR 1
                 </div>
 
-                <div class="nome-jogador">
+                <div
+                    class="nome-jogador"
+                    id="nomeJogador1">
                     VERBRUGGEN
                 </div>
 
             </div>
 
-
-            <!-- JOGADOR 2 -->
 
             <div class="jogador direita">
 
@@ -456,32 +528,31 @@ html, body {
                     JOGADOR 2
                 </div>
 
-                <div class="nome-jogador">
+                <div
+                    class="nome-jogador"
+                    id="nomeJogador2">
                     TER STEGEN
                 </div>
 
             </div>
 
-
         </div>
 
-
-        <!-- X CENTRAL -->
 
         <div id="versus">
             X
         </div>
 
 
-        <!-- PLACAR -->
-
         <div id="placar">
 
-            <span>
+            <span id="nomeTime1">
                 HOLANDA
             </span>
 
-            <span class="numero">
+            <span
+                class="numero"
+                id="placar1">
                 0
             </span>
 
@@ -489,23 +560,22 @@ html, body {
                 ×
             </span>
 
-            <span class="numero">
+            <span
+                class="numero"
+                id="placar2">
                 0
             </span>
 
-            <span>
+            <span id="nomeTime2">
                 ALEMANHA
             </span>
 
         </div>
 
-
     </div>
 
 
-    <!-- =====================================
-         11 IDEAL
-    ====================================== -->
+    <!-- 11 IDEAL -->
 
     <div id="campo-container">
 
@@ -518,14 +588,194 @@ html, body {
     </div>
 
 
-    <!-- RODAPÉ -->
-
     <div id="rodape">
         ESCOLHA POSIÇÃO POR POSIÇÃO
     </div>
 
-
 </div>
+
+
+<script>
+
+/* =========================================
+   ATUALIZAR OVERLAY
+========================================= */
+
+async function atualizarOverlay() {
+
+    try {
+
+        const resposta =
+            await fetch(
+                "/api/estado?tempo=" +
+                Date.now()
+            );
+
+
+        const estado =
+            await resposta.json();
+
+
+        /* POSIÇÃO */
+
+        document.getElementById(
+            "posicao"
+        ).innerText =
+            estado.posicao || "GOLEIRO";
+
+
+        /* JOGADORES */
+
+        document.getElementById(
+            "nomeJogador1"
+        ).innerText =
+            (
+                estado.jogador1 ||
+                "JOGADOR 1"
+            ).toUpperCase();
+
+
+        document.getElementById(
+            "nomeJogador2"
+        ).innerText =
+            (
+                estado.jogador2 ||
+                "JOGADOR 2"
+            ).toUpperCase();
+
+
+        /* TIMES */
+
+        document.getElementById(
+            "nomeTime1"
+        ).innerText =
+            (
+                estado.time1 ||
+                "TIME 1"
+            ).toUpperCase();
+
+
+        document.getElementById(
+            "nomeTime2"
+        ).innerText =
+            (
+                estado.time2 ||
+                "TIME 2"
+            ).toUpperCase();
+
+
+        /* PLACAR */
+
+        document.getElementById(
+            "placar1"
+        ).innerText =
+            estado.placar1 || 0;
+
+
+        document.getElementById(
+            "placar2"
+        ).innerText =
+            estado.placar2 || 0;
+
+
+        /* 11 IDEAL */
+
+        atualizarTimeIdeal(
+            estado.timeIdeal || []
+        );
+
+    }
+
+    catch (erro) {
+
+        console.log(
+            "Aguardando servidor..."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   ATUALIZAR 11 IDEAL
+========================================= */
+
+function atualizarTimeIdeal(timeIdeal) {
+
+    const campo =
+        document.getElementById(
+            "campo"
+        );
+
+
+    /* REMOVE APENAS OS JOGADORES ANTIGOS */
+
+    campo
+        .querySelectorAll(
+            ".jogador-campo"
+        )
+        .forEach(
+            jogador =>
+                jogador.remove()
+        );
+
+
+    /* CRIA OS JOGADORES */
+
+    timeIdeal.forEach(
+        (item, indice) => {
+
+            const jogador =
+                document.createElement(
+                    "div"
+                );
+
+
+            jogador.className =
+                "jogador-campo " +
+                "pos-" +
+                indice +
+                " " +
+                (
+                    item.lado === 1
+                    ? "lado1"
+                    : "lado2"
+                );
+
+
+            jogador.innerText =
+                (
+                    item.jogador ||
+                    "JOGADOR"
+                ).toUpperCase();
+
+
+            campo.appendChild(
+                jogador
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================
+   INICIAR
+========================================= */
+
+atualizarOverlay();
+
+
+/* Atualiza 4 vezes por segundo */
+
+setInterval(
+    atualizarOverlay,
+    250
+);
+
+</script>
 
 </body>
 
