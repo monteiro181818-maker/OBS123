@@ -3,7 +3,6 @@
 
 <head>
 <meta charset="UTF-8">
-
 <title>Painel 11x11 Metreacts</title>
 
 <style>
@@ -15,67 +14,37 @@
 body {
     margin: 0;
     padding: 30px;
-
     background: #090a10;
-
     color: white;
-
     font-family: Arial, sans-serif;
 }
 
-
-/* =========================================
-   PAINEL
-========================================= */
-
 .painel {
     width: 900px;
-
     margin: auto;
-
     background: #11131c;
-
     border: 2px solid #633cff;
-
     border-radius: 18px;
-
     padding: 30px;
-
-    box-shadow:
-        0 0 30px rgba(99,60,255,0.30);
+    box-shadow: 0 0 30px rgba(99,60,255,0.30);
 }
-
-
-/* =========================================
-   TÍTULO
-========================================= */
 
 h1 {
     margin-top: 0;
-
     text-align: center;
-
     font-size: 32px;
 }
-
-
-/* =========================================
-   POSIÇÃO
-========================================= */
 
 .posicao {
     margin-top: 25px;
     margin-bottom: 30px;
-
     text-align: center;
 }
 
 .posicao-numero {
     color: #9b82ff;
-
     font-size: 18px;
     font-weight: bold;
-
     margin-bottom: 8px;
 }
 
@@ -84,223 +53,140 @@ h1 {
     font-weight: 900;
 }
 
-
-/* =========================================
-   JOGADORES
-========================================= */
-
 .comparacao {
     display: flex;
-
     gap: 25px;
 }
 
-
-/* CARD */
-
 .jogador {
     flex: 1;
-
     background: #181b26;
-
     border: 1px solid #303443;
-
     border-radius: 14px;
-
     padding: 22px;
 }
-
-
-/* LADO 1 */
 
 .jogador1 {
     border-top: 4px solid #168cff;
 }
 
-
-/* LADO 2 */
-
 .jogador2 {
     border-top: 4px solid #ad24ff;
 }
 
-
-/* =========================================
-   CAMPOS
-========================================= */
-
 label {
     display: block;
-
     margin-bottom: 8px;
-
     color: #aeb3c2;
-
     font-size: 14px;
     font-weight: bold;
 }
 
-
 input {
     width: 100%;
-
     height: 46px;
-
     padding: 0 14px;
-
     margin-bottom: 15px;
-
     background: #0d0f16;
-
     color: white;
-
     border: 1px solid #363a49;
-
     border-radius: 8px;
-
     font-size: 17px;
-
     outline: none;
 }
-
 
 input:focus {
     border-color: #704cff;
 }
 
-
-/* =========================================
-   BOTÃO ESCOLHER
-========================================= */
-
 .escolher {
     width: 100%;
-
     height: 50px;
-
     margin-top: 5px;
-
     border: none;
-
     border-radius: 9px;
-
     color: white;
-
     font-size: 17px;
     font-weight: 900;
-
     cursor: pointer;
 }
-
 
 .escolher1 {
     background: #1677d2;
 }
 
-
 .escolher2 {
     background: #8d2ee0;
 }
-
 
 .escolher:hover {
     filter: brightness(1.15);
 }
 
-
-/* =========================================
-   VENCEDOR
-========================================= */
-
 #vencedor {
     margin-top: 25px;
-
     min-height: 55px;
-
     display: flex;
-
     align-items: center;
     justify-content: center;
-
     background: #0d0f16;
-
     border-radius: 10px;
-
     font-size: 19px;
     font-weight: bold;
-
     color: #b8bdca;
 }
 
-
-/* =========================================
-   NAVEGAÇÃO
-========================================= */
+#vencedor.escolhido {
+    color: white;
+    border: 1px solid #633cff;
+}
 
 .navegacao {
     margin-top: 25px;
-
     display: flex;
-
     gap: 15px;
 }
 
-
 .navegacao button {
     flex: 1;
-
     height: 52px;
-
     background: #252938;
-
     color: white;
-
     border: 1px solid #3b4052;
-
     border-radius: 9px;
-
     font-size: 17px;
     font-weight: bold;
-
     cursor: pointer;
 }
-
 
 .navegacao button:hover {
     background: #303548;
 }
 
-
-/* BOTÃO PRÓXIMO */
-
 #proximo {
     background: #633cff;
-
     border-color: #795cff;
 }
-
 
 #proximo:hover {
     background: #7555ff;
 }
 
+#statusServidor {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 13px;
+    color: #6cff9d;
+}
+
 </style>
-
 </head>
-
 
 <body>
 
-
 <div class="painel">
 
-
-    <h1>
-        PAINEL 11x11
-    </h1>
-
-
-    <!-- POSIÇÃO -->
+    <h1>PAINEL 11x11</h1>
 
     <div class="posicao">
 
@@ -317,18 +203,13 @@ input:focus {
     </div>
 
 
-    <!-- JOGADORES -->
-
     <div class="comparacao">
-
 
         <!-- JOGADOR 1 -->
 
         <div class="jogador jogador1">
 
-            <label>
-                JOGADOR 1
-            </label>
+            <label>JOGADOR 1</label>
 
             <input
                 type="text"
@@ -336,17 +217,13 @@ input:focus {
                 value="Verbruggen"
             >
 
-
-            <label>
-                TIME / SELEÇÃO
-            </label>
+            <label>TIME / SELEÇÃO</label>
 
             <input
                 type="text"
                 id="time1"
                 value="Holanda"
             >
-
 
             <button
                 class="escolher escolher1"
@@ -361,9 +238,7 @@ input:focus {
 
         <div class="jogador jogador2">
 
-            <label>
-                JOGADOR 2
-            </label>
+            <label>JOGADOR 2</label>
 
             <input
                 type="text"
@@ -371,17 +246,13 @@ input:focus {
                 value="Ter Stegen"
             >
 
-
-            <label>
-                TIME / SELEÇÃO
-            </label>
+            <label>TIME / SELEÇÃO</label>
 
             <input
                 type="text"
                 id="time2"
                 value="Alemanha"
             >
-
 
             <button
                 class="escolher escolher2"
@@ -391,18 +262,13 @@ input:focus {
 
         </div>
 
-
     </div>
 
-
-    <!-- VENCEDOR -->
 
     <div id="vencedor">
         Nenhum jogador escolhido
     </div>
 
-
-    <!-- NAVEGAÇÃO -->
 
     <div class="navegacao">
 
@@ -419,44 +285,103 @@ input:focus {
     </div>
 
 
+    <div id="statusServidor">
+        SERVIDOR CONECTADO
+    </div>
+
 </div>
 
 
 <script>
 
-
 /* =========================================
-   POSIÇÕES DO 11x11
+   POSIÇÕES
 ========================================= */
 
 const posicoes = [
 
     "GOLEIRO",
-
     "LATERAL DIREITO",
-
     "ZAGUEIRO 1",
-
     "ZAGUEIRO 2",
-
     "LATERAL ESQUERDO",
-
     "VOLANTE",
-
     "MEIA 1",
-
     "MEIA 2",
-
     "PONTA DIREITA",
-
     "CENTROAVANTE",
-
     "PONTA ESQUERDA"
 
 ];
 
 
 let indice = 0;
+
+let placar1 = 0;
+let placar2 = 0;
+
+let timeIdeal = [];
+
+
+/* =========================================
+   ENVIAR PARA O SERVIDOR
+========================================= */
+
+async function enviarEstado(dados) {
+
+    try {
+
+        const resposta = await fetch(
+            "/api/estado",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(dados)
+            }
+        );
+
+
+        const resultado =
+            await resposta.json();
+
+
+        if (resultado.ok) {
+
+            document.getElementById(
+                "statusServidor"
+            ).innerText =
+                "SERVIDOR CONECTADO";
+
+            document.getElementById(
+                "statusServidor"
+            ).style.color =
+                "#6cff9d";
+
+        }
+
+    }
+
+    catch (erro) {
+
+        document.getElementById(
+            "statusServidor"
+        ).innerText =
+            "ERRO DE CONEXÃO";
+
+        document.getElementById(
+            "statusServidor"
+        ).style.color =
+            "#ff5c5c";
+
+        console.error(erro);
+
+    }
+
+}
 
 
 /* =========================================
@@ -465,11 +390,62 @@ let indice = 0;
 
 function atualizarPosicao() {
 
-    document.getElementById("numeroPosicao").innerText =
-        (indice + 1) + " / " + posicoes.length;
+    document.getElementById(
+        "numeroPosicao"
+    ).innerText =
+        (indice + 1) +
+        " / " +
+        posicoes.length;
 
-    document.getElementById("posicaoAtual").innerText =
+
+    document.getElementById(
+        "posicaoAtual"
+    ).innerText =
         posicoes[indice];
+
+
+    enviarEstado({
+
+        posicao:
+            posicoes[indice],
+
+        numeroPosicao:
+            indice + 1
+
+    });
+
+}
+
+
+/* =========================================
+   ENVIAR NOMES
+========================================= */
+
+function enviarJogadores() {
+
+    enviarEstado({
+
+        jogador1:
+            document.getElementById(
+                "jogador1"
+            ).value,
+
+        time1:
+            document.getElementById(
+                "time1"
+            ).value,
+
+        jogador2:
+            document.getElementById(
+                "jogador2"
+            ).value,
+
+        time2:
+            document.getElementById(
+                "time2"
+            ).value
+
+    });
 
 }
 
@@ -480,35 +456,138 @@ function atualizarPosicao() {
 
 function escolherJogador(lado) {
 
-    let jogador;
+    const jogador1 =
+        document.getElementById(
+            "jogador1"
+        ).value.trim();
 
-    let time;
+    const time1 =
+        document.getElementById(
+            "time1"
+        ).value.trim();
+
+
+    const jogador2 =
+        document.getElementById(
+            "jogador2"
+        ).value.trim();
+
+    const time2 =
+        document.getElementById(
+            "time2"
+        ).value.trim();
+
+
+    let jogadorEscolhido;
+    let timeEscolhido;
 
 
     if (lado === 1) {
 
-        jogador =
-            document.getElementById("jogador1").value;
+        jogadorEscolhido = jogador1;
+        timeEscolhido = time1;
 
-        time =
-            document.getElementById("time1").value;
+        placar1++;
 
-    } else {
+    }
 
-        jogador =
-            document.getElementById("jogador2").value;
+    else {
 
-        time =
-            document.getElementById("time2").value;
+        jogadorEscolhido = jogador2;
+        timeEscolhido = time2;
+
+        placar2++;
 
     }
 
 
-    document.getElementById("vencedor").innerText =
+    /* EVITA DUPLICAR A MESMA POSIÇÃO */
+
+    timeIdeal =
+        timeIdeal.filter(
+            item =>
+                item.posicao !==
+                posicoes[indice]
+        );
+
+
+    /* SALVA NO 11 IDEAL */
+
+    timeIdeal.push({
+
+        posicao:
+            posicoes[indice],
+
+        jogador:
+            jogadorEscolhido,
+
+        time:
+            timeEscolhido,
+
+        lado:
+            lado
+
+    });
+
+
+    /* MOSTRA NO PAINEL */
+
+    const vencedor =
+        document.getElementById(
+            "vencedor"
+        );
+
+
+    vencedor.innerText =
         "ESCOLHIDO: " +
-        jogador.toUpperCase() +
+        jogadorEscolhido.toUpperCase() +
         " — " +
-        time.toUpperCase();
+        timeEscolhido.toUpperCase();
+
+
+    vencedor.classList.add(
+        "escolhido"
+    );
+
+
+    /* ENVIA TUDO */
+
+    enviarEstado({
+
+        posicao:
+            posicoes[indice],
+
+        numeroPosicao:
+            indice + 1,
+
+        jogador1:
+            jogador1,
+
+        time1:
+            time1,
+
+        jogador2:
+            jogador2,
+
+        time2:
+            time2,
+
+        vencedor:
+            jogadorEscolhido,
+
+        ladoVencedor:
+            lado,
+
+        placar1:
+            placar1,
+
+        placar2:
+            placar2,
+
+        timeIdeal:
+            timeIdeal
+
+    });
 
 }
 
@@ -519,14 +598,16 @@ function escolherJogador(lado) {
 
 function proximo() {
 
-    if (indice < posicoes.length - 1) {
+    if (
+        indice <
+        posicoes.length - 1
+    ) {
 
         indice++;
 
         atualizarPosicao();
 
-        document.getElementById("vencedor").innerText =
-            "Nenhum jogador escolhido";
+        limparVencedor();
 
     }
 
@@ -545,8 +626,7 @@ function anterior() {
 
         atualizarPosicao();
 
-        document.getElementById("vencedor").innerText =
-            "Nenhum jogador escolhido";
+        limparVencedor();
 
     }
 
@@ -554,34 +634,193 @@ function anterior() {
 
 
 /* =========================================
-   ALTERAR TEXTO DOS BOTÕES
+   LIMPAR TEXTO DO VENCEDOR
+========================================= */
+
+function limparVencedor() {
+
+    const vencedor =
+        document.getElementById(
+            "vencedor"
+        );
+
+    vencedor.innerText =
+        "Nenhum jogador escolhido";
+
+    vencedor.classList.remove(
+        "escolhido"
+    );
+
+}
+
+
+/* =========================================
+   ATUALIZAR BOTÃO JOGADOR 1
 ========================================= */
 
 document
-    .getElementById("jogador1")
-    .addEventListener("input", function() {
+.getElementById("jogador1")
+.addEventListener(
+    "input",
+    function() {
 
-        document.querySelector(".escolher1").innerText =
+        document.querySelector(
+            ".escolher1"
+        ).innerText =
             "ESCOLHER " +
             this.value.toUpperCase();
 
-    });
+        enviarJogadores();
+
+    }
+);
+
+
+/* =========================================
+   ATUALIZAR BOTÃO JOGADOR 2
+========================================= */
+
+document
+.getElementById("jogador2")
+.addEventListener(
+    "input",
+    function() {
+
+        document.querySelector(
+            ".escolher2"
+        ).innerText =
+            "ESCOLHER " +
+            this.value.toUpperCase();
+
+        enviarJogadores();
+
+    }
+);
+
+
+/* =========================================
+   TIMES
+========================================= */
+
+document
+.getElementById("time1")
+.addEventListener(
+    "input",
+    enviarJogadores
+);
 
 
 document
-    .getElementById("jogador2")
-    .addEventListener("input", function() {
+.getElementById("time2")
+.addEventListener(
+    "input",
+    enviarJogadores
+);
 
-        document.querySelector(".escolher2").innerText =
+
+/* =========================================
+   CARREGAR ESTADO DO SERVIDOR
+========================================= */
+
+async function carregarEstado() {
+
+    try {
+
+        const resposta =
+            await fetch(
+                "/api/estado"
+            );
+
+
+        const estado =
+            await resposta.json();
+
+
+        document.getElementById(
+            "jogador1"
+        ).value =
+            estado.jogador1;
+
+
+        document.getElementById(
+            "time1"
+        ).value =
+            estado.time1;
+
+
+        document.getElementById(
+            "jogador2"
+        ).value =
+            estado.jogador2;
+
+
+        document.getElementById(
+            "time2"
+        ).value =
+            estado.time2;
+
+
+        indice =
+            Math.max(
+                0,
+                (estado.numeroPosicao || 1)
+                - 1
+            );
+
+
+        placar1 =
+            estado.placar1 || 0;
+
+
+        placar2 =
+            estado.placar2 || 0;
+
+
+        timeIdeal =
+            estado.timeIdeal || [];
+
+
+        atualizarPosicao();
+
+
+        document.querySelector(
+            ".escolher1"
+        ).innerText =
             "ESCOLHER " +
-            this.value.toUpperCase();
+            estado.jogador1.toUpperCase();
 
-    });
 
+        document.querySelector(
+            ".escolher2"
+        ).innerText =
+            "ESCOLHER " +
+            estado.jogador2.toUpperCase();
+
+
+    }
+
+    catch (erro) {
+
+        document.getElementById(
+            "statusServidor"
+        ).innerText =
+            "ERRO DE CONEXÃO";
+
+        document.getElementById(
+            "statusServidor"
+        ).style.color =
+            "#ff5c5c";
+
+    }
+
+}
+
+
+/* INICIAR */
+
+carregarEstado();
 
 </script>
 
-
 </body>
-
 </html>
