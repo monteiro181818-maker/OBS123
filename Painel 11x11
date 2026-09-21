@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+
+<title>Painel 11x11 Metreacts</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 30px;
+
+    background: #090a10;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+}
+
+
+/* =========================================
+   PAINEL
+========================================= */
+
+.painel {
+    width: 900px;
+
+    margin: auto;
+
+    background: #11131c;
+
+    border: 2px solid #633cff;
+
+    border-radius: 18px;
+
+    padding: 30px;
+
+    box-shadow:
+        0 0 30px rgba(99,60,255,0.30);
+}
+
+
+/* =========================================
+   TÍTULO
+========================================= */
+
+h1 {
+    margin-top: 0;
+
+    text-align: center;
+
+    font-size: 32px;
+}
+
+
+/* =========================================
+   POSIÇÃO
+========================================= */
+
+.posicao {
+    margin-top: 25px;
+    margin-bottom: 30px;
+
+    text-align: center;
+}
+
+.posicao-numero {
+    color: #9b82ff;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    margin-bottom: 8px;
+}
+
+#posicaoAtual {
+    font-size: 30px;
+    font-weight: 900;
+}
+
+
+/* =========================================
+   JOGADORES
+========================================= */
+
+.comparacao {
+    display: flex;
+
+    gap: 25px;
+}
+
+
+/* CARD */
+
+.jogador {
+    flex: 1;
+
+    background: #181b26;
+
+    border: 1px solid #303443;
+
+    border-radius: 14px;
+
+    padding: 22px;
+}
+
+
+/* LADO 1 */
+
+.jogador1 {
+    border-top: 4px solid #168cff;
+}
+
+
+/* LADO 2 */
+
+.jogador2 {
+    border-top: 4px solid #ad24ff;
+}
+
+
+/* =========================================
+   CAMPOS
+========================================= */
+
+label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #aeb3c2;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+
+input {
+    width: 100%;
+
+    height: 46px;
+
+    padding: 0 14px;
+
+    margin-bottom: 15px;
+
+    background: #0d0f16;
+
+    color: white;
+
+    border: 1px solid #363a49;
+
+    border-radius: 8px;
+
+    font-size: 17px;
+
+    outline: none;
+}
+
+
+input:focus {
+    border-color: #704cff;
+}
+
+
+/* =========================================
+   BOTÃO ESCOLHER
+========================================= */
+
+.escolher {
+    width: 100%;
+
+    height: 50px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    color: white;
+
+    font-size: 17px;
+    font-weight: 900;
+
+    cursor: pointer;
+}
+
+
+.escolher1 {
+    background: #1677d2;
+}
+
+
+.escolher2 {
+    background: #8d2ee0;
+}
+
+
+.escolher:hover {
+    filter: brightness(1.15);
+}
+
+
+/* =========================================
+   VENCEDOR
+========================================= */
+
+#vencedor {
+    margin-top: 25px;
+
+    min-height: 55px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #0d0f16;
+
+    border-radius: 10px;
+
+    font-size: 19px;
+    font-weight: bold;
+
+    color: #b8bdca;
+}
+
+
+/* =========================================
+   NAVEGAÇÃO
+========================================= */
+
+.navegacao {
+    margin-top: 25px;
+
+    display: flex;
+
+    gap: 15px;
+}
+
+
+.navegacao button {
+    flex: 1;
+
+    height: 52px;
+
+    background: #252938;
+
+    color: white;
+
+    border: 1px solid #3b4052;
+
+    border-radius: 9px;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.navegacao button:hover {
+    background: #303548;
+}
+
+
+/* BOTÃO PRÓXIMO */
+
+#proximo {
+    background: #633cff;
+
+    border-color: #795cff;
+}
+
+
+#proximo:hover {
+    background: #7555ff;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="painel">
+
+
+    <h1>
+        PAINEL 11x11
+    </h1>
+
+
+    <!-- POSIÇÃO -->
+
+    <div class="posicao">
+
+        <div
+            class="posicao-numero"
+            id="numeroPosicao">
+            1 / 11
+        </div>
+
+        <div id="posicaoAtual">
+            GOLEIRO
+        </div>
+
+    </div>
+
+
+    <!-- JOGADORES -->
+
+    <div class="comparacao">
+
+
+        <!-- JOGADOR 1 -->
+
+        <div class="jogador jogador1">
+
+            <label>
+                JOGADOR 1
+            </label>
+
+            <input
+                type="text"
+                id="jogador1"
+                value="Verbruggen"
+            >
+
+
+            <label>
+                TIME / SELEÇÃO
+            </label>
+
+            <input
+                type="text"
+                id="time1"
+                value="Holanda"
+            >
+
+
+            <button
+                class="escolher escolher1"
+                onclick="escolherJogador(1)">
+                ESCOLHER VERBRUGGEN
+            </button>
+
+        </div>
+
+
+        <!-- JOGADOR 2 -->
+
+        <div class="jogador jogador2">
+
+            <label>
+                JOGADOR 2
+            </label>
+
+            <input
+                type="text"
+                id="jogador2"
+                value="Ter Stegen"
+            >
+
+
+            <label>
+                TIME / SELEÇÃO
+            </label>
+
+            <input
+                type="text"
+                id="time2"
+                value="Alemanha"
+            >
+
+
+            <button
+                class="escolher escolher2"
+                onclick="escolherJogador(2)">
+                ESCOLHER TER STEGEN
+            </button>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- VENCEDOR -->
+
+    <div id="vencedor">
+        Nenhum jogador escolhido
+    </div>
+
+
+    <!-- NAVEGAÇÃO -->
+
+    <div class="navegacao">
+
+        <button onclick="anterior()">
+            ← ANTERIOR
+        </button>
+
+        <button
+            id="proximo"
+            onclick="proximo()">
+            PRÓXIMO →
+        </button>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   POSIÇÕES DO 11x11
+========================================= */
+
+const posicoes = [
+
+    "GOLEIRO",
+
+    "LATERAL DIREITO",
+
+    "ZAGUEIRO 1",
+
+    "ZAGUEIRO 2",
+
+    "LATERAL ESQUERDO",
+
+    "VOLANTE",
+
+    "MEIA 1",
+
+    "MEIA 2",
+
+    "PONTA DIREITA",
+
+    "CENTROAVANTE",
+
+    "PONTA ESQUERDA"
+
+];
+
+
+let indice = 0;
+
+
+/* =========================================
+   ATUALIZAR POSIÇÃO
+========================================= */
+
+function atualizarPosicao() {
+
+    document.getElementById("numeroPosicao").innerText =
+        (indice + 1) + " / " + posicoes.length;
+
+    document.getElementById("posicaoAtual").innerText =
+        posicoes[indice];
+
+}
+
+
+/* =========================================
+   ESCOLHER JOGADOR
+========================================= */
+
+function escolherJogador(lado) {
+
+    let jogador;
+
+    let time;
+
+
+    if (lado === 1) {
+
+        jogador =
+            document.getElementById("jogador1").value;
+
+        time =
+            document.getElementById("time1").value;
+
+    } else {
+
+        jogador =
+            document.getElementById("jogador2").value;
+
+        time =
+            document.getElementById("time2").value;
+
+    }
+
+
+    document.getElementById("vencedor").innerText =
+        "ESCOLHIDO: " +
+        jogador.toUpperCase() +
+        " — " +
+        time.toUpperCase();
+
+}
+
+
+/* =========================================
+   PRÓXIMO
+========================================= */
+
+function proximo() {
+
+    if (indice < posicoes.length - 1) {
+
+        indice++;
+
+        atualizarPosicao();
+
+        document.getElementById("vencedor").innerText =
+            "Nenhum jogador escolhido";
+
+    }
+
+}
+
+
+/* =========================================
+   ANTERIOR
+========================================= */
+
+function anterior() {
+
+    if (indice > 0) {
+
+        indice--;
+
+        atualizarPosicao();
+
+        document.getElementById("vencedor").innerText =
+            "Nenhum jogador escolhido";
+
+    }
+
+}
+
+
+/* =========================================
+   ALTERAR TEXTO DOS BOTÕES
+========================================= */
+
+document
+    .getElementById("jogador1")
+    .addEventListener("input", function() {
+
+        document.querySelector(".escolher1").innerText =
+            "ESCOLHER " +
+            this.value.toUpperCase();
+
+    });
+
+
+document
+    .getElementById("jogador2")
+    .addEventListener("input", function() {
+
+        document.querySelector(".escolher2").innerText =
+            "ESCOLHER " +
+            this.value.toUpperCase();
+
+    });
+
+
+</script>
+
+
+</body>
+
+</html>
