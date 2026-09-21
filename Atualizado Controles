@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<title>Controle - Bate-Bola</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #111820;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.painel {
+    width: 760px;
+    margin: 40px auto 100px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.caixa {
+    background: #1c2730;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 20px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #aaa;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+
+    border: 1px solid #45525c;
+    border-radius: 7px;
+
+    background: #0e1419;
+    color: white;
+
+    font-size: 17px;
+}
+
+/* =========================
+   LISTA DE JOGOS
+========================= */
+
+.jogoConfig {
+    display: grid;
+    grid-template-columns: 55px 1fr 35px 1fr 45px;
+    gap: 10px;
+    align-items: center;
+
+    margin-top: 12px;
+}
+
+.numeroJogo {
+    text-align: center;
+    font-weight: bold;
+    color: #8ea0ad;
+}
+
+.versus {
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.remover {
+    margin: 0;
+    padding: 10px;
+
+    background: #b92d3a;
+    color: white;
+
+    font-size: 17px;
+}
+
+.adicionar {
+    width: 100%;
+    margin-top: 20px;
+
+    background: #555f68;
+    color: white;
+}
+
+/* =========================
+   JOGO ATUAL
+========================= */
+
+.statusJogo {
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 20px;
+
+    background: #111820;
+    border-radius: 8px;
+
+    color: #9dacb7;
+    font-weight: bold;
+}
+
+.placar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.placar input {
+    width: 80px;
+    text-align: center;
+
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.x {
+    font-size: 24px;
+}
+
+/* =========================
+   BOTÕES
+========================= */
+
+button {
+    margin-top: 15px;
+    padding: 13px 18px;
+
+    border: none;
+    border-radius: 8px;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.iniciar {
+    width: 100%;
+    background: #6f42c1;
+    color: white;
+}
+
+.salvar {
+    width: 100%;
+    background: #28a745;
+    color: white;
+}
+
+.revelar {
+    background: white;
+    color: black;
+    margin-right: 8px;
+}
+
+.proximo {
+    width: 100%;
+    background: #2675d8;
+    color: white;
+    margin-top: 25px;
+}
+
+.finalizar {
+    width: 100%;
+    background: #d58b19;
+    color: white;
+    margin-top: 15px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="painel">
+
+<h1>⚽ BATE-BOLA DA RODADA</h1>
+
+
+<!-- =========================
+     APRESENTADORES
+========================= -->
+
+<div class="caixa">
+
+<h2>Apresentadores</h2>
+
+<label>Seu nome</label>
+
+<input
+    id="nome1"
+    value="MTS"
+>
+
+<label>Nome do parceiro</label>
+
+<input
+    id="nome2"
+    value="AMIGO"
+>
+
+</div>
+
+
+<!-- =========================
+     CONFIGURAÇÃO DA RODADA
+========================= -->
+
+<div class="caixa">
+
+<h2>Jogos da rodada</h2>
+
+<p style="color:#9dacb7;">
+Monte aqui todos os confrontos antes de iniciar.
+</p>
+
+<div id="listaJogos"></div>
+
+<button
+    class="adicionar"
+    onclick="adicionarJogo()"
+>
++ ADICIONAR CONFRONTO
+</button>
+
+<button
+    class="iniciar"
+    onclick="iniciarRodada()"
+>
+INICIAR / CARREGAR RODADA
+</button>
+
+</div>
+
+
+<!-- =========================
+     CONFRONTO ATUAL
+========================= -->
+
+<div class="caixa">
+
+<h2>Confronto atual</h2>
+
+<div
+    class="statusJogo"
+    id="statusJogo"
+>
+JOGO 1
+</div>
+
+<label>Time da casa</label>
+
+<input
+    id="casa"
+    value=""
+>
+
+<label>Time visitante</label>
+
+<input
+    id="visitante"
+    value=""
+>
+
+</div>
+
+
+<!-- =========================
+     PALPITE 1
+========================= -->
+
+<div class="caixa">
+
+<h2 id="tituloPalpite1">
+Palpite 1
+</h2>
+
+<div class="placar">
+
+<input
+    id="p1casa"
+    type="number"
+    min="0"
+>
+
+<span class="x">×</span>
+
+<input
+    id="p1fora"
+    type="number"
+    min="0"
+>
+
+</div>
+
+<button
+    class="revelar"
+    onclick="revelar1()"
+>
+REVELAR PALPITE 1
+</button>
+
+</div>
+
+
+<!-- =========================
+     PALPITE 2
+========================= -->
+
+<div class="caixa">
+
+<h2 id="tituloPalpite2">
+Palpite 2
+</h2>
+
+<div class="placar">
+
+<input
+    id="p2casa"
+    type="number"
+    min="0"
+>
+
+<span class="x">×</span>
+
+<input
+    id="p2fora"
+    type="number"
+    min="0"
+>
+
+</div>
+
+<button
+    class="revelar"
+    onclick="revelar2()"
+>
+REVELAR PALPITE 2
+</button>
+
+</div>
+
+
+<button
+    class="salvar"
+    onclick="salvar()"
+>
+ATUALIZAR CONFRONTO
+</button>
+
+
+<button
+    class="proximo"
+    id="botaoProximo"
+    onclick="proximo()"
+>
+PRÓXIMO JOGO ▶
+</button>
+
+
+<button
+    class="finalizar"
+    onclick="finalizar()"
+>
+FINALIZAR RODADA
+</button>
+
+
+</div>
+
+
+<script>
+
+/* =========================
+   DADOS PRINCIPAIS
+========================= */
+
+let jogos = [
+
+    {
+        casa: "FLAMENGO",
+        visitante: "VASCO"
+    },
+
+    {
+        casa: "PALMEIRAS",
+        visitante: "CORINTHIANS"
+    },
+
+    {
+        casa: "FLUMINENSE",
+        visitante: "BOTAFOGO"
+    }
+
+];
+
+let jogoAtual = 0;
+
+let resultados = [];
+
+
+/* =========================
+   MONTA A LISTA DE JOGOS
+========================= */
+
+function desenharListaJogos() {
+
+    const lista =
+        document.getElementById(
+            "listaJogos"
+        );
+
+    lista.innerHTML = "";
+
+
+    jogos.forEach(
+        function(jogo, indice) {
+
+            const linha =
+                document.createElement(
+                    "div"
+                );
+
+            linha.className =
+                "jogoConfig";
+
+
+            linha.innerHTML = `
+
+                <div class="numeroJogo">
+                    ${indice + 1}
+                </div>
+
+                <input
+                    id="configCasa${indice}"
+                    value="${jogo.casa}"
+                    placeholder="Mandante"
+                >
+
+                <div class="versus">
+                    ×
+                </div>
+
+                <input
+                    id="configVisitante${indice}"
+                    value="${jogo.visitante}"
+                    placeholder="Visitante"
+                >
+
+                <button
+                    class="remover"
+                    onclick="removerJogo(${indice})"
+                    title="Remover confronto"
+                >
+                    ×
+                </button>
+
+            `;
+
+
+            lista.appendChild(
+                linha
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================
+   SALVA LISTA EDITADA
+========================= */
+
+function lerJogosDaTela() {
+
+    const novosJogos = [];
+
+
+    for (
+        let i = 0;
+        i < jogos.length;
+        i++
+    ) {
+
+        const casa =
+            document
+                .getElementById(
+                    "configCasa" + i
+                )
+                .value
+                .trim()
+                .toUpperCase();
+
+
+        const visitante =
+            document
+                .getElementById(
+                    "configVisitante" + i
+                )
+                .value
+                .trim()
+                .toUpperCase();
+
+
+        novosJogos.push({
+
+            casa: casa,
+
+            visitante:
+                visitante
+
+        });
+
+    }
+
+
+    jogos = novosJogos;
+
+}
+
+
+/* =========================
+   ADICIONAR JOGO
+========================= */
+
+function adicionarJogo() {
+
+    lerJogosDaTela();
+
+
+    jogos.push({
+
+        casa: "",
+
+        visitante: ""
+
+    });
+
+
+    desenharListaJogos();
+
+}
+
+
+/* =========================
+   REMOVER JOGO
+========================= */
+
+function removerJogo(indice) {
+
+    if (
+        jogos.length <= 1
+    ) {
+
+        alert(
+            "A rodada precisa ter pelo menos um confronto."
+        );
+
+        return;
+
+    }
+
+
+    lerJogosDaTela();
+
+
+    jogos.splice(
+        indice,
+        1
+    );
+
+
+    desenharListaJogos();
+
+}
+
+
+/* =========================
+   INICIAR RODADA
+========================= */
+
+async function iniciarRodada() {
+
+    lerJogosDaTela();
+
+
+    for (
+        let i = 0;
+        i < jogos.length;
+        i++
+    ) {
+
+        if (
+            jogos[i].casa === "" ||
+            jogos[i].visitante === ""
+        ) {
+
+            alert(
+                "Preencha todos os confrontos antes de iniciar."
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    jogoAtual = 0;
+
+    resultados = [];
+
+
+    carregarJogo();
+
+
+    await enviar(
+        "atualizar"
+    );
+
+}
+
+
+/* =========================
+   CARREGA JOGO ATUAL
+========================= */
+
+function carregarJogo() {
+
+    const jogo =
+        jogos[jogoAtual];
+
+
+    document
+        .getElementById(
+            "casa"
+        )
+        .value =
+            jogo.casa;
+
+
+    document
+        .getElementById(
+            "visitante"
+        )
+        .value =
+            jogo.visitante;
+
+
+    document
+        .getElementById(
+            "p1casa"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "p1fora"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "p2casa"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "p2fora"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "statusJogo"
+        )
+        .textContent =
+            "JOGO " +
+            (jogoAtual + 1) +
+            " DE " +
+            jogos.length;
+
+
+    atualizarNomesPalpites();
+
+}
+
+
+/* =========================
+   NOMES DOS PALPITES
+========================= */
+
+function atualizarNomesPalpites() {
+
+    const nome1 =
+        document
+            .getElementById(
+                "nome1"
+            )
+            .value
+            .toUpperCase();
+
+
+    const nome2 =
+        document
+            .getElementById(
+                "nome2"
+            )
+            .value
+            .toUpperCase();
+
+
+    document
+        .getElementById(
+            "tituloPalpite1"
+        )
+        .textContent =
+            "Palpite - " +
+            nome1;
+
+
+    document
+        .getElementById(
+            "tituloPalpite2"
+        )
+        .textContent =
+            "Palpite - " +
+            nome2;
+
+}
+
+
+/* =========================
+   DADOS DO JOGO
+========================= */
+
+function dados() {
+
+    return {
+
+        nome1:
+            document
+                .getElementById(
+                    "nome1"
+                )
+                .value,
+
+        nome2:
+            document
+                .getElementById(
+                    "nome2"
+                )
+                .value,
+
+        casa:
+            document
+                .getElementById(
+                    "casa"
+                )
+                .value
+                .trim()
+                .toUpperCase(),
+
+        visitante:
+            document
+                .getElementById(
+                    "visitante"
+                )
+                .value
+                .trim()
+                .toUpperCase(),
+
+        p1casa:
+            document
+                .getElementById(
+                    "p1casa"
+                )
+                .value,
+
+        p1fora:
+            document
+                .getElementById(
+                    "p1fora"
+                )
+                .value,
+
+        p2casa:
+            document
+                .getElementById(
+                    "p2casa"
+                )
+                .value,
+
+        p2fora:
+            document
+                .getElementById(
+                    "p2fora"
+                )
+                .value
+
+    };
+
+}
+
+
+/* =========================
+   ENVIA PARA SERVIDOR
+========================= */
+
+async function enviar(acao) {
+
+    const pacote = {
+
+        acao: acao,
+
+        dados: dados(),
+
+        resultados:
+            resultados
+
+    };
+
+
+    try {
+
+        const resposta =
+            await fetch(
+
+                "/api/comando",
+
+                {
+                    method:
+                        "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            pacote
+                        )
+                }
+
+            );
+
+
+        const resultado =
+            await resposta.json();
+
+
+        if (
+            !resultado.ok
+        ) {
+
+            alert(
+                "Erro ao enviar comando."
+            );
+
+        }
+
+
+    } catch (erro) {
+
+        alert(
+            "Não foi possível comunicar com o servidor."
+        );
+
+        console.error(
+            erro
+        );
+
+    }
+
+}
+
+
+/* =========================
+   BOTÕES
+========================= */
+
+function salvar() {
+
+    enviar(
+        "atualizar"
+    );
+
+}
+
+
+function revelar1() {
+
+    enviar(
+        "revelar1"
+    );
+
+}
+
+
+function revelar2() {
+
+    enviar(
+        "revelar2"
+    );
+
+}
+
+
+/* =========================
+   SALVA RESULTADO
+========================= */
+
+function guardarResultadoAtual() {
+
+    const d =
+        dados();
+
+
+    resultados[jogoAtual] = {
+
+        casa:
+            d.casa,
+
+        visitante:
+            d.visitante,
+
+        nome1:
+            d.nome1,
+
+        nome2:
+            d.nome2,
+
+        palpite1:
+            d.p1casa +
+            " × " +
+            d.p1fora,
+
+        palpite2:
+            d.p2casa +
+            " × " +
+            d.p2fora
+
+    };
+
+}
+
+
+/* =========================
+   VERIFICA PALPITES
+========================= */
+
+function palpitesPreenchidos() {
+
+    const d =
+        dados();
+
+
+    return !(
+        d.p1casa === "" ||
+        d.p1fora === "" ||
+        d.p2casa === "" ||
+        d.p2fora === ""
+    );
+
+}
+
+
+/* =========================
+   PRÓXIMO JOGO
+========================= */
+
+async function proximo() {
+
+
+    if (
+        !palpitesPreenchidos()
+    ) {
+
+        alert(
+            "Preencha os dois palpites antes de continuar."
+        );
+
+        return;
+
+    }
+
+
+    guardarResultadoAtual();
+
+
+    await enviar(
+        "proximo"
+    );
+
+
+    if (
+        jogoAtual <
+        jogos.length - 1
+    ) {
+
+        jogoAtual++;
+
+
+        carregarJogo();
+
+
+        await enviar(
+            "atualizar"
+        );
+
+    }
+
+    else {
+
+        alert(
+            "Este é o último jogo. Clique em FINALIZAR RODADA para mostrar o quadro final."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   FINALIZAR RODADA
+========================= */
+
+async function finalizar() {
+
+
+    if (
+        !palpitesPreenchidos()
+    ) {
+
+        alert(
+            "Preencha os dois palpites antes de finalizar."
+        );
+
+        return;
+
+    }
+
+
+    guardarResultadoAtual();
+
+
+    await enviar(
+        "finalizar"
+    );
+
+}
+
+
+/* =========================
+   INÍCIO
+========================= */
+
+desenharListaJogos();
+
+carregarJogo();
+
+</script>
+
+</body>
+</html>
