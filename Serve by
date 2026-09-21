@@ -1,0 +1,182 @@
+from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
+import json
+import os
+
+PORTA = 8000
+
+estado = {
+    "versao": 0,
+    "acao": "atualizar",
+    "dados": {
+        "nome1": "MTS",
+        "nome2": "AMIGO",
+        "casa": "FLAMENGO",
+        "visitante": "VASCO",
+        "p1casa": "2",
+        "p1fora": "1",
+        "p2casa": "1",
+        "p2fora": "1"
+    }
+}
+
+
+class BateBolaHandler(SimpleHTTPRequestHandler):
+
+    def do_GET(self):
+
+        if self.path.startswith("/api/estado"):
+
+            resposta = json.dumps(
+                estado,
+                ensure_ascii=False
+            ).encode("utf-8")
+
+            self.send_response(200)
+
+            self.send_header(
+                "Content-Type",
+                "application/json; charset=utf-8"
+            )
+
+            self.send_header(
+                "Cache-Control",
+                "no-store"
+            )
+
+            self.end_headers()
+
+            self.wfile.write(resposta)
+
+            return
+
+        super().do_GET()
+
+
+    def do_POST(self):
+
+        global estado
+
+        if self.path.startswith("/api/comando"):
+
+            tamanho = int(
+                self.headers.get(
+                    "Content-Length",
+                    0
+                )
+            )
+
+            corpo = self.rfile.read(tamanho)
+
+            try:
+
+                pacote = json.loads(
+                    corpo.decode("utf-8")
+                )
+
+                estado = {
+                    "versao":
+                        estado["versao"] + 1,
+
+                    "acao":
+                        pacote.get(
+                            "acao",
+                            "atualizar"
+                        ),
+
+                    "dados":
+                        pacote.get(
+                            "dados",
+                            {}
+                        ),
+
+                    "resultados":
+                        pacote.get(
+                            "resultados",
+                            estado.get("resultados", [])
+                        )
+                }
+
+                resposta = json.dumps({
+                    "ok": True,
+                    "versao": estado["versao"]
+                }).encode("utf-8")
+
+                self.send_response(200)
+
+                self.send_header(
+                    "Content-Type",
+                    "application/json"
+                )
+
+                self.end_headers()
+
+                self.wfile.write(resposta)
+
+            except Exception as erro:
+
+                resposta = json.dumps({
+                    "ok": False,
+                    "erro": str(erro)
+                }).encode("utf-8")
+
+                self.send_response(400)
+
+                self.send_header(
+                    "Content-Type",
+                    "application/json"
+                )
+
+                self.end_headers()
+
+                self.wfile.write(resposta)
+
+            return
+
+        self.send_error(404)
+
+
+if __name__ == "__main__":
+
+    pasta = os.path.dirname(
+        os.path.abspath(__file__)
+    )
+
+    os.chdir(pasta)
+
+    servidor = ThreadingHTTPServer(
+        ("127.0.0.1", PORTA),
+        BateBolaHandler
+    )
+
+    print("")
+    print("==============================")
+    print("  METREACTS - BATE-BOLA")
+    print("==============================")
+    print("")
+    print(
+        f"Servidor ligado em "
+        f"http://localhost:{PORTA}"
+    )
+    print("")
+    print(
+        "Painel:"
+        f" http://localhost:{PORTA}"
+        "/controle/controle.html"
+    )
+    print(
+        "OBS:"
+        f" http://localhost:{PORTA}"
+        "/overlay/index.html"
+    )
+    print("")
+    print("CTRL + C para encerrar.")
+    print("")
+
+    try:
+        servidor.serve_forever()
+
+    except KeyboardInterrupt:
+        print("\nServidor encerrado.")
+
+    finally:
+        servidor.server_close()
