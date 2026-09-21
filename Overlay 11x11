@@ -15,12 +15,16 @@ html, body {
     width: 100%;
     height: 100%;
     margin: 0;
+    padding: 0;
     overflow: hidden;
     background: transparent;
     font-family: Arial, sans-serif;
 }
 
-/* QUADRO CENTRAL */
+/* =========================================
+   QUADRO CENTRAL
+========================================= */
+
 #comparacao {
     position: absolute;
 
@@ -33,9 +37,14 @@ html, body {
     transform: translate(-50%, -50%);
 }
 
-/* POSIÇÃO */
+
+/* =========================================
+   POSIÇÃO DO JOGADOR
+========================================= */
+
 #posicao {
     position: absolute;
+
     top: 0;
     left: 50%;
 
@@ -53,9 +62,15 @@ html, body {
     font-weight: 900;
 
     white-space: nowrap;
+
+    z-index: 20;
 }
 
-/* ÁREA DOS JOGADORES */
+
+/* =========================================
+   ÁREA DOS JOGADORES
+========================================= */
+
 #jogadores {
     position: absolute;
 
@@ -68,7 +83,11 @@ html, body {
     display: flex;
 }
 
-/* CADA METADE */
+
+/* =========================================
+   CADA JOGADOR
+========================================= */
+
 .jogador {
     position: relative;
 
@@ -78,29 +97,85 @@ html, body {
     overflow: hidden;
 }
 
-/* ÁREA TEMPORÁRIA DA FOTO */
+
+/* =========================================
+   FOTO
+========================================= */
+
 .foto {
     position: absolute;
 
-    width: 88%;
-    height: 88%;
+    width: 94%;
+    height: 100%;
 
     left: 50%;
     bottom: 0;
 
     transform: translateX(-50%);
 
+    overflow: hidden;
+}
+
+
+/* IMAGEM DO JOGADOR */
+
+.foto img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center top;
+
+    display: block;
+}
+
+
+/* FOTO 2 TEMPORÁRIA */
+
+.placeholder {
     display: flex;
-    justify-content: center;
+
     align-items: center;
+    justify-content: center;
 
     color: rgba(255,255,255,0.25);
 
     font-size: 25px;
-    font-weight: bold;
+    font-weight: 900;
 }
 
-/* PLACA DO NOME */
+
+/* =========================================
+   SOMBREAMENTO NAS FOTOS
+========================================= */
+
+.jogador::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,0.85) 0%,
+            rgba(0,0,0,0.15) 35%,
+            transparent 60%
+        );
+}
+
+
+/* =========================================
+   PLACA DO NOME
+========================================= */
+
 .nome-box {
     position: absolute;
 
@@ -109,35 +184,64 @@ html, body {
     width: 92%;
     height: 65px;
 
-    background: rgba(5, 5, 10, 0.94);
-
-    border: 2px solid white;
+    background: rgba(5, 5, 10, 0.95);
 
     display: flex;
     align-items: center;
 
-    z-index: 5;
+    z-index: 10;
 }
 
-/* LADO ESQUERDO */
+
+/* HOLANDA / LADO ESQUERDO */
+
 .esquerda .nome-box {
     left: 0;
 
-    border-color: #008cff;
+    border: 2px solid #008cff;
 
     transform: skewX(12deg);
 }
 
-/* LADO DIREITO */
+
+/* ALEMANHA / LADO DIREITO */
+
 .direita .nome-box {
     right: 0;
 
-    border-color: #b400ff;
+    border: 2px solid #b400ff;
 
     transform: skewX(-12deg);
 }
 
-/* CORRIGE O TEXTO */
+
+/* =========================================
+   TEXTO DOS NOMES
+========================================= */
+
+.conteudo {
+    width: 100%;
+
+    padding: 0 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+
+    font-size: 27px;
+    font-weight: 900;
+
+    white-space: nowrap;
+    overflow: hidden;
+
+    text-align: center;
+}
+
+
+/* CORRIGE A INCLINAÇÃO DAS PLACAS */
+
 .esquerda .conteudo {
     transform: skewX(-12deg);
 }
@@ -146,24 +250,11 @@ html, body {
     transform: skewX(12deg);
 }
 
-.conteudo {
-    width: 100%;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+/* =========================================
+   X CENTRAL
+========================================= */
 
-    padding: 0 15px;
-
-    color: white;
-
-    font-size: clamp(18px, 2vw, 30px);
-    font-weight: 900;
-
-    white-space: nowrap;
-}
-
-/* X CENTRAL */
 #versus {
     position: absolute;
 
@@ -177,63 +268,105 @@ html, body {
     font-size: 70px;
     font-weight: 900;
 
-    z-index: 10;
+    z-index: 15;
 
     text-shadow:
         -3px 0 #008cff,
-        3px 0 #b400ff;
+         3px 0 #b400ff;
 }
 
 </style>
+
 </head>
+
 
 <body>
 
+
 <div id="comparacao">
+
+
+    <!-- POSIÇÃO -->
 
     <div id="posicao">
         GOLEIRO
     </div>
 
+
+    <!-- JOGADORES -->
+
     <div id="jogadores">
 
-        <!-- JOGADOR 1 -->
+
+        <!-- =========================
+             HOLANDA
+        ========================== -->
+
         <div class="jogador esquerda">
 
+
             <div class="foto">
-                FOTO 1
+
+                <img
+                    src="../dados/fotos/holanda/verbruggen.png"
+                    alt="Verbruggen"
+                >
+
             </div>
 
+
             <div class="nome-box">
+
                 <div class="conteudo">
-                    ROSSI
+                    VERBRUGGEN
                 </div>
+
             </div>
+
 
         </div>
 
-        <!-- JOGADOR 2 -->
+
+
+        <!-- =========================
+             ALEMANHA
+        ========================== -->
+
         <div class="jogador direita">
 
-            <div class="foto">
+
+            <div class="foto placeholder">
+
                 FOTO 2
+
             </div>
 
+
             <div class="nome-box">
+
                 <div class="conteudo">
-                    LÉO JARDIM
+                    GOLEIRO ALEMANHA
                 </div>
+
             </div>
+
 
         </div>
 
+
     </div>
+
+
+    <!-- X CENTRAL -->
 
     <div id="versus">
         X
     </div>
 
+
 </div>
 
+
 </body>
+
 </html>
