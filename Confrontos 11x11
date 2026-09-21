@@ -1,0 +1,157 @@
+{
+  "confrontos": [
+    {
+      "posicao": "GOLEIRO",
+      "jogador1": {
+        "nome": "Verbruggen",
+        "time": "Holanda",
+        "foto": "verbruggen.png"
+      },
+      "jogador2": {
+        "nome": "Ter Stegen",
+        "time": "Alemanha",
+        "foto": "ter-stegen.png"
+      }
+    },
+
+    {
+      "posicao": "LATERAL DIREITO",
+      "jogador1": {
+        "nome": "Jogador 1 LD",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 LD",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    },
+
+    {
+      "posicao": "ZAGUEIRO 1",
+      "jogador1": {
+        "nome": "Jogador 1 ZAG",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 ZAG",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    },
+
+    {
+      "posicao": "ZAGUEIRO 2",
+      "jogador1": {
+        "nome": "Jogador 1 ZAG",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 ZAG",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    },
+
+    {
+      "posicao": "LATERAL ESQUERDO",
+      "jogador1": {
+        "nome": "Jogador 1 LE",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 LE",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    },
+
+    {
+      "posicao": "VOLANTE",
+      "jogador1": {
+        "nome": "Jogador 1 VOL",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 VOL",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    },
+
+    {
+      "posicao": "MEIA 1",
+      "jogador1": {
+        "nome": "Jogador 1 MEI",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 MEI",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    },
+
+    {
+      "posicao": "MEIA 2",
+      "jogador1": {
+        "nome": "Jogador 1 MEI",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 MEI",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    },
+
+    {
+      "posicao": "PONTA DIREITA",
+      "jogador1": {
+        "nome": "Jogador 1 PD",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 PD",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    },
+
+    {
+      "posicao": "CENTROAVANTE",
+      "jogador1": {
+        "nome": "Jogador 1 CA",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 CA",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    },
+
+    {
+      "posicao": "PONTA ESQUERDA",
+      "jogador1": {
+        "nome": "Jogador 1 PE",
+        "time": "Holanda",
+        "foto": ""
+      },
+      "jogador2": {
+        "nome": "Jogador 2 PE",
+        "time": "Alemanha",
+        "foto": ""
+      }
+    }
+  ]
+}
