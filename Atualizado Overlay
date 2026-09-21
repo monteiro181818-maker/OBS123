@@ -39,7 +39,37 @@ html, body {
         );
 }
 
-/* ARQUIBANCADA */
+/* FOTO REAL DO ESTÁDIO */
+
+.fundoEstadio {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    opacity: 0;
+
+    transform: scale(1.04);
+
+    transition:
+        opacity .8s ease,
+        transform 8s ease;
+
+    z-index: 1;
+}
+
+.fundoEstadio.visivel {
+    opacity: 1;
+    transform: scale(1.10);
+}
+
+
+/* =========================
+   ESTÁDIO GENÉRICO
+========================= */
 
 .arquibancada {
     position: absolute;
@@ -62,9 +92,9 @@ html, body {
     box-shadow:
         inset 0 0 80px #000,
         0 20px 80px #000;
-}
 
-/* ILUMINAÇÃO */
+    z-index: 0;
+}
 
 .luzes {
     position: absolute;
@@ -78,9 +108,9 @@ html, body {
     box-shadow:
         0 0 15px white,
         0 0 35px rgba(255,255,255,.5);
-}
 
-/* CAMPO */
+    z-index: 0;
+}
 
 .gramado {
     position: absolute;
@@ -105,6 +135,8 @@ html, body {
     border:
         3px solid
         rgba(255,255,255,.3);
+
+    z-index: 0;
 }
 
 .linha {
@@ -136,6 +168,28 @@ html, body {
     border-radius: 50%;
 }
 
+
+/* =========================
+   CAMADAS SOBRE A FOTO
+========================= */
+
+.escurecerEstadio {
+    position: absolute;
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.35),
+            rgba(0,0,0,.18) 45%,
+            rgba(0,0,0,.55)
+        );
+
+    z-index: 2;
+
+    pointer-events: none;
+}
+
 .vinheta {
     position: absolute;
     inset: 0;
@@ -144,8 +198,12 @@ html, body {
         radial-gradient(
             circle,
             transparent 30%,
-            rgba(0,0,0,.75) 100%
+            rgba(0,0,0,.72) 100%
         );
+
+    z-index: 3;
+
+    pointer-events: none;
 }
 
 
@@ -164,15 +222,21 @@ html, body {
 
     text-align: center;
     color: white;
+
+    z-index: 10;
 }
 
 .titulo {
     font-size: 20px;
     letter-spacing: 6px;
     font-weight: bold;
-    opacity: .8;
+
+    opacity: .9;
 
     margin-bottom: 25px;
+
+    text-shadow:
+        0 3px 15px black;
 }
 
 
@@ -194,7 +258,8 @@ html, body {
     letter-spacing: 3px;
 
     text-shadow:
-        0 5px 25px black;
+        0 5px 25px black,
+        0 2px 5px black;
 
     animation:
         aparecer 1.2s ease-out;
@@ -219,7 +284,7 @@ html, body {
     filter:
         drop-shadow(
             0 8px 15px
-            rgba(0,0,0,.7)
+            rgba(0,0,0,.8)
         );
 }
 
@@ -228,7 +293,7 @@ html, body {
 }
 
 .x {
-    opacity: .5;
+    opacity: .7;
     margin: 0 10px;
 
     font-size: 65px;
@@ -255,7 +320,7 @@ html, body {
     border-radius: 16px;
 
     background:
-        rgba(0,0,0,.60);
+        rgba(0,0,0,.68);
 
     border:
         1px solid
@@ -269,7 +334,7 @@ html, body {
 
     box-shadow:
         0 10px 35px
-        rgba(0,0,0,.45);
+        rgba(0,0,0,.55);
 }
 
 .palpite.visivel {
@@ -283,7 +348,7 @@ html, body {
     letter-spacing: 4px;
     font-weight: bold;
 
-    opacity: .75;
+    opacity: .8;
 }
 
 .placar {
@@ -468,10 +533,21 @@ html, body {
 
 <div class="estadio">
 
+    <!-- FOTO REAL DO ESTÁDIO -->
+
+    <img
+        id="fundoEstadio"
+        class="fundoEstadio"
+        src=""
+        alt=""
+    >
+
+
+    <!-- FUNDO GENÉRICO -->
+
     <div class="arquibancada"></div>
 
     <div class="luzes"></div>
-
 
     <div class="gramado">
 
@@ -482,8 +558,14 @@ html, body {
     </div>
 
 
+    <!-- CAMADAS DE CONTRASTE -->
+
+    <div class="escurecerEstadio"></div>
+
     <div class="vinheta"></div>
 
+
+    <!-- CONTEÚDO -->
 
     <div class="conteudo">
 
@@ -492,8 +574,6 @@ html, body {
             BATE-BOLA DA RODADA
         </div>
 
-
-        <!-- CONFRONTO COM ESCUDOS -->
 
         <div class="confronto">
 
@@ -541,8 +621,6 @@ html, body {
 
         </div>
 
-
-        <!-- PALPITES -->
 
         <div class="palpites">
 
@@ -597,9 +675,7 @@ html, body {
 >
 
     <div class="resumoTitulo">
-
         BATE-BOLA DA RODADA
-
     </div>
 
 
@@ -645,16 +721,6 @@ let ultimaVersao = -1;
 /* =========================
    ESCUDOS
 ========================= */
-
-/*
-Transforma:
-
-FLAMENGO → flamengo
-VASCO → vasco
-CORINTHIANS → corinthians
-
-Também remove acentos e espaços.
-*/
 
 function nomeArquivoTime(nome) {
 
@@ -704,6 +770,86 @@ function atualizarEscudos(
         "/escudos/" +
         arquivoVisitante +
         ".png";
+}
+
+
+/* =========================
+   ESTÁDIOS
+========================= */
+
+/*
+Por enquanto temos apenas um estádio configurado.
+
+Depois vamos acrescentar os demais.
+*/
+
+function atualizarEstadio(
+    casa,
+    visitante
+) {
+
+    const fundo =
+        document.getElementById(
+            "fundoEstadio"
+        );
+
+
+    const mandante =
+        casa
+        .trim()
+        .toUpperCase();
+
+
+    const adversario =
+        visitante
+        .trim()
+        .toUpperCase();
+
+
+    /*
+    TESTE 1:
+    FLAMENGO X VASCO
+    */
+
+    if (
+        mandante === "FLAMENGO" &&
+        adversario === "VASCO"
+    ) {
+
+        fundo.classList.remove(
+            "visivel"
+        );
+
+
+        fundo.src =
+            "/estadios/maracana.jpg";
+
+
+        fundo.onload =
+            function() {
+
+                fundo.classList.add(
+                    "visivel"
+                );
+
+            };
+
+
+        return;
+
+    }
+
+
+    /*
+    SE AINDA NÃO EXISTIR
+    ESTÁDIO CONFIGURADO,
+    VOLTA AO FUNDO GENÉRICO
+    */
+
+    fundo.classList.remove(
+        "visivel"
+    );
+
 }
 
 
@@ -759,8 +905,6 @@ function reiniciar() {
 function atualizarDados(d) {
 
 
-    /* NOMES DOS TIMES */
-
     document.getElementById(
         "nomeCasa"
     ).textContent =
@@ -776,6 +920,14 @@ function atualizarDados(d) {
     /* ESCUDOS */
 
     atualizarEscudos(
+        d.casa,
+        d.visitante
+    );
+
+
+    /* ESTÁDIO */
+
+    atualizarEstadio(
         d.casa,
         d.visitante
     );
@@ -998,8 +1150,6 @@ async function verificarServidor() {
             );
 
 
-            /* ATUALIZAR */
-
             if (
                 pacote.acao ===
                 "atualizar"
@@ -1020,8 +1170,6 @@ async function verificarServidor() {
             }
 
 
-            /* PALPITE 1 */
-
             if (
                 pacote.acao ===
                 "revelar1"
@@ -1032,8 +1180,6 @@ async function verificarServidor() {
             }
 
 
-            /* PALPITE 2 */
-
             if (
                 pacote.acao ===
                 "revelar2"
@@ -1043,8 +1189,6 @@ async function verificarServidor() {
 
             }
 
-
-            /* PRÓXIMO JOGO */
 
             if (
                 pacote.acao ===
@@ -1065,8 +1209,6 @@ async function verificarServidor() {
 
             }
 
-
-            /* FINALIZAR */
 
             if (
                 pacote.acao ===
