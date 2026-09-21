@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 <meta charset="UTF-8">
 <title>11x11 Metreacts</title>
 
 <style>
+
+/* =========================
+   CONFIGURAÇÃO GERAL
+========================= */
+
 * {
     box-sizing: border-box;
 }
@@ -13,43 +19,74 @@ html, body {
     width: 100%;
     height: 100%;
     margin: 0;
+    padding: 0;
+
     overflow: hidden;
+
     background: transparent;
+
     font-family: Arial, sans-serif;
 }
 
-/* QUADRO CENTRAL */
+
+/* =========================
+   QUADRO CENTRAL
+========================= */
+
 #comparacao {
+
     position: absolute;
+
     width: 720px;
     height: 540px;
+
     left: 50%;
     top: 47%;
+
     transform: translate(-50%, -50%);
 }
 
-/* FUNDO PRETO
-   Serve para esconder o X azul/roxo da arte original */
+
+/* =========================
+   FUNDO PRETO
+
+   Esconde o X azul/roxo
+   original do layout
+========================= */
+
 #fundo-comparacao {
+
     position: absolute;
+
     top: 55px;
     left: 0;
+
     width: 100%;
     height: 415px;
+
     background: #050509;
+
     z-index: 1;
 }
 
-/* POSIÇÃO */
+
+/* =========================
+   POSIÇÃO
+========================= */
+
 #posicao {
+
     position: absolute;
+
     top: 0;
     left: 50%;
+
     transform: translateX(-50%);
 
     padding: 7px 35px;
 
     color: white;
+
     background: #080810;
 
     border: 2px solid #704cff;
@@ -63,9 +100,15 @@ html, body {
     z-index: 30;
 }
 
-/* ÁREA DOS JOGADORES */
+
+/* =========================
+   ÁREA DOS JOGADORES
+========================= */
+
 #jogadores {
+
     position: absolute;
+
     top: 55px;
     left: 0;
 
@@ -77,15 +120,28 @@ html, body {
     z-index: 5;
 }
 
+
+/* =========================
+   CADA JOGADOR
+========================= */
+
 .jogador {
+
     position: relative;
+
     width: 50%;
     height: 100%;
+
     overflow: hidden;
 }
 
-/* FOTO */
+
+/* =========================
+   ÁREA DA FOTO
+========================= */
+
 .foto {
+
     position: absolute;
 
     width: 100%;
@@ -97,19 +153,39 @@ html, body {
     overflow: hidden;
 }
 
+
+/* =========================
+   IMAGEM DO JOGADOR
+========================= */
+
 .foto img {
-    width: 100%;
-    height: 100%;
+
+    position: absolute;
+
+    width: auto;
+    height: 125%;
+
+    max-width: none;
+
+    left: 50%;
+    bottom: -15px;
+
+    transform: translateX(-50%);
 
     object-fit: contain;
-    object-position: center bottom;
 
     display: block;
 }
 
-/* FOTO TEMPORÁRIA DA ALEMANHA */
+
+/* =========================
+   FOTO TEMPORÁRIA ALEMANHA
+========================= */
+
 .placeholder {
+
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -119,27 +195,39 @@ html, body {
     font-weight: 900;
 }
 
-/* SOMBRA NA PARTE DE BAIXO */
+
+/* =========================
+   SOMBRA SOBRE JOGADORES
+========================= */
+
 .jogador::after {
+
     content: "";
 
     position: absolute;
+
     inset: 0;
 
-    background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.80) 0%,
-        rgba(0,0,0,0.15) 28%,
-        transparent 50%
-    );
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,0.80) 0%,
+            rgba(0,0,0,0.15) 28%,
+            transparent 50%
+        );
 
     pointer-events: none;
 
     z-index: 3;
 }
 
-/* PLACAS */
+
+/* =========================
+   PLACA DOS NOMES
+========================= */
+
 .nome-box {
+
     position: absolute;
 
     bottom: 0;
@@ -150,29 +238,49 @@ html, body {
     background: rgba(5,5,10,0.96);
 
     display: flex;
+
     align-items: center;
 
     z-index: 10;
 }
 
+
+/* HOLANDA */
+
 .esquerda .nome-box {
+
     left: 0;
+
     border: 2px solid #008cff;
+
     transform: skewX(12deg);
 }
 
+
+/* ALEMANHA */
+
 .direita .nome-box {
+
     right: 0;
+
     border: 2px solid #b400ff;
+
     transform: skewX(-12deg);
 }
 
+
+/* =========================
+   TEXTO DOS NOMES
+========================= */
+
 .conteudo {
+
     width: 100%;
 
     padding: 0 15px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
@@ -187,6 +295,9 @@ html, body {
     text-align: center;
 }
 
+
+/* CORRIGE INCLINAÇÃO */
+
 .esquerda .conteudo {
     transform: skewX(-12deg);
 }
@@ -195,8 +306,13 @@ html, body {
     transform: skewX(12deg);
 }
 
-/* X NOVO */
+
+/* =========================
+   X BRANCO NOVO
+========================= */
+
 #versus {
+
     position: absolute;
 
     left: 50%;
@@ -217,62 +333,104 @@ html, body {
 }
 
 </style>
+
 </head>
+
 
 <body>
 
+
 <div id="comparacao">
 
-    <!-- COBRE O X ORIGINAL -->
+
+    <!-- FUNDO QUE ESCONDE O X ORIGINAL -->
+
     <div id="fundo-comparacao"></div>
+
+
+    <!-- POSIÇÃO -->
 
     <div id="posicao">
         GOLEIRO
     </div>
 
+
+    <!-- JOGADORES -->
+
     <div id="jogadores">
 
-        <!-- HOLANDA -->
+
+        <!-- =========================
+             HOLANDA
+        ========================== -->
+
         <div class="jogador esquerda">
 
+
             <div class="foto">
+
                 <img
                     src="../dados/fotos/holanda/verbruggen.png"
                     alt="Verbruggen"
                 >
+
             </div>
 
+
             <div class="nome-box">
+
                 <div class="conteudo">
                     VERBRUGGEN
                 </div>
+
             </div>
+
 
         </div>
 
-        <!-- ALEMANHA -->
+
+
+        <!-- =========================
+             ALEMANHA
+        ========================== -->
+
         <div class="jogador direita">
 
+
             <div class="foto placeholder">
+
                 FOTO 2
+
             </div>
 
+
             <div class="nome-box">
+
                 <div class="conteudo">
                     GOLEIRO ALEMANHA
                 </div>
+
             </div>
+
 
         </div>
 
+
     </div>
 
-    <!-- X QUE VAI PERMANECER -->
+
+    <!-- =========================
+         X BRANCO
+    ========================== -->
+
     <div id="versus">
         X
     </div>
 
+
 </div>
 
+
 </body>
+
 </html>
