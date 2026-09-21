@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
 <meta charset="UTF-8">
 <title>11x11 Metreacts</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
@@ -15,45 +13,44 @@ html, body {
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0;
     overflow: hidden;
     background: transparent;
     font-family: Arial, sans-serif;
 }
 
-/* =========================================
-   QUADRO CENTRAL
-========================================= */
-
+/* QUADRO CENTRAL */
 #comparacao {
     position: absolute;
-
     width: 720px;
     height: 540px;
-
     left: 50%;
     top: 47%;
-
     transform: translate(-50%, -50%);
 }
 
+/* FUNDO PRETO
+   Serve para esconder o X azul/roxo da arte original */
+#fundo-comparacao {
+    position: absolute;
+    top: 55px;
+    left: 0;
+    width: 100%;
+    height: 415px;
+    background: #050509;
+    z-index: 1;
+}
 
-/* =========================================
-   POSIÇÃO DO JOGADOR
-========================================= */
-
+/* POSIÇÃO */
 #posicao {
     position: absolute;
-
     top: 0;
     left: 50%;
-
     transform: translateX(-50%);
 
     padding: 7px 35px;
 
     color: white;
-    background: rgba(5, 5, 15, 0.92);
+    background: #080810;
 
     border: 2px solid #704cff;
     border-radius: 8px;
@@ -63,17 +60,12 @@ html, body {
 
     white-space: nowrap;
 
-    z-index: 20;
+    z-index: 30;
 }
 
-
-/* =========================================
-   ÁREA DOS JOGADORES
-========================================= */
-
+/* ÁREA DOS JOGADORES */
 #jogadores {
     position: absolute;
-
     top: 55px;
     left: 0;
 
@@ -81,110 +73,81 @@ html, body {
     height: 415px;
 
     display: flex;
+
+    z-index: 5;
 }
-
-
-/* =========================================
-   CADA JOGADOR
-========================================= */
 
 .jogador {
     position: relative;
-
     width: 50%;
     height: 100%;
-
     overflow: hidden;
 }
 
-
-/* =========================================
-   FOTO
-========================================= */
-
+/* FOTO */
 .foto {
     position: absolute;
 
-    width: 94%;
+    width: 100%;
     height: 100%;
 
-    left: 50%;
+    left: 0;
     bottom: 0;
-
-    transform: translateX(-50%);
 
     overflow: hidden;
 }
-
-
-/* IMAGEM DO JOGADOR */
 
 .foto img {
     width: 100%;
     height: 100%;
 
-    object-fit: cover;
-    object-position: center top;
+    object-fit: contain;
+    object-position: center bottom;
 
     display: block;
 }
 
-
-/* FOTO 2 TEMPORÁRIA */
-
+/* FOTO TEMPORÁRIA DA ALEMANHA */
 .placeholder {
     display: flex;
-
     align-items: center;
     justify-content: center;
 
-    color: rgba(255,255,255,0.25);
+    color: rgba(255,255,255,0.30);
 
-    font-size: 25px;
+    font-size: 24px;
     font-weight: 900;
 }
 
-
-/* =========================================
-   SOMBREAMENTO NAS FOTOS
-========================================= */
-
+/* SOMBRA NA PARTE DE BAIXO */
 .jogador::after {
     content: "";
 
     position: absolute;
+    inset: 0;
 
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.80) 0%,
+        rgba(0,0,0,0.15) 28%,
+        transparent 50%
+    );
 
     pointer-events: none;
 
-    background:
-        linear-gradient(
-            to top,
-            rgba(0,0,0,0.85) 0%,
-            rgba(0,0,0,0.15) 35%,
-            transparent 60%
-        );
+    z-index: 3;
 }
 
-
-/* =========================================
-   PLACA DO NOME
-========================================= */
-
+/* PLACAS */
 .nome-box {
     position: absolute;
 
     bottom: 0;
 
-    width: 92%;
+    width: 94%;
     height: 65px;
 
-    background: rgba(5, 5, 10, 0.95);
+    background: rgba(5,5,10,0.96);
 
     display: flex;
     align-items: center;
@@ -192,32 +155,17 @@ html, body {
     z-index: 10;
 }
 
-
-/* HOLANDA / LADO ESQUERDO */
-
 .esquerda .nome-box {
     left: 0;
-
     border: 2px solid #008cff;
-
     transform: skewX(12deg);
 }
 
-
-/* ALEMANHA / LADO DIREITO */
-
 .direita .nome-box {
     right: 0;
-
     border: 2px solid #b400ff;
-
     transform: skewX(-12deg);
 }
-
-
-/* =========================================
-   TEXTO DOS NOMES
-========================================= */
 
 .conteudo {
     width: 100%;
@@ -239,9 +187,6 @@ html, body {
     text-align: center;
 }
 
-
-/* CORRIGE A INCLINAÇÃO DAS PLACAS */
-
 .esquerda .conteudo {
     transform: skewX(-12deg);
 }
@@ -250,11 +195,7 @@ html, body {
     transform: skewX(12deg);
 }
 
-
-/* =========================================
-   X CENTRAL
-========================================= */
-
+/* X NOVO */
 #versus {
     position: absolute;
 
@@ -265,108 +206,73 @@ html, body {
 
     color: white;
 
-    font-size: 70px;
+    font-size: 72px;
     font-weight: 900;
 
-    z-index: 15;
+    z-index: 25;
 
     text-shadow:
-        -3px 0 #008cff,
-         3px 0 #b400ff;
+        -4px 0 #008cff,
+         4px 0 #b400ff;
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
 <div id="comparacao">
 
-
-    <!-- POSIÇÃO -->
+    <!-- COBRE O X ORIGINAL -->
+    <div id="fundo-comparacao"></div>
 
     <div id="posicao">
         GOLEIRO
     </div>
 
-
-    <!-- JOGADORES -->
-
     <div id="jogadores">
 
-
-        <!-- =========================
-             HOLANDA
-        ========================== -->
-
+        <!-- HOLANDA -->
         <div class="jogador esquerda">
 
-
             <div class="foto">
-
                 <img
                     src="../dados/fotos/holanda/verbruggen.png"
                     alt="Verbruggen"
                 >
-
             </div>
 
-
             <div class="nome-box">
-
                 <div class="conteudo">
                     VERBRUGGEN
                 </div>
-
             </div>
-
 
         </div>
 
-
-
-        <!-- =========================
-             ALEMANHA
-        ========================== -->
-
+        <!-- ALEMANHA -->
         <div class="jogador direita">
 
-
             <div class="foto placeholder">
-
                 FOTO 2
-
             </div>
 
-
             <div class="nome-box">
-
                 <div class="conteudo">
                     GOLEIRO ALEMANHA
                 </div>
-
             </div>
-
 
         </div>
 
-
     </div>
 
-
-    <!-- X CENTRAL -->
-
+    <!-- X QUE VAI PERMANECER -->
     <div id="versus">
         X
     </div>
 
-
 </div>
 
-
 </body>
-
 </html>
