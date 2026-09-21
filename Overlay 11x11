@@ -107,10 +107,6 @@ html, body {
 }
 
 
-/* =========================
-   CADA JOGADOR
-========================= */
-
 .jogador {
     position: relative;
 
@@ -122,7 +118,7 @@ html, body {
 
 
 /* =========================
-   ÁREA DA FOTO
+   ÁREA DAS FOTOS
 ========================= */
 
 .foto {
@@ -139,33 +135,23 @@ html, body {
 
 
 /* =========================
-   TAMANHO GERAL DAS FOTOS
-========================= */
-
-.foto img {
-    position: absolute;
-
-    width: auto;
-    height: 125%;
-
-    max-width: none;
-
-    bottom: -15px;
-
-    object-fit: contain;
-
-    display: block;
-}
-
-
-/* =========================
    VERBRUGGEN
 ========================= */
 
 .esquerda .foto img {
+    position: absolute;
+
+    width: auto;
+    height: 116%;
+
+    max-width: none;
+
     left: 50%;
+    bottom: -28px;
 
     transform: translateX(-50%);
+
+    display: block;
 }
 
 
@@ -174,9 +160,19 @@ html, body {
 ========================= */
 
 .direita .foto img {
+    position: absolute;
+
+    width: auto;
+    height: 135%;
+
+    max-width: none;
+
     left: 50%;
+    bottom: -35px;
 
     transform: translateX(-50%);
+
+    display: block;
 }
 
 
@@ -194,9 +190,9 @@ html, body {
     background:
         linear-gradient(
             to top,
-            rgba(0,0,0,0.80) 0%,
-            rgba(0,0,0,0.15) 28%,
-            transparent 50%
+            rgba(0,0,0,0.78) 0%,
+            rgba(0,0,0,0.12) 27%,
+            transparent 48%
         );
 
     pointer-events: none;
@@ -206,7 +202,7 @@ html, body {
 
 
 /* =========================
-   PLACAS
+   PLACAS DOS NOMES
 ========================= */
 
 .nome-box {
@@ -226,8 +222,6 @@ html, body {
 }
 
 
-/* HOLANDA */
-
 .esquerda .nome-box {
     left: 0;
 
@@ -236,8 +230,6 @@ html, body {
     transform: skewX(12deg);
 }
 
-
-/* ALEMANHA */
 
 .direita .nome-box {
     right: 0;
@@ -249,27 +241,27 @@ html, body {
 
 
 /* =========================
-   NOMES
+   CONTEÚDO DAS PLACAS
 ========================= */
 
 .conteudo {
     width: 100%;
 
-    padding: 0 15px;
+    padding: 0 18px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    gap: 12px;
+
     color: white;
 
-    font-size: 27px;
+    font-size: 25px;
     font-weight: 900;
 
     white-space: nowrap;
     overflow: hidden;
-
-    text-align: center;
 }
 
 
@@ -280,6 +272,30 @@ html, body {
 
 .direita .conteudo {
     transform: skewX(12deg);
+}
+
+
+/* =========================
+   BANDEIRAS
+========================= */
+
+.bandeira {
+    font-size: 27px;
+
+    line-height: 1;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================
+   NOME
+========================= */
+
+.nome {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 
@@ -316,7 +332,7 @@ html, body {
 <div id="comparacao">
 
 
-    <!-- ESCONDE O X ORIGINAL -->
+    <!-- FUNDO QUE ESCONDE O X ORIGINAL -->
 
     <div id="fundo-comparacao"></div>
 
@@ -333,9 +349,7 @@ html, body {
     <div id="jogadores">
 
 
-        <!-- =========================
-             HOLANDA
-        ========================== -->
+        <!-- HOLANDA -->
 
         <div class="jogador esquerda">
 
@@ -352,7 +366,15 @@ html, body {
             <div class="nome-box">
 
                 <div class="conteudo">
-                    VERBRUGGEN
+
+                    <span class="bandeira">
+                        🇳🇱
+                    </span>
+
+                    <span class="nome">
+                        VERBRUGGEN
+                    </span>
+
                 </div>
 
             </div>
@@ -361,9 +383,7 @@ html, body {
 
 
 
-        <!-- =========================
-             ALEMANHA
-        ========================== -->
+        <!-- ALEMANHA -->
 
         <div class="jogador direita">
 
@@ -380,7 +400,15 @@ html, body {
             <div class="nome-box">
 
                 <div class="conteudo">
-                    TER STEGEN
+
+                    <span class="bandeira">
+                        🇩🇪
+                    </span>
+
+                    <span class="nome">
+                        TER STEGEN
+                    </span>
+
                 </div>
 
             </div>
