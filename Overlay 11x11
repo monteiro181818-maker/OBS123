@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 <meta charset="UTF-8">
 <title>11x11 Metreacts</title>
 
 <style>
+
+* {
+    box-sizing: border-box;
+}
 
 html, body {
     width: 100%;
@@ -15,68 +20,168 @@ html, body {
     font-family: Arial, sans-serif;
 }
 
+/* QUADRO CENTRAL */
 #comparacao {
     position: absolute;
 
-    /* ÁREA CENTRAL DO QUADRO */
-    width: 850px;
-    height: 650px;
+    width: 720px;
+    height: 540px;
 
     left: 50%;
-    top: 50%;
+    top: 47%;
 
     transform: translate(-50%, -50%);
+}
+
+/* POSIÇÃO */
+#posicao {
+    position: absolute;
+    top: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    padding: 7px 35px;
+
+    color: white;
+    background: rgba(5, 5, 15, 0.92);
+
+    border: 2px solid #704cff;
+    border-radius: 8px;
+
+    font-size: 27px;
+    font-weight: 900;
+
+    white-space: nowrap;
+}
+
+/* ÁREA DOS JOGADORES */
+#jogadores {
+    position: absolute;
+
+    top: 55px;
+    left: 0;
+
+    width: 100%;
+    height: 415px;
 
     display: flex;
-    flex-direction: column;
+}
+
+/* CADA METADE */
+.jogador {
+    position: relative;
+
+    width: 50%;
+    height: 100%;
+
+    overflow: hidden;
+}
+
+/* ÁREA TEMPORÁRIA DA FOTO */
+.foto {
+    position: absolute;
+
+    width: 88%;
+    height: 88%;
+
+    left: 50%;
+    bottom: 0;
+
+    transform: translateX(-50%);
+
+    display: flex;
+    justify-content: center;
     align-items: center;
+
+    color: rgba(255,255,255,0.25);
+
+    font-size: 25px;
+    font-weight: bold;
 }
 
-#posicao {
-    color: white;
-    font-size: 38px;
-    font-weight: 900;
-    margin-bottom: 35px;
+/* PLACA DO NOME */
+.nome-box {
+    position: absolute;
 
-    text-shadow: 0 3px 8px black;
+    bottom: 0;
+
+    width: 92%;
+    height: 65px;
+
+    background: rgba(5, 5, 10, 0.94);
+
+    border: 2px solid white;
+
+    display: flex;
+    align-items: center;
+
+    z-index: 5;
 }
 
-#jogadores {
+/* LADO ESQUERDO */
+.esquerda .nome-box {
+    left: 0;
+
+    border-color: #008cff;
+
+    transform: skewX(12deg);
+}
+
+/* LADO DIREITO */
+.direita .nome-box {
+    right: 0;
+
+    border-color: #b400ff;
+
+    transform: skewX(-12deg);
+}
+
+/* CORRIGE O TEXTO */
+.esquerda .conteudo {
+    transform: skewX(-12deg);
+}
+
+.direita .conteudo {
+    transform: skewX(12deg);
+}
+
+.conteudo {
     width: 100%;
 
     display: flex;
-    justify-content: space-between;
     align-items: center;
-}
+    justify-content: center;
 
-.jogador {
-    width: 330px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.foto {
-    width: 280px;
-    height: 360px;
-
-    object-fit: cover;
-
-    border-radius: 15px;
-}
-
-.nome {
-    margin-top: 15px;
+    padding: 0 15px;
 
     color: white;
 
-    font-size: 30px;
+    font-size: clamp(18px, 2vw, 30px);
     font-weight: 900;
 
-    text-align: center;
+    white-space: nowrap;
+}
 
-    text-shadow: 0 3px 8px black;
+/* X CENTRAL */
+#versus {
+    position: absolute;
+
+    left: 50%;
+    top: 48%;
+
+    transform: translate(-50%, -50%);
+
+    color: white;
+
+    font-size: 70px;
+    font-weight: 900;
+
+    z-index: 10;
+
+    text-shadow:
+        -3px 0 #008cff,
+        3px 0 #b400ff;
 }
 
 </style>
@@ -92,26 +197,40 @@ html, body {
 
     <div id="jogadores">
 
-        <div class="jogador">
+        <!-- JOGADOR 1 -->
+        <div class="jogador esquerda">
 
-            <div class="foto"></div>
+            <div class="foto">
+                FOTO 1
+            </div>
 
-            <div class="nome">
-                ROSSI
+            <div class="nome-box">
+                <div class="conteudo">
+                    ROSSI
+                </div>
             </div>
 
         </div>
 
-        <div class="jogador">
+        <!-- JOGADOR 2 -->
+        <div class="jogador direita">
 
-            <div class="foto"></div>
+            <div class="foto">
+                FOTO 2
+            </div>
 
-            <div class="nome">
-                LÉO JARDIM
+            <div class="nome-box">
+                <div class="conteudo">
+                    LÉO JARDIM
+                </div>
             </div>
 
         </div>
 
+    </div>
+
+    <div id="versus">
+        X
     </div>
 
 </div>
