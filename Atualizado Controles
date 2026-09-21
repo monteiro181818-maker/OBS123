@@ -19,7 +19,7 @@ body {
 }
 
 .painel {
-    width: 760px;
+    width: 820px;
     margin: 40px auto 100px;
 }
 
@@ -45,7 +45,8 @@ label {
     color: #aaa;
 }
 
-input {
+input,
+select {
     width: 100%;
     padding: 12px;
 
@@ -58,13 +59,30 @@ input {
     font-size: 17px;
 }
 
+select {
+    cursor: pointer;
+}
+
+input[readonly] {
+    background: #182027;
+    color: #d7e0e6;
+    cursor: default;
+}
+
 /* =========================
    LISTA DE JOGOS
 ========================= */
 
 .jogoConfig {
     display: grid;
-    grid-template-columns: 55px 1fr 35px 1fr 45px;
+
+    grid-template-columns:
+        55px
+        minmax(0, 1fr)
+        35px
+        minmax(0, 1fr)
+        45px;
+
     gap: 10px;
     align-items: center;
 
@@ -107,6 +125,7 @@ input {
 
 .statusJogo {
     text-align: center;
+
     padding: 10px;
     margin-bottom: 20px;
 
@@ -117,6 +136,32 @@ input {
     font-weight: bold;
 }
 
+.confrontoAtual {
+    display: grid;
+
+    grid-template-columns:
+        1fr 50px 1fr;
+
+    gap: 10px;
+    align-items: end;
+}
+
+.timeAtual label {
+    margin-top: 0;
+}
+
+.xAtual {
+    text-align: center;
+    font-size: 27px;
+    font-weight: bold;
+
+    padding-bottom: 10px;
+}
+
+/* =========================
+   PLACARES
+========================= */
+
 .placar {
     display: flex;
     align-items: center;
@@ -125,6 +170,7 @@ input {
 
 .placar input {
     width: 80px;
+
     text-align: center;
 
     font-size: 24px;
@@ -141,6 +187,7 @@ input {
 
 button {
     margin-top: 15px;
+
     padding: 13px 18px;
 
     border: none;
@@ -152,14 +199,20 @@ button {
     cursor: pointer;
 }
 
+button:hover {
+    filter: brightness(1.1);
+}
+
 .iniciar {
     width: 100%;
+
     background: #6f42c1;
     color: white;
 }
 
 .salvar {
     width: 100%;
+
     background: #28a745;
     color: white;
 }
@@ -167,20 +220,25 @@ button {
 .revelar {
     background: white;
     color: black;
+
     margin-right: 8px;
 }
 
 .proximo {
     width: 100%;
+
     background: #2675d8;
     color: white;
+
     margin-top: 25px;
 }
 
 .finalizar {
     width: 100%;
+
     background: #d58b19;
     color: white;
+
     margin-top: 15px;
 }
 
@@ -208,6 +266,7 @@ button {
 <input
     id="nome1"
     value="MTS"
+    oninput="atualizarNomesPalpites()"
 >
 
 <label>Nome do parceiro</label>
@@ -215,13 +274,14 @@ button {
 <input
     id="nome2"
     value="AMIGO"
+    oninput="atualizarNomesPalpites()"
 >
 
 </div>
 
 
 <!-- =========================
-     CONFIGURAÇÃO DA RODADA
+     JOGOS DA RODADA
 ========================= -->
 
 <div class="caixa">
@@ -229,10 +289,11 @@ button {
 <h2>Jogos da rodada</h2>
 
 <p style="color:#9dacb7;">
-Monte aqui todos os confrontos antes de iniciar.
+Escolha os confrontos antes de iniciar a rodada.
 </p>
 
 <div id="listaJogos"></div>
+
 
 <button
     class="adicionar"
@@ -240,6 +301,7 @@ Monte aqui todos os confrontos antes de iniciar.
 >
 + ADICIONAR CONFRONTO
 </button>
+
 
 <button
     class="iniciar"
@@ -259,6 +321,7 @@ INICIAR / CARREGAR RODADA
 
 <h2>Confronto atual</h2>
 
+
 <div
     class="statusJogo"
     id="statusJogo"
@@ -266,19 +329,40 @@ INICIAR / CARREGAR RODADA
 JOGO 1
 </div>
 
-<label>Time da casa</label>
 
-<input
-    id="casa"
-    value=""
->
+<div class="confrontoAtual">
 
-<label>Time visitante</label>
 
-<input
-    id="visitante"
-    value=""
->
+    <div class="timeAtual">
+
+        <label>Mandante</label>
+
+        <input
+            id="casa"
+            readonly
+        >
+
+    </div>
+
+
+    <div class="xAtual">
+        ×
+    </div>
+
+
+    <div class="timeAtual">
+
+        <label>Visitante</label>
+
+        <input
+            id="visitante"
+            readonly
+        >
+
+    </div>
+
+
+</div>
 
 </div>
 
@@ -290,8 +374,9 @@ JOGO 1
 <div class="caixa">
 
 <h2 id="tituloPalpite1">
-Palpite 1
+Palpite - MTS
 </h2>
+
 
 <div class="placar">
 
@@ -301,7 +386,9 @@ Palpite 1
     min="0"
 >
 
-<span class="x">×</span>
+<span class="x">
+×
+</span>
 
 <input
     id="p1fora"
@@ -310,6 +397,7 @@ Palpite 1
 >
 
 </div>
+
 
 <button
     class="revelar"
@@ -328,8 +416,9 @@ REVELAR PALPITE 1
 <div class="caixa">
 
 <h2 id="tituloPalpite2">
-Palpite 2
+Palpite - AMIGO
 </h2>
+
 
 <div class="placar">
 
@@ -339,7 +428,9 @@ Palpite 2
     min="0"
 >
 
-<span class="x">×</span>
+<span class="x">
+×
+</span>
 
 <input
     id="p2fora"
@@ -348,6 +439,7 @@ Palpite 2
 >
 
 </div>
+
 
 <button
     class="revelar"
@@ -369,7 +461,6 @@ ATUALIZAR CONFRONTO
 
 <button
     class="proximo"
-    id="botaoProximo"
     onclick="proximo()"
 >
 PRÓXIMO JOGO ▶
@@ -390,7 +481,37 @@ FINALIZAR RODADA
 <script>
 
 /* =========================
-   DADOS PRINCIPAIS
+   20 CLUBES
+========================= */
+
+const clubes = [
+
+    "ATHLETICO-PR",
+    "ATLÉTICO-MG",
+    "BAHIA",
+    "BOTAFOGO",
+    "CHAPECOENSE",
+    "CORINTHIANS",
+    "CORITIBA",
+    "CRUZEIRO",
+    "FLAMENGO",
+    "FLUMINENSE",
+    "GRÊMIO",
+    "INTERNACIONAL",
+    "MIRASSOL",
+    "PALMEIRAS",
+    "RED BULL BRAGANTINO",
+    "REMO",
+    "SANTOS",
+    "SÃO PAULO",
+    "VASCO",
+    "VITÓRIA"
+
+];
+
+
+/* =========================
+   JOGOS INICIAIS
 ========================= */
 
 let jogos = [
@@ -412,13 +533,57 @@ let jogos = [
 
 ];
 
+
 let jogoAtual = 0;
 
 let resultados = [];
 
 
 /* =========================
-   MONTA A LISTA DE JOGOS
+   CRIA OPÇÕES DOS CLUBES
+========================= */
+
+function criarOpcoes(
+    selecionado
+) {
+
+    let html =
+        `<option value="">
+            Selecione...
+        </option>`;
+
+
+    clubes.forEach(
+        function(clube) {
+
+            const marcado =
+                clube === selecionado
+                ? "selected"
+                : "";
+
+
+            html += `
+
+                <option
+                    value="${clube}"
+                    ${marcado}
+                >
+                    ${clube}
+                </option>
+
+            `;
+
+        }
+    );
+
+
+    return html;
+
+}
+
+
+/* =========================
+   DESENHA LISTA
 ========================= */
 
 function desenharListaJogos() {
@@ -428,16 +593,19 @@ function desenharListaJogos() {
             "listaJogos"
         );
 
+
     lista.innerHTML = "";
 
 
     jogos.forEach(
         function(jogo, indice) {
 
+
             const linha =
                 document.createElement(
                     "div"
                 );
+
 
             linha.className =
                 "jogoConfig";
@@ -449,21 +617,33 @@ function desenharListaJogos() {
                     ${indice + 1}
                 </div>
 
-                <input
+
+                <select
                     id="configCasa${indice}"
-                    value="${jogo.casa}"
-                    placeholder="Mandante"
                 >
+
+                    ${criarOpcoes(
+                        jogo.casa
+                    )}
+
+                </select>
+
 
                 <div class="versus">
                     ×
                 </div>
 
-                <input
+
+                <select
                     id="configVisitante${indice}"
-                    value="${jogo.visitante}"
-                    placeholder="Visitante"
                 >
+
+                    ${criarOpcoes(
+                        jogo.visitante
+                    )}
+
+                </select>
+
 
                 <button
                     class="remover"
@@ -487,7 +667,7 @@ function desenharListaJogos() {
 
 
 /* =========================
-   SALVA LISTA EDITADA
+   LÊ OS JOGOS
 ========================= */
 
 function lerJogosDaTela() {
@@ -501,14 +681,13 @@ function lerJogosDaTela() {
         i++
     ) {
 
+
         const casa =
             document
                 .getElementById(
                     "configCasa" + i
                 )
-                .value
-                .trim()
-                .toUpperCase();
+                .value;
 
 
         const visitante =
@@ -516,14 +695,13 @@ function lerJogosDaTela() {
                 .getElementById(
                     "configVisitante" + i
                 )
-                .value
-                .trim()
-                .toUpperCase();
+                .value;
 
 
         novosJogos.push({
 
-            casa: casa,
+            casa:
+                casa,
 
             visitante:
                 visitante
@@ -533,7 +711,8 @@ function lerJogosDaTela() {
     }
 
 
-    jogos = novosJogos;
+    jogos =
+        novosJogos;
 
 }
 
@@ -567,6 +746,7 @@ function adicionarJogo() {
 
 function removerJogo(indice) {
 
+
     if (
         jogos.length <= 1
     ) {
@@ -595,12 +775,10 @@ function removerJogo(indice) {
 
 
 /* =========================
-   INICIAR RODADA
+   VALIDA RODADA
 ========================= */
 
-async function iniciarRodada() {
-
-    lerJogosDaTela();
+function validarRodada() {
 
 
     for (
@@ -609,18 +787,59 @@ async function iniciarRodada() {
         i++
     ) {
 
+
         if (
-            jogos[i].casa === "" ||
-            jogos[i].visitante === ""
+            !jogos[i].casa ||
+            !jogos[i].visitante
         ) {
 
             alert(
-                "Preencha todos os confrontos antes de iniciar."
+                "Selecione mandante e visitante em todos os jogos."
             );
 
-            return;
+            return false;
 
         }
+
+
+        if (
+            jogos[i].casa ===
+            jogos[i].visitante
+        ) {
+
+            alert(
+                "O jogo " +
+                (i + 1) +
+                " está com o mesmo clube dos dois lados."
+            );
+
+            return false;
+
+        }
+
+    }
+
+
+    return true;
+
+}
+
+
+/* =========================
+   INICIAR RODADA
+========================= */
+
+async function iniciarRodada() {
+
+
+    lerJogosDaTela();
+
+
+    if (
+        !validarRodada()
+    ) {
+
+        return;
 
     }
 
@@ -641,10 +860,11 @@ async function iniciarRodada() {
 
 
 /* =========================
-   CARREGA JOGO ATUAL
+   CARREGA JOGO
 ========================= */
 
 function carregarJogo() {
+
 
     const jogo =
         jogos[jogoAtual];
@@ -699,6 +919,7 @@ function carregarJogo() {
             "statusJogo"
         )
         .textContent =
+
             "JOGO " +
             (jogoAtual + 1) +
             " DE " +
@@ -711,10 +932,11 @@ function carregarJogo() {
 
 
 /* =========================
-   NOMES DOS PALPITES
+   NOMES
 ========================= */
 
 function atualizarNomesPalpites() {
+
 
     const nome1 =
         document
@@ -722,7 +944,9 @@ function atualizarNomesPalpites() {
                 "nome1"
             )
             .value
-            .toUpperCase();
+            .trim()
+            .toUpperCase() ||
+            "MTS";
 
 
     const nome2 =
@@ -731,7 +955,9 @@ function atualizarNomesPalpites() {
                 "nome2"
             )
             .value
-            .toUpperCase();
+            .trim()
+            .toUpperCase() ||
+            "AMIGO";
 
 
     document
@@ -755,10 +981,11 @@ function atualizarNomesPalpites() {
 
 
 /* =========================
-   DADOS DO JOGO
+   DADOS
 ========================= */
 
 function dados() {
+
 
     return {
 
@@ -767,14 +994,16 @@ function dados() {
                 .getElementById(
                     "nome1"
                 )
-                .value,
+                .value
+                .trim(),
 
         nome2:
             document
                 .getElementById(
                     "nome2"
                 )
-                .value,
+                .value
+                .trim(),
 
         casa:
             document
@@ -782,8 +1011,7 @@ function dados() {
                     "casa"
                 )
                 .value
-                .trim()
-                .toUpperCase(),
+                .trim(),
 
         visitante:
             document
@@ -791,8 +1019,7 @@ function dados() {
                     "visitante"
                 )
                 .value
-                .trim()
-                .toUpperCase(),
+                .trim(),
 
         p1casa:
             document
@@ -828,16 +1055,19 @@ function dados() {
 
 
 /* =========================
-   ENVIA PARA SERVIDOR
+   ENVIA AO SERVIDOR
 ========================= */
 
 async function enviar(acao) {
 
+
     const pacote = {
 
-        acao: acao,
+        acao:
+            acao,
 
-        dados: dados(),
+        dados:
+            dados(),
 
         resultados:
             resultados
@@ -846,6 +1076,7 @@ async function enviar(acao) {
 
 
     try {
+
 
         const resposta =
             await fetch(
@@ -889,9 +1120,11 @@ async function enviar(acao) {
 
     } catch (erro) {
 
+
         alert(
             "Não foi possível comunicar com o servidor."
         );
+
 
         console.error(
             erro
@@ -903,7 +1136,7 @@ async function enviar(acao) {
 
 
 /* =========================
-   BOTÕES
+   COMANDOS
 ========================= */
 
 function salvar() {
@@ -934,10 +1167,11 @@ function revelar2() {
 
 
 /* =========================
-   SALVA RESULTADO
+   GUARDA PALPITE
 ========================= */
 
 function guardarResultadoAtual() {
+
 
     const d =
         dados();
@@ -973,20 +1207,26 @@ function guardarResultadoAtual() {
 
 
 /* =========================
-   VERIFICA PALPITES
+   VALIDA PALPITES
 ========================= */
 
 function palpitesPreenchidos() {
+
 
     const d =
         dados();
 
 
     return !(
+
         d.p1casa === "" ||
+
         d.p1fora === "" ||
+
         d.p2casa === "" ||
+
         d.p2fora === ""
+
     );
 
 }
@@ -1025,6 +1265,7 @@ async function proximo() {
         jogos.length - 1
     ) {
 
+
         jogoAtual++;
 
 
@@ -1037,7 +1278,9 @@ async function proximo() {
 
     }
 
+
     else {
+
 
         alert(
             "Este é o último jogo. Clique em FINALIZAR RODADA para mostrar o quadro final."
@@ -1049,7 +1292,7 @@ async function proximo() {
 
 
 /* =========================
-   FINALIZAR RODADA
+   FINALIZAR
 ========================= */
 
 async function finalizar() {
