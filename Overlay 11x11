@@ -3,7 +3,7 @@
 
 <head>
 <meta charset="UTF-8">
-<title>11x11 Metreacts</title>
+<title>11x11 Metreacts V2</title>
 
 <style>
 
@@ -15,95 +15,189 @@ html, body {
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 0;
     overflow: hidden;
     background: transparent;
     font-family: Arial, sans-serif;
+    color: white;
+}
+
+/* =====================================
+   TELA 1920x1080
+===================================== */
+
+#layout {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(70, 30, 130, 0.55),
+            rgba(5, 7, 20, 0.97) 65%
+        );
 }
 
 
-/* =========================
-   QUADRO CENTRAL
-========================= */
+/* =====================================
+   TÍTULO
+===================================== */
 
-#comparacao {
+#titulo {
     position: absolute;
 
-    width: 720px;
-    height: 540px;
-
-    left: 50%;
-    top: 47%;
-
-    transform: translate(-50%, -50%);
-}
-
-
-/* =========================
-   FUNDO PRETO
-   ESCONDE O X ORIGINAL
-========================= */
-
-#fundo-comparacao {
-    position: absolute;
-
-    top: 55px;
-    left: 0;
-
-    width: 100%;
-    height: 415px;
-
-    background: #050509;
-
-    z-index: 1;
-}
-
-
-/* =========================
-   POSIÇÃO
-========================= */
-
-#posicao {
-    position: absolute;
-
-    top: 0;
+    top: 25px;
     left: 50%;
 
     transform: translateX(-50%);
 
-    padding: 7px 35px;
-
-    color: white;
-    background: #080810;
-
-    border: 2px solid #704cff;
-    border-radius: 8px;
-
-    font-size: 27px;
+    font-size: 42px;
     font-weight: 900;
+    letter-spacing: 3px;
 
-    white-space: nowrap;
-
-    z-index: 30;
+    text-shadow:
+        0 0 15px #7b2cff,
+        0 0 30px #168cff;
 }
 
 
-/* =========================
-   ÁREA DOS JOGADORES
-========================= */
+/* =====================================
+   CÂMERAS
+===================================== */
+
+.camera {
+    position: absolute;
+
+    left: 45px;
+
+    width: 420px;
+    height: 330px;
+
+    border: 4px solid #633cff;
+
+    border-radius: 18px;
+
+    background: transparent;
+
+    box-shadow:
+        0 0 20px rgba(100, 50, 255, 0.75),
+        inset 0 0 25px rgba(0,0,0,0.65);
+}
+
+
+/* CÂMERA 1 */
+
+#camera1 {
+    top: 145px;
+}
+
+
+/* CÂMERA 2 */
+
+#camera2 {
+    top: 575px;
+}
+
+
+/* NOMES DAS CÂMERAS */
+
+.camera-nome {
+    position: absolute;
+
+    bottom: -42px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    min-width: 190px;
+
+    padding: 7px 25px;
+
+    text-align: center;
+
+    background: #080812;
+
+    border: 2px solid #633cff;
+
+    border-radius: 8px;
+
+    font-size: 20px;
+    font-weight: 900;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================
+   COMPARAÇÃO CENTRAL
+===================================== */
+
+#comparacao {
+    position: absolute;
+
+    left: 510px;
+    top: 145px;
+
+    width: 810px;
+    height: 700px;
+
+    border: 3px solid #683cff;
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(10,15,30,0.94),
+            rgba(25,10,45,0.94)
+        );
+
+    box-shadow:
+        0 0 30px rgba(105,50,255,0.50);
+
+    overflow: hidden;
+}
+
+
+/* POSIÇÃO */
+
+#posicao {
+    position: absolute;
+
+    top: 20px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    padding: 8px 40px;
+
+    background: #080812;
+
+    border: 2px solid #704cff;
+
+    border-radius: 10px;
+
+    font-size: 29px;
+    font-weight: 900;
+
+    z-index: 20;
+}
+
+
+/* ÁREA DOS JOGADORES */
 
 #jogadores {
     position: absolute;
 
-    top: 55px;
-    left: 0;
+    top: 90px;
+    left: 25px;
 
-    width: 100%;
-    height: 415px;
+    width: 754px;
+    height: 500px;
 
     display: flex;
-
-    z-index: 5;
 }
 
 
@@ -113,214 +207,245 @@ html, body {
     width: 50%;
     height: 100%;
 
-    overflow: hidden;
-}
-
-
-/* =========================
-   ÁREA DAS FOTOS
-========================= */
-
-.foto {
-    position: absolute;
-
-    width: 100%;
-    height: 100%;
-
-    left: 0;
-    bottom: 0;
-
-    overflow: hidden;
-}
-
-
-/* =========================
-   VERBRUGGEN
-========================= */
-
-.esquerda .foto img {
-    position: absolute;
-
-    width: auto;
-    height: 116%;
-
-    max-width: none;
-
-    left: 50%;
-    bottom: -28px;
-
-    transform: translateX(-50%);
-
-    display: block;
-}
-
-
-/* =========================
-   TER STEGEN
-========================= */
-
-.direita .foto img {
-    position: absolute;
-
-    width: auto;
-    height: 135%;
-
-    max-width: none;
-
-    left: 50%;
-    bottom: -35px;
-
-    transform: translateX(-50%);
-
-    display: block;
-}
-
-
-/* =========================
-   SOMBRA INFERIOR
-========================= */
-
-.jogador::after {
-    content: "";
-
-    position: absolute;
-
-    inset: 0;
-
-    background:
-        linear-gradient(
-            to top,
-            rgba(0,0,0,0.78) 0%,
-            rgba(0,0,0,0.12) 27%,
-            transparent 48%
-        );
-
-    pointer-events: none;
-
-    z-index: 3;
-}
-
-
-/* =========================
-   PLACAS DOS NOMES
-========================= */
-
-.nome-box {
-    position: absolute;
-
-    bottom: 0;
-
-    width: 94%;
-    height: 65px;
-
-    background: rgba(5,5,10,0.96);
-
     display: flex;
+
     align-items: center;
-
-    z-index: 10;
+    justify-content: center;
 }
 
 
-.esquerda .nome-box {
-    left: 0;
+/* TEMPORÁRIO */
 
-    border: 2px solid #008cff;
-
-    transform: skewX(12deg);
-}
-
-
-.direita .nome-box {
-    right: 0;
-
-    border: 2px solid #b400ff;
-
-    transform: skewX(-12deg);
-}
-
-
-/* =========================
-   CONTEÚDO DAS PLACAS
-========================= */
-
-.conteudo {
-    width: 100%;
-
-    padding: 0 18px;
+.placeholder-jogador {
+    width: 270px;
+    height: 390px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
-    gap: 12px;
+    border: 2px dashed rgba(255,255,255,0.25);
 
-    color: white;
+    color: rgba(255,255,255,0.35);
 
-    font-size: 25px;
+    font-size: 23px;
     font-weight: 900;
-
-    white-space: nowrap;
-    overflow: hidden;
 }
 
 
-.esquerda .conteudo {
-    transform: skewX(-12deg);
-}
-
-
-.direita .conteudo {
-    transform: skewX(12deg);
-}
-
-
-/* =========================
-   BANDEIRAS
-========================= */
-
-.bandeira {
-    font-size: 27px;
-
-    line-height: 1;
-
-    flex-shrink: 0;
-}
-
-
-/* =========================
-   NOME
-========================= */
-
-.nome {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-
-/* =========================
-   X BRANCO
-========================= */
+/* X */
 
 #versus {
     position: absolute;
 
     left: 50%;
-    top: 48%;
+    top: 46%;
 
     transform: translate(-50%, -50%);
 
-    color: white;
-
-    font-size: 72px;
+    font-size: 82px;
     font-weight: 900;
 
-    z-index: 25;
+    z-index: 30;
 
     text-shadow:
-        -4px 0 #008cff,
-         4px 0 #b400ff;
+        -4px 0 #168cff,
+         4px 0 #ad24ff;
+}
+
+
+/* NOMES */
+
+.nome-jogador {
+    position: absolute;
+
+    bottom: 35px;
+
+    width: 310px;
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(5,5,12,0.96);
+
+    font-size: 25px;
+    font-weight: 900;
+
+    border-radius: 8px;
+}
+
+
+.esquerda .nome-jogador {
+    border: 2px solid #168cff;
+}
+
+
+.direita .nome-jogador {
+    border: 2px solid #ad24ff;
+}
+
+
+/* =====================================
+   PLACAR
+===================================== */
+
+#placar {
+    position: absolute;
+
+    left: 50%;
+    bottom: 25px;
+
+    transform: translateX(-50%);
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 28px;
+
+    font-size: 30px;
+    font-weight: 900;
+}
+
+
+.numero {
+    font-size: 42px;
+}
+
+
+.vs-placar {
+    color: #9b6cff;
+}
+
+
+/* =====================================
+   CAMPO DO 11 IDEAL
+===================================== */
+
+#campo-container {
+    position: absolute;
+
+    right: 40px;
+    top: 145px;
+
+    width: 515px;
+    height: 760px;
+
+    border: 3px solid #2ecf72;
+
+    border-radius: 22px;
+
+    background: rgba(5,25,18,0.93);
+
+    box-shadow:
+        0 0 30px rgba(25,210,105,0.30);
+
+    overflow: hidden;
+}
+
+
+#campo-titulo {
+    position: absolute;
+
+    top: 18px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    font-size: 28px;
+    font-weight: 900;
+
+    white-space: nowrap;
+
+    z-index: 20;
+}
+
+
+/* CAMPO */
+
+#campo {
+    position: absolute;
+
+    left: 25px;
+    top: 75px;
+
+    width: 459px;
+    height: 650px;
+
+    border: 3px solid rgba(255,255,255,0.75);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(20,115,60,0.95),
+            rgba(12,80,45,0.95)
+        );
+}
+
+
+/* LINHA DO MEIO */
+
+#campo::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 100%;
+    height: 2px;
+
+    background: rgba(255,255,255,0.70);
+}
+
+
+/* CÍRCULO CENTRAL */
+
+#campo::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 110px;
+    height: 110px;
+
+    transform: translate(-50%, -50%);
+
+    border: 2px solid rgba(255,255,255,0.70);
+
+    border-radius: 50%;
+}
+
+
+/* =====================================
+   RODAPÉ
+===================================== */
+
+#rodape {
+    position: absolute;
+
+    left: 510px;
+    bottom: 65px;
+
+    width: 810px;
+
+    text-align: center;
+
+    font-size: 19px;
+
+    color: rgba(255,255,255,0.50);
+
+    letter-spacing: 3px;
 }
 
 </style>
@@ -329,100 +454,153 @@ html, body {
 
 <body>
 
-<div id="comparacao">
+<div id="layout">
 
 
-    <!-- FUNDO QUE ESCONDE O X ORIGINAL -->
+    <!-- TÍTULO -->
 
-    <div id="fundo-comparacao"></div>
-
-
-    <!-- POSIÇÃO -->
-
-    <div id="posicao">
-        GOLEIRO
+    <div id="titulo">
+        11x11 METREACTS
     </div>
 
 
-    <!-- JOGADORES -->
+    <!-- =====================
+         CÂMERA MTS
+    ====================== -->
 
-    <div id="jogadores">
+    <div id="camera1" class="camera">
 
-
-        <!-- HOLANDA -->
-
-        <div class="jogador esquerda">
-
-            <div class="foto">
-
-                <img
-                    src="../dados/fotos/holanda/verbruggen.png"
-                    alt="Verbruggen"
-                >
-
-            </div>
-
-
-            <div class="nome-box">
-
-                <div class="conteudo">
-
-                    <span class="bandeira">
-                        🇳🇱
-                    </span>
-
-                    <span class="nome">
-                        VERBRUGGEN
-                    </span>
-
-                </div>
-
-            </div>
-
+        <div class="camera-nome">
+            MTS
         </div>
-
-
-
-        <!-- ALEMANHA -->
-
-        <div class="jogador direita">
-
-            <div class="foto">
-
-                <img
-                    src="../dados/fotos/alemanha/terstegen.png"
-                    alt="Ter Stegen"
-                >
-
-            </div>
-
-
-            <div class="nome-box">
-
-                <div class="conteudo">
-
-                    <span class="bandeira">
-                        🇩🇪
-                    </span>
-
-                    <span class="nome">
-                        TER STEGEN
-                    </span>
-
-                </div>
-
-            </div>
-
-        </div>
-
 
     </div>
 
 
-    <!-- X CENTRAL -->
+    <!-- =====================
+         CÂMERA 2
+    ====================== -->
 
-    <div id="versus">
-        X
+    <div id="camera2" class="camera">
+
+        <div class="camera-nome">
+            CONVIDADO
+        </div>
+
+    </div>
+
+
+    <!-- =====================
+         COMPARAÇÃO
+    ====================== -->
+
+    <div id="comparacao">
+
+
+        <div id="posicao">
+            GOLEIRO
+        </div>
+
+
+        <div id="jogadores">
+
+
+            <!-- JOGADOR 1 -->
+
+            <div class="jogador esquerda">
+
+                <div class="placeholder-jogador">
+                    JOGADOR 1
+                </div>
+
+                <div class="nome-jogador">
+                    VERBRUGGEN
+                </div>
+
+            </div>
+
+
+            <!-- JOGADOR 2 -->
+
+            <div class="jogador direita">
+
+                <div class="placeholder-jogador">
+                    JOGADOR 2
+                </div>
+
+                <div class="nome-jogador">
+                    TER STEGEN
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- X -->
+
+        <div id="versus">
+            X
+        </div>
+
+
+        <!-- PLACAR -->
+
+        <div id="placar">
+
+            <span>HOLANDA</span>
+
+            <span class="numero">
+                0
+            </span>
+
+            <span class="vs-placar">
+                ×
+            </span>
+
+            <span class="numero">
+                0
+            </span>
+
+            <span>ALEMANHA</span>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =====================
+         11 IDEAL
+    ====================== -->
+
+    <div id="campo-container">
+
+
+        <div id="campo-titulo">
+            11 IDEAL
+        </div>
+
+
+        <div id="campo">
+
+            <!--
+            OS JOGADORES ESCOLHIDOS
+            VÃO ENTRAR AQUI
+            AUTOMATICAMENTE
+            -->
+
+        </div>
+
+
+    </div>
+
+
+    <!-- RODAPÉ -->
+
+    <div id="rodape">
+        ESCOLHA POSIÇÃO POR POSIÇÃO
     </div>
 
 
