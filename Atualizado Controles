@@ -187,7 +187,6 @@ input[readonly] {
 
 button {
     margin-top: 15px;
-
     padding: 13px 18px;
 
     border: none;
@@ -242,6 +241,32 @@ button:hover {
     margin-top: 15px;
 }
 
+.novaRodada {
+    width: 100%;
+
+    background: #b92d3a;
+    color: white;
+
+    margin-top: 15px;
+}
+
+.avisoSalvo {
+    margin-top: 15px;
+
+    text-align: center;
+
+    color: #7fcf96;
+
+    font-size: 14px;
+
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+.avisoSalvo.visivel {
+    opacity: 1;
+}
+
 </style>
 </head>
 
@@ -265,16 +290,16 @@ button:hover {
 
 <input
     id="nome1"
-    value="MTS"
-    oninput="atualizarNomesPalpites()"
+    value="MATHEUS"
+    oninput="mudouPainel()"
 >
 
 <label>Nome do parceiro</label>
 
 <input
     id="nome2"
-    value="AMIGO"
-    oninput="atualizarNomesPalpites()"
+    value="THALYSON"
+    oninput="mudouPainel()"
 >
 
 </div>
@@ -310,6 +335,13 @@ Escolha os confrontos antes de iniciar a rodada.
 INICIAR / CARREGAR RODADA
 </button>
 
+<div
+    class="avisoSalvo"
+    id="avisoSalvo"
+>
+Rodada salva automaticamente ✓
+</div>
+
 </div>
 
 
@@ -332,35 +364,33 @@ JOGO 1
 
 <div class="confrontoAtual">
 
+<div class="timeAtual">
 
-    <div class="timeAtual">
+<label>Mandante</label>
 
-        <label>Mandante</label>
+<input
+    id="casa"
+    readonly
+>
 
-        <input
-            id="casa"
-            readonly
-        >
-
-    </div>
-
-
-    <div class="xAtual">
-        ×
-    </div>
+</div>
 
 
-    <div class="timeAtual">
+<div class="xAtual">
+×
+</div>
 
-        <label>Visitante</label>
 
-        <input
-            id="visitante"
-            readonly
-        >
+<div class="timeAtual">
 
-    </div>
+<label>Visitante</label>
 
+<input
+    id="visitante"
+    readonly
+>
+
+</div>
 
 </div>
 
@@ -368,13 +398,13 @@ JOGO 1
 
 
 <!-- =========================
-     PALPITE 1
+     PALPITE MATHEUS
 ========================= -->
 
 <div class="caixa">
 
 <h2 id="tituloPalpite1">
-Palpite - MTS
+Palpite - MATHEUS
 </h2>
 
 
@@ -384,6 +414,7 @@ Palpite - MTS
     id="p1casa"
     type="number"
     min="0"
+    oninput="salvarEstado()"
 >
 
 <span class="x">
@@ -394,6 +425,7 @@ Palpite - MTS
     id="p1fora"
     type="number"
     min="0"
+    oninput="salvarEstado()"
 >
 
 </div>
@@ -403,20 +435,20 @@ Palpite - MTS
     class="revelar"
     onclick="revelar1()"
 >
-REVELAR PALPITE 1
+REVELAR PALPITE MATHEUS
 </button>
 
 </div>
 
 
 <!-- =========================
-     PALPITE 2
+     PALPITE THALYSON
 ========================= -->
 
 <div class="caixa">
 
 <h2 id="tituloPalpite2">
-Palpite - AMIGO
+Palpite - THALYSON
 </h2>
 
 
@@ -426,6 +458,7 @@ Palpite - AMIGO
     id="p2casa"
     type="number"
     min="0"
+    oninput="salvarEstado()"
 >
 
 <span class="x">
@@ -436,6 +469,7 @@ Palpite - AMIGO
     id="p2fora"
     type="number"
     min="0"
+    oninput="salvarEstado()"
 >
 
 </div>
@@ -445,7 +479,7 @@ Palpite - AMIGO
     class="revelar"
     onclick="revelar2()"
 >
-REVELAR PALPITE 2
+REVELAR PALPITE THALYSON
 </button>
 
 </div>
@@ -475,10 +509,26 @@ FINALIZAR RODADA
 </button>
 
 
+<button
+    class="novaRodada"
+    onclick="novaRodada()"
+>
+NOVA RODADA
+</button>
+
+
 </div>
 
 
 <script>
+
+/* =========================
+   CONFIGURAÇÃO
+========================= */
+
+const CHAVE_SALVAMENTO =
+    "metreacts_batebola_estado_v1";
+
 
 /* =========================
    20 CLUBES
@@ -511,27 +561,35 @@ const clubes = [
 
 
 /* =========================
-   JOGOS INICIAIS
+   JOGOS PADRÃO
 ========================= */
 
-let jogos = [
+function jogosPadrao() {
 
-    {
-        casa: "FLAMENGO",
-        visitante: "VASCO"
-    },
+    return [
 
-    {
-        casa: "PALMEIRAS",
-        visitante: "CORINTHIANS"
-    },
+        {
+            casa: "FLAMENGO",
+            visitante: "VASCO"
+        },
 
-    {
-        casa: "FLUMINENSE",
-        visitante: "BOTAFOGO"
-    }
+        {
+            casa: "PALMEIRAS",
+            visitante: "CORINTHIANS"
+        },
 
-];
+        {
+            casa: "FLUMINENSE",
+            visitante: "BOTAFOGO"
+        }
+
+    ];
+
+}
+
+
+let jogos =
+    jogosPadrao();
 
 
 let jogoAtual = 0;
@@ -540,7 +598,7 @@ let resultados = [];
 
 
 /* =========================
-   CRIA OPÇÕES DOS CLUBES
+   CRIA OPÇÕES
 ========================= */
 
 function criarOpcoes(
@@ -583,7 +641,7 @@ function criarOpcoes(
 
 
 /* =========================
-   DESENHA LISTA
+   DESENHA JOGOS
 ========================= */
 
 function desenharListaJogos() {
@@ -599,7 +657,6 @@ function desenharListaJogos() {
 
     jogos.forEach(
         function(jogo, indice) {
-
 
             const linha =
                 document.createElement(
@@ -617,33 +674,27 @@ function desenharListaJogos() {
                     ${indice + 1}
                 </div>
 
-
                 <select
                     id="configCasa${indice}"
+                    onchange="mudouListaJogos()"
                 >
-
                     ${criarOpcoes(
                         jogo.casa
                     )}
-
                 </select>
-
 
                 <div class="versus">
                     ×
                 </div>
 
-
                 <select
                     id="configVisitante${indice}"
+                    onchange="mudouListaJogos()"
                 >
-
                     ${criarOpcoes(
                         jogo.visitante
                     )}
-
                 </select>
-
 
                 <button
                     class="remover"
@@ -667,7 +718,7 @@ function desenharListaJogos() {
 
 
 /* =========================
-   LÊ OS JOGOS
+   LÊ JOGOS DA TELA
 ========================= */
 
 function lerJogosDaTela() {
@@ -680,7 +731,6 @@ function lerJogosDaTela() {
         i < jogos.length;
         i++
     ) {
-
 
         const casa =
             document
@@ -700,8 +750,7 @@ function lerJogosDaTela() {
 
         novosJogos.push({
 
-            casa:
-                casa,
+            casa: casa,
 
             visitante:
                 visitante
@@ -713,6 +762,19 @@ function lerJogosDaTela() {
 
     jogos =
         novosJogos;
+
+}
+
+
+/* =========================
+   ALTERAÇÃO DA LISTA
+========================= */
+
+function mudouListaJogos() {
+
+    lerJogosDaTela();
+
+    salvarEstado();
 
 }
 
@@ -737,6 +799,8 @@ function adicionarJogo() {
 
     desenharListaJogos();
 
+    salvarEstado();
+
 }
 
 
@@ -745,7 +809,6 @@ function adicionarJogo() {
 ========================= */
 
 function removerJogo(indice) {
-
 
     if (
         jogos.length <= 1
@@ -769,7 +832,20 @@ function removerJogo(indice) {
     );
 
 
+    if (
+        jogoAtual >=
+        jogos.length
+    ) {
+
+        jogoAtual =
+            jogos.length - 1;
+
+    }
+
+
     desenharListaJogos();
+
+    salvarEstado();
 
 }
 
@@ -780,13 +856,11 @@ function removerJogo(indice) {
 
 function validarRodada() {
 
-
     for (
         let i = 0;
         i < jogos.length;
         i++
     ) {
-
 
         if (
             !jogos[i].casa ||
@@ -831,7 +905,6 @@ function validarRodada() {
 
 async function iniciarRodada() {
 
-
     lerJogosDaTela();
 
 
@@ -849,7 +922,12 @@ async function iniciarRodada() {
     resultados = [];
 
 
-    carregarJogo();
+    carregarJogo(
+        true
+    );
+
+
+    salvarEstado();
 
 
     await enviar(
@@ -863,11 +941,17 @@ async function iniciarRodada() {
    CARREGA JOGO
 ========================= */
 
-function carregarJogo() {
-
+function carregarJogo(
+    limparPalpites = true
+) {
 
     const jogo =
         jogos[jogoAtual];
+
+
+    if (!jogo) {
+        return;
+    }
 
 
     document
@@ -886,32 +970,38 @@ function carregarJogo() {
             jogo.visitante;
 
 
-    document
-        .getElementById(
-            "p1casa"
-        )
-        .value = "";
+    if (
+        limparPalpites
+    ) {
+
+        document
+            .getElementById(
+                "p1casa"
+            )
+            .value = "";
 
 
-    document
-        .getElementById(
-            "p1fora"
-        )
-        .value = "";
+        document
+            .getElementById(
+                "p1fora"
+            )
+            .value = "";
 
 
-    document
-        .getElementById(
-            "p2casa"
-        )
-        .value = "";
+        document
+            .getElementById(
+                "p2casa"
+            )
+            .value = "";
 
 
-    document
-        .getElementById(
-            "p2fora"
-        )
-        .value = "";
+        document
+            .getElementById(
+                "p2fora"
+            )
+            .value = "";
+
+    }
 
 
     document
@@ -935,8 +1025,16 @@ function carregarJogo() {
    NOMES
 ========================= */
 
-function atualizarNomesPalpites() {
+function mudouPainel() {
 
+    atualizarNomesPalpites();
+
+    salvarEstado();
+
+}
+
+
+function atualizarNomesPalpites() {
 
     const nome1 =
         document
@@ -946,7 +1044,7 @@ function atualizarNomesPalpites() {
             .value
             .trim()
             .toUpperCase() ||
-            "MTS";
+            "MATHEUS";
 
 
     const nome2 =
@@ -957,7 +1055,7 @@ function atualizarNomesPalpites() {
             .value
             .trim()
             .toUpperCase() ||
-            "AMIGO";
+            "THALYSON";
 
 
     document
@@ -981,11 +1079,10 @@ function atualizarNomesPalpites() {
 
 
 /* =========================
-   DADOS
+   DADOS DO JOGO
 ========================= */
 
 function dados() {
-
 
     return {
 
@@ -995,7 +1092,8 @@ function dados() {
                     "nome1"
                 )
                 .value
-                .trim(),
+                .trim() ||
+                "MATHEUS",
 
         nome2:
             document
@@ -1003,7 +1101,8 @@ function dados() {
                     "nome2"
                 )
                 .value
-                .trim(),
+                .trim() ||
+                "THALYSON",
 
         casa:
             document
@@ -1055,11 +1154,313 @@ function dados() {
 
 
 /* =========================
+   SALVAMENTO AUTOMÁTICO
+========================= */
+
+function salvarEstado() {
+
+    try {
+
+        const estado = {
+
+            nome1:
+                document
+                    .getElementById(
+                        "nome1"
+                    )
+                    .value,
+
+            nome2:
+                document
+                    .getElementById(
+                        "nome2"
+                    )
+                    .value,
+
+            jogos:
+                jogos,
+
+            jogoAtual:
+                jogoAtual,
+
+            resultados:
+                resultados,
+
+            palpiteAtual: {
+
+                p1casa:
+                    document
+                        .getElementById(
+                            "p1casa"
+                        )
+                        .value,
+
+                p1fora:
+                    document
+                        .getElementById(
+                            "p1fora"
+                        )
+                        .value,
+
+                p2casa:
+                    document
+                        .getElementById(
+                            "p2casa"
+                        )
+                        .value,
+
+                p2fora:
+                    document
+                        .getElementById(
+                            "p2fora"
+                        )
+                        .value
+
+            }
+
+        };
+
+
+        localStorage.setItem(
+
+            CHAVE_SALVAMENTO,
+
+            JSON.stringify(
+                estado
+            )
+
+        );
+
+
+        mostrarAvisoSalvo();
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao salvar rodada:",
+            erro
+        );
+
+    }
+
+}
+
+
+/* =========================
+   AVISO SALVO
+========================= */
+
+let temporizadorAviso;
+
+
+function mostrarAvisoSalvo() {
+
+    const aviso =
+        document.getElementById(
+            "avisoSalvo"
+        );
+
+
+    aviso.classList.add(
+        "visivel"
+    );
+
+
+    clearTimeout(
+        temporizadorAviso
+    );
+
+
+    temporizadorAviso =
+        setTimeout(
+            function() {
+
+                aviso
+                    .classList
+                    .remove(
+                        "visivel"
+                    );
+
+            },
+            1200
+        );
+
+}
+
+
+/* =========================
+   RECUPERA ESTADO
+========================= */
+
+function recuperarEstado() {
+
+    try {
+
+        const salvo =
+            localStorage.getItem(
+                CHAVE_SALVAMENTO
+            );
+
+
+        if (!salvo) {
+
+            return false;
+
+        }
+
+
+        const estado =
+            JSON.parse(
+                salvo
+            );
+
+
+        if (
+            Array.isArray(
+                estado.jogos
+            ) &&
+            estado.jogos.length > 0
+        ) {
+
+            jogos =
+                estado.jogos;
+
+        }
+
+
+        if (
+            Array.isArray(
+                estado.resultados
+            )
+        ) {
+
+            resultados =
+                estado.resultados;
+
+        }
+
+
+        if (
+            Number.isInteger(
+                estado.jogoAtual
+            )
+        ) {
+
+            jogoAtual =
+                estado.jogoAtual;
+
+        }
+
+
+        if (
+            jogoAtual < 0 ||
+            jogoAtual >= jogos.length
+        ) {
+
+            jogoAtual = 0;
+
+        }
+
+
+        document
+            .getElementById(
+                "nome1"
+            )
+            .value =
+                estado.nome1 ||
+                "MATHEUS";
+
+
+        document
+            .getElementById(
+                "nome2"
+            )
+            .value =
+                estado.nome2 ||
+                "THALYSON";
+
+
+        desenharListaJogos();
+
+
+        carregarJogo(
+            true
+        );
+
+
+        if (
+            estado.palpiteAtual
+        ) {
+
+            document
+                .getElementById(
+                    "p1casa"
+                )
+                .value =
+                    estado
+                    .palpiteAtual
+                    .p1casa || "";
+
+
+            document
+                .getElementById(
+                    "p1fora"
+                )
+                .value =
+                    estado
+                    .palpiteAtual
+                    .p1fora || "";
+
+
+            document
+                .getElementById(
+                    "p2casa"
+                )
+                .value =
+                    estado
+                    .palpiteAtual
+                    .p2casa || "";
+
+
+            document
+                .getElementById(
+                    "p2fora"
+                )
+                .value =
+                    estado
+                    .palpiteAtual
+                    .p2fora || "";
+
+        }
+
+
+        atualizarNomesPalpites();
+
+
+        return true;
+
+
+    } catch (erro) {
+
+        console.error(
+            "Erro ao recuperar rodada:",
+            erro
+        );
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================
    ENVIA AO SERVIDOR
 ========================= */
 
 async function enviar(acao) {
-
 
     const pacote = {
 
@@ -1076,7 +1477,6 @@ async function enviar(acao) {
 
 
     try {
-
 
         const resposta =
             await fetch(
@@ -1120,7 +1520,6 @@ async function enviar(acao) {
 
     } catch (erro) {
 
-
         alert(
             "Não foi possível comunicar com o servidor."
         );
@@ -1141,6 +1540,8 @@ async function enviar(acao) {
 
 function salvar() {
 
+    salvarEstado();
+
     enviar(
         "atualizar"
     );
@@ -1149,6 +1550,8 @@ function salvar() {
 
 
 function revelar1() {
+
+    salvarEstado();
 
     enviar(
         "revelar1"
@@ -1159,6 +1562,8 @@ function revelar1() {
 
 function revelar2() {
 
+    salvarEstado();
+
     enviar(
         "revelar2"
     );
@@ -1167,11 +1572,10 @@ function revelar2() {
 
 
 /* =========================
-   GUARDA PALPITE
+   GUARDA RESULTADO
 ========================= */
 
 function guardarResultadoAtual() {
-
 
     const d =
         dados();
@@ -1203,6 +1607,9 @@ function guardarResultadoAtual() {
 
     };
 
+
+    salvarEstado();
+
 }
 
 
@@ -1211,7 +1618,6 @@ function guardarResultadoAtual() {
 ========================= */
 
 function palpitesPreenchidos() {
-
 
     const d =
         dados();
@@ -1233,11 +1639,10 @@ function palpitesPreenchidos() {
 
 
 /* =========================
-   PRÓXIMO JOGO
+   PRÓXIMO
 ========================= */
 
 async function proximo() {
-
 
     if (
         !palpitesPreenchidos()
@@ -1265,11 +1670,15 @@ async function proximo() {
         jogos.length - 1
     ) {
 
-
         jogoAtual++;
 
 
-        carregarJogo();
+        carregarJogo(
+            true
+        );
+
+
+        salvarEstado();
 
 
         await enviar(
@@ -1278,9 +1687,7 @@ async function proximo() {
 
     }
 
-
     else {
-
 
         alert(
             "Este é o último jogo. Clique em FINALIZAR RODADA para mostrar o quadro final."
@@ -1296,7 +1703,6 @@ async function proximo() {
 ========================= */
 
 async function finalizar() {
-
 
     if (
         !palpitesPreenchidos()
@@ -1314,8 +1720,80 @@ async function finalizar() {
     guardarResultadoAtual();
 
 
+    salvarEstado();
+
+
     await enviar(
         "finalizar"
+    );
+
+}
+
+
+/* =========================
+   NOVA RODADA
+========================= */
+
+async function novaRodada() {
+
+    const confirmar =
+        confirm(
+            "Deseja realmente iniciar uma NOVA RODADA? Os confrontos e palpites salvos serão apagados."
+        );
+
+
+    if (
+        !confirmar
+    ) {
+
+        return;
+
+    }
+
+
+    localStorage.removeItem(
+        CHAVE_SALVAMENTO
+    );
+
+
+    jogos =
+        jogosPadrao();
+
+
+    jogoAtual = 0;
+
+    resultados = [];
+
+
+    document
+        .getElementById(
+            "nome1"
+        )
+        .value =
+            "MATHEUS";
+
+
+    document
+        .getElementById(
+            "nome2"
+        )
+        .value =
+            "THALYSON";
+
+
+    desenharListaJogos();
+
+
+    carregarJogo(
+        true
+    );
+
+
+    salvarEstado();
+
+
+    await enviar(
+        "atualizar"
     );
 
 }
@@ -1325,9 +1803,24 @@ async function finalizar() {
    INÍCIO
 ========================= */
 
-desenharListaJogos();
+const recuperou =
+    recuperarEstado();
 
-carregarJogo();
+
+if (
+    !recuperou
+) {
+
+    desenharListaJogos();
+
+    carregarJogo(
+        true
+    );
+
+}
+
+
+atualizarNomesPalpites();
 
 </script>
 
