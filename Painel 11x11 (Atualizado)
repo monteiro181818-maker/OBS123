@@ -797,6 +797,27 @@ Crie, salve e carregue seus confrontos.
     type="text"
     placeholder="Brasil">
 
+<label>ESCUDO / BANDEIRA</label>
+
+<div class="foto-linha">
+
+    <input
+        id="configEscudo1"
+        type="text"
+        readonly
+        placeholder="Nenhum escudo selecionado">
+
+    <button
+        type="button"
+        class="botao-foto"
+        onclick="abrirGaleria('configEscudo1')">
+
+        🛡️ ESCOLHER
+
+    </button>
+
+</div>
+
 </div>
 
 <div class="time-config">
@@ -807,6 +828,27 @@ Crie, salve e carregue seus confrontos.
     id="configTime2"
     type="text"
     placeholder="Argentina">
+
+<label>ESCUDO / BANDEIRA</label>
+
+<div class="foto-linha">
+
+    <input
+        id="configEscudo2"
+        type="text"
+        readonly
+        placeholder="Nenhum escudo selecionado">
+
+    <button
+        type="button"
+        class="botao-foto"
+        onclick="abrirGaleria('configEscudo2')">
+
+        🛡️ ESCOLHER
+
+    </button>
+
+</div>
 
 </div>
 
@@ -1204,6 +1246,16 @@ function pegarConfiguracao() {
             "configTime2"
         ).value.trim();
 
+const escudo1 =
+    document.getElementById(
+        "configEscudo1"
+    ).value.trim();
+
+const escudo2 =
+    document.getElementById(
+        "configEscudo2"
+    ).value.trim();
+
     if (!time1 || !time2) {
         throw new Error(
             "Preencha os dois times/seleções."
@@ -1252,16 +1304,18 @@ function pegarConfiguracao() {
                 confrontos[numero].posicao,
 
             jogador1: {
-                nome: jogador1,
-                time: time1,
-                foto: foto1
-            },
+    nome: jogador1,
+    time: time1,
+    foto: foto1,
+    escudo: escudo1
+},
 
-            jogador2: {
-                nome: jogador2,
-                time: time2,
-                foto: foto2
-            }
+jogador2: {
+    nome: jogador2,
+    time: time2,
+    foto: foto2,
+    escudo: escudo2
+}
 
         });
     }
@@ -1530,6 +1584,9 @@ async function enviarConfrontoAtual() {
         foto1:
             confronto.jogador1.foto,
 
+escudo1:
+    confronto.jogador1.escudo || "",
+
         jogador2:
             confronto.jogador2.nome,
 
@@ -1538,6 +1595,9 @@ async function enviarConfrontoAtual() {
 
         foto2:
             confronto.jogador2.foto,
+
+escudo2:
+    confronto.jogador2.escudo || "",
 
         placar1,
         placar2,
@@ -1829,16 +1889,18 @@ function criarNovo11x11() {
             posicao: posicao,
 
             jogador1: {
-                nome: "",
-                time: "",
-                foto: ""
-            },
+    nome: "",
+    time: "",
+    foto: "",
+    escudo: ""
+},
 
             jogador2: {
-                nome: "",
-                time: "",
-                foto: ""
-            }
+    nome: "",
+    time: "",
+    foto: "",
+    escudo: ""
+}
         })
     );
 
@@ -1861,6 +1923,14 @@ function criarNovo11x11() {
     document.getElementById(
         "configTime2"
     ).value = "";
+
+document.getElementById(
+    "configEscudo1"
+).value = "";
+
+document.getElementById(
+    "configEscudo2"
+).value = "";
 
     atualizarBotaoFinal();
 
