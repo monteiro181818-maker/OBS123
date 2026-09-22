@@ -5,12 +5,14 @@
       "jogador1": {
         "nome": "Bart Verbruggen",
         "time": "Holanda",
-        "foto": "verbruggen.png"
+        "foto": "verbruggen.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Marc-André ter Stegen",
         "time": "Alemanha",
-        "foto": "ter-stegen.png"
+        "foto": "ter-stegen.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -18,12 +20,14 @@
       "jogador1": {
         "nome": "Denzel Dumfries",
         "time": "Holanda",
-        "foto": "dumfries.png"
+        "foto": "dumfries.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Joshua Kimmich",
         "time": "Alemanha",
-        "foto": "kimmich.png"
+        "foto": "kimmich.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -31,12 +35,14 @@
       "jogador1": {
         "nome": "Jan Paul van Hecke",
         "time": "Holanda",
-        "foto": "van-hecke.png"
+        "foto": "van-hecke.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Nico Schlotterbeck",
         "time": "Alemanha",
-        "foto": "schlotterbeck.png"
+        "foto": "schlotterbeck.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -44,12 +50,14 @@
       "jogador1": {
         "nome": "Virgil van Dijk",
         "time": "Holanda",
-        "foto": "van-dijk.png"
+        "foto": "van-dijk.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Jonathan Tah",
         "time": "Alemanha",
-        "foto": "tah.png"
+        "foto": "tah.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -57,12 +65,14 @@
       "jogador1": {
         "nome": "Micky van de Ven",
         "time": "Holanda",
-        "foto": "van-de-ven.png"
+        "foto": "van-de-ven.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "David Raum",
         "time": "Alemanha",
-        "foto": "raum.png"
+        "foto": "raum.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -70,12 +80,14 @@
       "jogador1": {
         "nome": "Ryan Gravenberch",
         "time": "Holanda",
-        "foto": "gravenberch.png"
+        "foto": "gravenberch.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Pascal Groß",
         "time": "Alemanha",
-        "foto": "gross.png"
+        "foto": "gross.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -83,12 +95,14 @@
       "jogador1": {
         "nome": "Tijjani Reijnders",
         "time": "Holanda",
-        "foto": "reijnders.png"
+        "foto": "reijnders.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Robert Andrich",
         "time": "Alemanha",
-        "foto": "andrich.png"
+        "foto": "andrich.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -96,12 +110,14 @@
       "jogador1": {
         "nome": "Teun Koopmeiners",
         "time": "Holanda",
-        "foto": "koopmeiners.png"
+        "foto": "koopmeiners.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Jamal Musiala",
         "time": "Alemanha",
-        "foto": "musiala.png"
+        "foto": "musiala.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -109,12 +125,14 @@
       "jogador1": {
         "nome": "Donyell Malen",
         "time": "Holanda",
-        "foto": "malen.png"
+        "foto": "malen.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Serge Gnabry",
         "time": "Alemanha",
-        "foto": "gnabry.png"
+        "foto": "gnabry.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -122,12 +140,14 @@
       "jogador1": {
         "nome": "Cody Gakpo",
         "time": "Holanda",
-        "foto": "gakpo.png"
+        "foto": "gakpo.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Kai Havertz",
         "time": "Alemanha",
-        "foto": "havertz.png"
+        "foto": "havertz.png",
+        "escudo": "alemanha.png"
       }
     },
     {
@@ -135,12 +155,14 @@
       "jogador1": {
         "nome": "Crysencio Summerville",
         "time": "Holanda",
-        "foto": "summerville.png"
+        "foto": "summerville.png",
+        "escudo": "holanda.png"
       },
       "jogador2": {
         "nome": "Deniz Undav",
         "time": "Alemanha",
-        "foto": "undav.png"
+        "foto": "undav.png",
+        "escudo": "alemanha.png"
       }
     }
   ]
