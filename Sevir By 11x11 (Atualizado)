@@ -532,6 +532,10 @@ def criar_estado_dos_confrontos(confrontos):
                 "foto",
                 ""
             ),
+           "escudo1": jogador1.get(
+    "escudo",
+    ""
+),
 
             "jogador2": jogador2.get(
                 "nome",
@@ -545,6 +549,10 @@ def criar_estado_dos_confrontos(confrontos):
                 "foto",
                 ""
             ),
+"escudo2": jogador2.get(
+    "escudo",
+    ""
+),
 
             "placar1": 0,
             "placar2": 0,
@@ -561,12 +569,14 @@ def criar_estado_dos_confrontos(confrontos):
         "numeroPosicao": 1,
 
         "jogador1": "",
-        "time1": "",
-        "foto1": "",
+"time1": "",
+"foto1": "",
+"escudo1": "",
 
-        "jogador2": "",
-        "time2": "",
-        "foto2": "",
+"jogador2": "",
+"time2": "",
+"foto2": "",
+"escudo2": "",
 
         "placar1": 0,
         "placar2": 0,
