@@ -1,0 +1,1186 @@
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+import json
+import os
+import re
+import base64
+import unicodedata
+
+
+# ==========================================
+# CONFIGURAÇÃO
+# ==========================================
+
+PORTA = 8000
+
+PASTA_PROJETO = os.path.dirname(os.path.abspath(__file__))
+os.chdir(PASTA_PROJETO)
+
+PASTA_DADOS = os.path.join(PASTA_PROJETO, "dados")
+PASTA_SALVOS = os.path.join(PASTA_DADOS, "salvos")
+PASTA_IMAGENS = os.path.join(PASTA_PROJETO, "imagens")
+
+ARQUIVO_CONFRONTOS = os.path.join(
+    PASTA_DADOS,
+    "confrontos.json"
+)
+
+os.makedirs(PASTA_DADOS, exist_ok=True)
+os.makedirs(PASTA_SALVOS, exist_ok=True)
+os.makedirs(PASTA_IMAGENS, exist_ok=True)
+
+
+# ==========================================
+# JSON
+# ==========================================
+
+def carregar_json(caminho):
+    with open(caminho, "r", encoding="utf-8") as arquivo:
+        return json.load(arquivo)
+
+
+def salvar_json(caminho, dados):
+    with open(caminho, "w", encoding="utf-8") as arquivo:
+        json.dump(
+            dados,
+            arquivo,
+            ensure_ascii=False,
+            indent=2
+        )
+
+
+# ==========================================
+# CONFRONTOS ATIVOS
+# ==========================================
+
+def carregar_confrontos():
+    try:
+        return carregar_json(ARQUIVO_CONFRONTOS)
+    except Exception:
+        return {"confrontos": []}
+
+
+def validar_confrontos(dados):
+    if not isinstance(dados, dict):
+        raise ValueError("Formato do 11x11 inválido.")
+
+    confrontos = dados.get("confrontos")
+
+    if not isinstance(confrontos, list):
+        raise ValueError("Lista de confrontos inválida.")
+
+    if len(confrontos) != 11:
+        raise ValueError(
+            "O 11x11 precisa ter exatamente 11 posições."
+        )
+
+    for numero, confronto in enumerate(confrontos, start=1):
+
+        if not isinstance(confronto, dict):
+            raise ValueError(
+                f"Posição {numero} inválida."
+            )
+
+        posicao = str(
+            confronto.get("posicao", "")
+        ).strip()
+
+        if not posicao:
+            raise ValueError(
+                f"Posição {numero} sem nome."
+            )
+
+        jogador1 = confronto.get("jogador1")
+        jogador2 = confronto.get("jogador2")
+
+        if not isinstance(jogador1, dict):
+            raise ValueError(
+                f"Jogador 1 da posição {numero} inválido."
+            )
+
+        if not isinstance(jogador2, dict):
+            raise ValueError(
+                f"Jogador 2 da posição {numero} inválido."
+            )
+
+        nome1 = str(
+            jogador1.get("nome", "")
+        ).strip()
+
+        nome2 = str(
+            jogador2.get("nome", "")
+        ).strip()
+
+        if not nome1:
+            raise ValueError(
+                f"Falta o jogador 1 da posição {numero}."
+            )
+
+        if not nome2:
+            raise ValueError(
+                f"Falta o jogador 2 da posição {numero}."
+            )
+
+    return confrontos
+
+
+def salvar_confrontos(dados):
+    validar_confrontos(dados)
+    salvar_json(ARQUIVO_CONFRONTOS, dados)
+
+
+# ==========================================
+# NORMALIZAÇÃO DE NOMES
+# ==========================================
+
+def normalizar_nome(texto):
+    texto = str(texto).strip()
+
+    texto = unicodedata.normalize(
+        "NFKD",
+        texto
+    )
+
+    texto = "".join(
+        caractere
+        for caractere in texto
+        if not unicodedata.combining(caractere)
+    )
+
+    texto = texto.lower()
+
+    texto = re.sub(
+        r"\s+",
+        "-",
+        texto
+    )
+
+    texto = re.sub(
+        r"[^a-z0-9_-]",
+        "",
+        texto
+    )
+
+    texto = re.sub(
+        r"-+",
+        "-",
+        texto
+    )
+
+    return texto.strip("-_")
+
+
+# ==========================================
+# BIBLIOTECA DE 11x11
+# ==========================================
+
+def gerar_nome_arquivo_11x11(nome):
+    nome_limpo = normalizar_nome(nome)
+
+    if not nome_limpo:
+        nome_limpo = "11x11"
+
+    return nome_limpo + ".json"
+
+
+def caminho_11x11_salvo(arquivo):
+    arquivo = os.path.basename(str(arquivo))
+
+    if not arquivo.lower().endswith(".json"):
+        raise ValueError(
+            "Arquivo de 11x11 inválido."
+        )
+
+    return os.path.join(
+        PASTA_SALVOS,
+        arquivo
+    )
+
+
+def listar_11x11_salvos():
+    lista = []
+
+    for arquivo in os.listdir(PASTA_SALVOS):
+
+        if not arquivo.lower().endswith(".json"):
+            continue
+
+        caminho = os.path.join(
+            PASTA_SALVOS,
+            arquivo
+        )
+
+        if not os.path.isfile(caminho):
+            continue
+
+        try:
+            dados = carregar_json(caminho)
+
+            confrontos = dados.get(
+                "confrontos",
+                []
+            )
+
+            nome = str(
+                dados.get("nome", "")
+            ).strip()
+
+            if not nome:
+                nome = os.path.splitext(
+                    arquivo
+                )[0]
+
+            time1 = ""
+            time2 = ""
+
+            if confrontos:
+                primeiro = confrontos[0]
+
+                time1 = str(
+                    primeiro
+                    .get("jogador1", {})
+                    .get("time", "")
+                )
+
+                time2 = str(
+                    primeiro
+                    .get("jogador2", {})
+                    .get("time", "")
+                )
+
+            lista.append({
+                "nome": nome,
+                "arquivo": arquivo,
+                "time1": time1,
+                "time2": time2
+            })
+
+        except Exception as erro:
+            print(
+                "Erro ao ler salvo:",
+                arquivo,
+                erro
+            )
+
+    lista.sort(
+        key=lambda item: item["nome"].lower()
+    )
+
+    return lista
+
+
+def salvar_11x11_biblioteca(nome, confrontos):
+    nome = str(nome).strip()
+
+    if not nome:
+        raise ValueError(
+            "Digite um nome para o 11x11."
+        )
+
+    validar_confrontos({
+        "confrontos": confrontos
+    })
+
+    arquivo = gerar_nome_arquivo_11x11(nome)
+
+    caminho = caminho_11x11_salvo(
+        arquivo
+    )
+
+    dados = {
+        "nome": nome,
+        "confrontos": confrontos
+    }
+
+    salvar_json(
+        caminho,
+        dados
+    )
+
+    return {
+        "nome": nome,
+        "arquivo": arquivo
+    }
+
+
+def carregar_11x11_salvo(arquivo):
+    caminho = caminho_11x11_salvo(
+        arquivo
+    )
+
+    if not os.path.exists(caminho):
+        raise ValueError(
+            "11x11 salvo não encontrado."
+        )
+
+    dados = carregar_json(caminho)
+
+    confrontos = validar_confrontos(
+        dados
+    )
+
+    nome = str(
+        dados.get("nome", "")
+    ).strip()
+
+    if not nome:
+        nome = os.path.splitext(
+            os.path.basename(caminho)
+        )[0]
+
+    return {
+        "nome": nome,
+        "confrontos": confrontos
+    }
+
+
+def excluir_11x11_salvo(arquivo):
+    caminho = caminho_11x11_salvo(
+        arquivo
+    )
+
+    if not os.path.exists(caminho):
+        raise ValueError(
+            "11x11 salvo não encontrado."
+        )
+
+    os.remove(caminho)
+
+
+# ==========================================
+# IMAGENS
+# ==========================================
+
+def listar_imagens():
+    extensoes = (
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".webp"
+    )
+
+    imagens = []
+
+    for nome in os.listdir(PASTA_IMAGENS):
+
+        caminho = os.path.join(
+            PASTA_IMAGENS,
+            nome
+        )
+
+        if not os.path.isfile(caminho):
+            continue
+
+        if not nome.lower().endswith(extensoes):
+            continue
+
+        imagens.append(nome)
+
+    imagens.sort(
+        key=lambda nome: nome.lower()
+    )
+
+    return imagens
+
+
+def limpar_nome_arquivo(nome):
+    nome = os.path.basename(str(nome))
+
+    nome_base, extensao = os.path.splitext(
+        nome
+    )
+
+    extensao = extensao.lower()
+
+    extensoes = (
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".webp"
+    )
+
+    if extensao not in extensoes:
+        raise ValueError(
+            "Formato de imagem não permitido."
+        )
+
+    nome_base = normalizar_nome(
+        nome_base
+    )
+
+    if not nome_base:
+        nome_base = "imagem"
+
+    return nome_base + extensao
+
+
+def nome_disponivel(nome):
+    caminho = os.path.join(
+        PASTA_IMAGENS,
+        nome
+    )
+
+    if not os.path.exists(caminho):
+        return nome
+
+    base, extensao = os.path.splitext(nome)
+
+    numero = 2
+
+    while True:
+        novo_nome = (
+            f"{base}-{numero}{extensao}"
+        )
+
+        novo_caminho = os.path.join(
+            PASTA_IMAGENS,
+            novo_nome
+        )
+
+        if not os.path.exists(novo_caminho):
+            return novo_nome
+
+        numero += 1
+
+
+def salvar_imagem_base64(nome, conteudo):
+    nome = limpar_nome_arquivo(nome)
+    nome = nome_disponivel(nome)
+
+    if not isinstance(conteudo, str):
+        raise ValueError(
+            "Conteúdo da imagem inválido."
+        )
+
+    if "," in conteudo:
+        cabecalho, conteudo = conteudo.split(
+            ",",
+            1
+        )
+
+        if "base64" not in cabecalho.lower():
+            raise ValueError(
+                "Formato da imagem inválido."
+            )
+
+    try:
+        dados_imagem = base64.b64decode(
+            conteudo,
+            validate=True
+        )
+    except Exception:
+        raise ValueError(
+            "Não foi possível ler a imagem."
+        )
+
+    if not dados_imagem:
+        raise ValueError(
+            "A imagem está vazia."
+        )
+
+    limite = 15 * 1024 * 1024
+
+    if len(dados_imagem) > limite:
+        raise ValueError(
+            "A imagem ultrapassa o limite de 15 MB."
+        )
+
+    caminho = os.path.join(
+        PASTA_IMAGENS,
+        nome
+    )
+
+    with open(caminho, "wb") as arquivo:
+        arquivo.write(dados_imagem)
+
+    return nome
+
+
+# ==========================================
+# ESTADO DO 11x11
+# ==========================================
+
+def criar_estado_dos_confrontos(confrontos):
+    if confrontos:
+        primeiro = confrontos[0]
+
+        jogador1 = primeiro.get(
+            "jogador1",
+            {}
+        )
+
+        jogador2 = primeiro.get(
+            "jogador2",
+            {}
+        )
+
+        return {
+            "posicao": primeiro.get(
+                "posicao",
+                "GOLEIRO"
+            ),
+            "numeroPosicao": 1,
+
+            "jogador1": jogador1.get(
+                "nome",
+                ""
+            ),
+            "time1": jogador1.get(
+                "time",
+                ""
+            ),
+            "foto1": jogador1.get(
+                "foto",
+                ""
+            ),
+
+            "jogador2": jogador2.get(
+                "nome",
+                ""
+            ),
+            "time2": jogador2.get(
+                "time",
+                ""
+            ),
+            "foto2": jogador2.get(
+                "foto",
+                ""
+            ),
+
+            "placar1": 0,
+            "placar2": 0,
+
+            "vencedor": None,
+            "ladoVencedor": None,
+
+            "timeIdeal": [],
+            "modoFinal": False
+        }
+
+    return {
+        "posicao": "GOLEIRO",
+        "numeroPosicao": 1,
+
+        "jogador1": "",
+        "time1": "",
+        "foto1": "",
+
+        "jogador2": "",
+        "time2": "",
+        "foto2": "",
+
+        "placar1": 0,
+        "placar2": 0,
+
+        "vencedor": None,
+        "ladoVencedor": None,
+
+        "timeIdeal": [],
+        "modoFinal": False
+    }
+
+
+def criar_estado_inicial():
+    dados = carregar_confrontos()
+
+    confrontos = dados.get(
+        "confrontos",
+        []
+    )
+
+    return criar_estado_dos_confrontos(
+        confrontos
+    )
+
+
+estado = criar_estado_inicial()
+
+
+# ==========================================
+# SERVIDOR
+# ==========================================
+
+class Servidor11x11(SimpleHTTPRequestHandler):
+
+    # ======================================
+    # ENVIAR JSON
+    # ======================================
+
+    def enviar_json(self, dados, status=200):
+        resposta = json.dumps(
+            dados,
+            ensure_ascii=False
+        ).encode("utf-8")
+
+        self.send_response(status)
+
+        self.send_header(
+            "Content-Type",
+            "application/json; charset=utf-8"
+        )
+
+        self.send_header(
+            "Content-Length",
+            str(len(resposta))
+        )
+
+        self.send_header(
+            "Cache-Control",
+            "no-store"
+        )
+
+        self.end_headers()
+
+        self.wfile.write(resposta)
+
+
+    # ======================================
+    # LER JSON
+    # ======================================
+
+    def ler_json(self):
+        tamanho = int(
+            self.headers.get(
+                "Content-Length",
+                0
+            )
+        )
+
+        if tamanho > 25 * 1024 * 1024:
+            raise ValueError(
+                "Envio muito grande."
+            )
+
+        corpo = self.rfile.read(tamanho)
+
+        if not corpo:
+            return {}
+
+        return json.loads(
+            corpo.decode("utf-8")
+        )
+
+
+    # ======================================
+    # GET
+    # ======================================
+
+    def do_GET(self):
+        caminho = self.path.split("?")[0]
+
+        # ESTADO
+        if caminho == "/api/estado":
+            self.enviar_json(estado)
+            return
+
+        # IMAGENS
+        if caminho == "/api/imagens":
+            try:
+                imagens = listar_imagens()
+
+                self.enviar_json({
+                    "ok": True,
+                    "total": len(imagens),
+                    "imagens": imagens
+                })
+
+            except Exception as erro:
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 500)
+
+            return
+
+        # 11x11 SALVOS
+        if caminho == "/api/11x11-salvos":
+            try:
+                salvos = listar_11x11_salvos()
+
+                self.enviar_json({
+                    "ok": True,
+                    "total": len(salvos),
+                    "salvos": salvos
+                })
+
+            except Exception as erro:
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 500)
+
+            return
+
+        super().do_GET()
+
+
+    # ======================================
+    # POST
+    # ======================================
+
+    def do_POST(self):
+        global estado
+
+        caminho = self.path.split("?")[0]
+
+        print(
+            "POST recebido:",
+            caminho
+        )
+
+        # ==================================
+        # ESTADO
+        # ==================================
+
+        if caminho == "/api/estado":
+            try:
+                novos_dados = self.ler_json()
+
+                estado.update(novos_dados)
+
+                self.enviar_json({
+                    "ok": True,
+                    "estado": estado
+                })
+
+            except Exception as erro:
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 400)
+
+            return
+
+
+        # ==================================
+        # UPLOAD DE IMAGEM
+        # ==================================
+
+        if caminho == "/api/upload-imagem":
+            try:
+                dados = self.ler_json()
+
+                nome = dados.get(
+                    "nome",
+                    ""
+                )
+
+                conteudo = dados.get(
+                    "conteudo",
+                    ""
+                )
+
+                if not nome:
+                    raise ValueError(
+                        "Nome da imagem não informado."
+                    )
+
+                if not conteudo:
+                    raise ValueError(
+                        "Imagem não enviada."
+                    )
+
+                nome_salvo = salvar_imagem_base64(
+                    nome,
+                    conteudo
+                )
+
+                print(
+                    "Imagem salva:",
+                    nome_salvo
+                )
+
+                self.enviar_json({
+                    "ok": True,
+                    "mensagem": (
+                        "Imagem adicionada com sucesso."
+                    ),
+                    "arquivo": nome_salvo,
+                    "url": (
+                        "/imagens/" +
+                        nome_salvo
+                    )
+                })
+
+            except Exception as erro:
+                print(
+                    "Erro no upload:",
+                    erro
+                )
+
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 400)
+
+            return
+
+
+        # ==================================
+        # SALVAR CONFRONTOS ATIVOS
+        # ==================================
+
+        if caminho == "/api/salvar-confrontos":
+            try:
+                dados = self.ler_json()
+
+                confrontos = validar_confrontos(
+                    dados
+                )
+
+                salvar_confrontos({
+                    "confrontos": confrontos
+                })
+
+                estado = criar_estado_dos_confrontos(
+                    confrontos
+                )
+
+                print(
+                    "11x11 ativo atualizado."
+                )
+
+                self.enviar_json({
+                    "ok": True,
+                    "mensagem": (
+                        "11x11 salvo e carregado "
+                        "com sucesso."
+                    ),
+                    "estado": estado
+                })
+
+            except Exception as erro:
+                print(
+                    "Erro ao salvar confrontos:",
+                    erro
+                )
+
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 400)
+
+            return
+
+
+        # ==================================
+        # SALVAR 11x11 NA BIBLIOTECA
+        # ==================================
+
+        if caminho == "/api/salvar-11x11":
+            try:
+                dados = self.ler_json()
+
+                nome = str(
+                    dados.get(
+                        "nome",
+                        ""
+                    )
+                ).strip()
+
+                confrontos = dados.get(
+                    "confrontos",
+                    []
+                )
+
+                resultado = salvar_11x11_biblioteca(
+                    nome,
+                    confrontos
+                )
+
+                print(
+                    "11x11 salvo:",
+                    resultado["nome"],
+                    "-",
+                    resultado["arquivo"]
+                )
+
+                self.enviar_json({
+                    "ok": True,
+                    "mensagem": (
+                        "11x11 salvo na biblioteca."
+                    ),
+                    "nome": resultado["nome"],
+                    "arquivo": resultado["arquivo"]
+                })
+
+            except Exception as erro:
+                print(
+                    "Erro ao salvar 11x11:",
+                    erro
+                )
+
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 400)
+
+            return
+
+        # ==================================
+        # EDITAR 11x11 SALVO
+        # SOMENTE LÊ - NÃO ATIVA NO OBS
+        # ==================================
+
+        if caminho == "/api/editar-11x11":
+            try:
+                dados = self.ler_json()
+
+                arquivo = str(
+                    dados.get(
+                        "arquivo",
+                        ""
+                    )
+                ).strip()
+
+                if not arquivo:
+                    raise ValueError(
+                        "Arquivo do 11x11 não informado."
+                    )
+
+                resultado = carregar_11x11_salvo(
+                    arquivo
+                )
+
+                print(
+                    "11x11 aberto para edição:",
+                    resultado["nome"]
+                )
+
+                self.enviar_json({
+                    "ok": True,
+                    "mensagem": (
+                        "11x11 aberto para edição."
+                    ),
+                    "nome": resultado["nome"],
+                    "arquivo": arquivo,
+                    "confrontos": resultado["confrontos"]
+                })
+
+            except Exception as erro:
+                print(
+                    "Erro ao abrir 11x11 para edição:",
+                    erro
+                )
+
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 400)
+
+            return
+
+
+        # ==================================
+        # CARREGAR 11x11 SALVO
+        # ==================================
+
+        if caminho == "/api/carregar-11x11":
+            try:
+                dados = self.ler_json()
+
+                arquivo = str(
+                    dados.get(
+                        "arquivo",
+                        ""
+                    )
+                ).strip()
+
+                if not arquivo:
+                    raise ValueError(
+                        "Arquivo do 11x11 não informado."
+                    )
+
+                resultado = carregar_11x11_salvo(
+                    arquivo
+                )
+
+                confrontos = resultado[
+                    "confrontos"
+                ]
+
+                # Torna este confronto o ativo
+                salvar_confrontos({
+                    "confrontos": confrontos
+                })
+
+                # Reseta placar e escalação
+                estado = criar_estado_dos_confrontos(
+                    confrontos
+                )
+
+                print(
+                    "11x11 carregado:",
+                    resultado["nome"]
+                )
+
+                self.enviar_json({
+                    "ok": True,
+                    "mensagem": (
+                        "11x11 carregado com sucesso."
+                    ),
+                    "nome": resultado["nome"],
+                    "arquivo": arquivo,
+                    "confrontos": confrontos,
+                    "estado": estado
+                })
+
+            except Exception as erro:
+                print(
+                    "Erro ao carregar 11x11:",
+                    erro
+                )
+
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 400)
+
+            return
+
+
+        # ==================================
+        # EXCLUIR 11x11 SALVO
+        # ==================================
+
+        if caminho == "/api/excluir-11x11":
+            try:
+                dados = self.ler_json()
+
+                arquivo = str(
+                    dados.get(
+                        "arquivo",
+                        ""
+                    )
+                ).strip()
+
+                if not arquivo:
+                    raise ValueError(
+                        "Arquivo do 11x11 não informado."
+                    )
+
+                excluir_11x11_salvo(
+                    arquivo
+                )
+
+                print(
+                    "11x11 excluído:",
+                    arquivo
+                )
+
+                self.enviar_json({
+                    "ok": True,
+                    "mensagem": (
+                        "11x11 excluído com sucesso."
+                    ),
+                    "arquivo": arquivo
+                })
+
+            except Exception as erro:
+                print(
+                    "Erro ao excluir 11x11:",
+                    erro
+                )
+
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 400)
+
+            return
+
+
+        # ==================================
+        # RESET
+        # ==================================
+
+        if caminho == "/api/reset":
+            try:
+                estado = criar_estado_inicial()
+
+                self.enviar_json({
+                    "ok": True,
+                    "estado": estado
+                })
+
+            except Exception as erro:
+                self.enviar_json({
+                    "ok": False,
+                    "erro": str(erro)
+                }, 400)
+
+            return
+
+
+        # ==================================
+        # ROTA NÃO ENCONTRADA
+        # ==================================
+
+        print(
+            "ROTA NÃO ENCONTRADA:",
+            caminho
+        )
+
+        self.enviar_json({
+            "ok": False,
+            "erro": "Rota não encontrada",
+            "rota": caminho
+        }, 404)
+
+
+# ==========================================
+# INICIAR SERVIDOR
+# ==========================================
+
+if __name__ == "__main__":
+
+    servidor = ThreadingHTTPServer(
+        ("0.0.0.0", PORTA),
+        Servidor11x11
+    )
+
+    print("")
+    print("====================================")
+    print("       11x11 METREACTS V2")
+    print("====================================")
+    print("")
+
+    print(
+        f"Painel:    http://localhost:{PORTA}/painel/"
+    )
+
+    print(
+        f"Overlay:   http://localhost:{PORTA}/overlay/"
+    )
+
+    print(
+        f"API:       http://localhost:{PORTA}/api/estado"
+    )
+
+    print(
+        f"Imagens:   http://localhost:{PORTA}/api/imagens"
+    )
+
+    print(
+        f"11x11:     http://localhost:{PORTA}/api/11x11-salvos"
+    )
+
+    print(
+        f"JSON:      http://localhost:{PORTA}/dados/confrontos.json"
+    )
+
+    print(
+        f"Upload:    http://localhost:{PORTA}/api/upload-imagem"
+    )
+
+    print("")
+    print("Servidor funcionando.")
+    print("Para encerrar: CTRL + C")
+    print("")
+
+    try:
+        servidor.serve_forever()
+
+    except KeyboardInterrupt:
+        print("")
+        print("Servidor encerrado.")
+        servidor.server_close()
