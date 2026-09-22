@@ -412,6 +412,32 @@ html, body {
     color: #9b6cff;
 }
 
+.escudo-placar {
+    width: 200px;
+    height: 100px;
+
+    object-fit: contain;
+
+    background: transparent;
+    border-radius: 70px;
+
+    padding: 4px;
+
+    display: block;
+}
+
+#escudoTime1 {
+    position: relative;
+    left: 65px;
+    top: 0px;
+}
+
+#escudoTime2 {
+    position: relative;
+    left: -60px;
+    top: 0px;
+}
+
 
 /* ==================================================
    11 IDEAL PEQUENO
@@ -970,7 +996,7 @@ html, body {
         0 40px;
 
     background:
-        rgba(7,8,18,0.96);
+        rgba(82, 75, 105, 0.96);
 
     border:
         3px solid #633cff;
@@ -986,6 +1012,42 @@ html, body {
 
 .time-final {
     font-size: 30px;
+    font-weight: 900;
+}
+
+.time-final {
+    font-size: 30px;
+    font-weight: 900;
+}
+
+.escudo-final {
+    width: 200px;
+    height: 100px;
+
+    object-fit: contain;
+
+    background: transparent;
+    border-radius: 70px;
+
+    padding: 4px;
+
+    display: block;
+}
+
+#escudoTime1 {
+    position: relative;
+    left: 65px;
+    top: 0px;
+}
+
+#escudoTime2 {
+    position: relative;
+    left: -60px;
+    top: 0px;
+}
+
+.numero-final {
+    font-size: 55px;
     font-weight: 900;
 }
 
@@ -1123,9 +1185,16 @@ html, body {
 
         <div id="placar">
 
-            <span id="nomeTime1">
-                HOLANDA
-            </span>
+    <img
+        id="escudoTime1"
+        class="escudo-placar"
+        src=""
+        alt="Escudo Time 1"
+    >
+
+    <span id="nomeTime1">
+        HOLANDA
+    </span>
 
             <span
                 class="numero"
@@ -1146,6 +1215,13 @@ html, body {
             <span id="nomeTime2">
                 ALEMANHA
             </span>
+
+<img
+    id="escudoTime2"
+    class="escudo-placar"
+    src=""
+    alt="Escudo Time 2"
+>
 
         </div>
 
@@ -1181,6 +1257,13 @@ html, body {
 
 
         <div id="placarFinal">
+
+<img
+    id="escudoFinal1"
+    class="escudo-final"
+    src=""
+    alt="Escudo Time 1"
+>
 
             <span
                 class="time-final"
@@ -1221,6 +1304,13 @@ html, body {
                 ALEMANHA
 
             </span>
+
+<img
+    id="escudoFinal2"
+    class="escudo-final"
+    src=""
+    alt="Escudo Time 2"
+>
 
         </div>
 
@@ -1435,6 +1525,21 @@ function atualizarModo(
             "block";
 
 
+atualizarFoto(
+    document.getElementById(
+        "escudoFinal1"
+    ),
+    estado.escudo1
+);
+
+atualizarFoto(
+    document.getElementById(
+        "escudoFinal2"
+    ),
+    estado.escudo2
+);
+
+
         document.getElementById(
             "timeFinal1"
         ).innerText =
@@ -1581,6 +1686,22 @@ async function atualizarOverlay() {
             estado.foto2
 
         );
+
+/* ESCUDOS */
+
+atualizarFoto(
+    document.getElementById(
+        "escudoTime1"
+    ),
+    estado.escudo1
+);
+
+atualizarFoto(
+    document.getElementById(
+        "escudoTime2"
+    ),
+    estado.escudo2
+);
 
 
         /* TIMES */
