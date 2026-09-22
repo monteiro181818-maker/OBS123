@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+<meta charset="UTF-8">
+<title>11x11 Metreacts V2</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: transparent;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+#layout {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(70,30,130,0.55),
+            rgba(5,7,20,0.97) 65%
+        );
+}
+
+
+/* ==================================================
+   CÂMERAS
+================================================== */
+
+.camera {
+    position: absolute;
+    left: 45px;
+
+    width: 420px;
+    height: 330px;
+
+    background: transparent;
+
+    border: 4px solid #633cff;
+    border-radius: 18px;
+
+    box-shadow:
+        0 0 20px
+        rgba(100,50,255,0.75);
+
+    pointer-events: none;
+}
+
+#camera1 {
+    top: 145px;
+}
+
+#camera2 {
+    top: 575px;
+}
+
+
+/* ==================================================
+   COMPARAÇÃO NORMAL
+================================================== */
+
+#comparacao {
+    position: absolute;
+
+    left: 510px;
+    top: 145px;
+
+    width: 810px;
+    height: 700px;
+
+    border: 3px solid #683cff;
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(10,15,30,0.94),
+            rgba(25,10,45,0.94)
+        );
+
+    box-shadow:
+        0 0 30px
+        rgba(105,50,255,0.50);
+
+    overflow: hidden;
+}
+
+#posicao {
+    position: absolute;
+
+    top: 20px;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    padding: 8px 40px;
+
+    background: #080812;
+
+    border:
+        2px solid #704cff;
+
+    border-radius: 10px;
+
+    font-size: 29px;
+    font-weight: 900;
+
+    z-index: 20;
+
+    white-space: nowrap;
+}
+
+
+/* ==================================================
+   JOGADORES DA COMPARAÇÃO
+================================================== */
+
+#jogadores {
+    position: absolute;
+
+    top: 90px;
+    left: 25px;
+
+    width: 754px;
+    height: 500px;
+
+    display: flex;
+}
+
+.jogador {
+    position: relative;
+
+    width: 50%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    transition:
+        opacity 0.35s ease,
+        filter 0.35s ease;
+}
+
+.foto-jogador {
+    width: 300px;
+    height: 410px;
+
+    object-fit: cover;
+    object-position: center top;
+
+    display: block;
+
+    border-radius: 4px;
+
+    z-index: 1;
+
+    transition:
+        transform 0.35s ease,
+        filter 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+
+/* ==================================================
+   PARTE 11 - JOGADOR ESCOLHIDO
+================================================== */
+
+.selo-escolhido {
+    position: absolute;
+
+    top: 35px;
+    left: 50%;
+
+    transform:
+        translateX(-50%) scale(0.75);
+
+    min-width: 185px;
+
+    padding: 10px 18px;
+
+    border-radius: 9px;
+
+    text-align: center;
+
+    font-size: 19px;
+    font-weight: 900;
+
+    letter-spacing: 1px;
+
+    color: white;
+
+    opacity: 0;
+
+    z-index: 15;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.30s ease,
+        transform 0.30s ease;
+}
+
+.esquerda .selo-escolhido {
+    background:
+        rgba(22,140,255,0.95);
+
+    border:
+        2px solid #73bdff;
+
+    box-shadow:
+        0 0 22px
+        rgba(22,140,255,0.75);
+}
+
+.direita .selo-escolhido {
+    background:
+        rgba(173,36,255,0.95);
+
+    border:
+        2px solid #d28aff;
+
+    box-shadow:
+        0 0 22px
+        rgba(173,36,255,0.75);
+}
+
+
+/* VENCEDOR */
+
+.jogador.vencedor
+.foto-jogador {
+    transform:
+        scale(1.045);
+}
+
+.jogador.esquerda.vencedor
+.foto-jogador {
+    box-shadow:
+        0 0 18px #168cff,
+        0 0 38px rgba(22,140,255,0.75);
+}
+
+.jogador.direita.vencedor
+.foto-jogador {
+    box-shadow:
+        0 0 18px #ad24ff,
+        0 0 38px rgba(173,36,255,0.75);
+}
+
+.jogador.vencedor
+.selo-escolhido {
+    opacity: 1;
+
+    transform:
+        translateX(-50%) scale(1);
+}
+
+
+/* PERDEDOR */
+
+.jogador.perdedor {
+    opacity: 0.42;
+
+    filter:
+        grayscale(55%);
+}
+
+.jogador.perdedor
+.foto-jogador {
+    transform:
+        scale(0.96);
+}
+
+
+/* NOME DO VENCEDOR */
+
+.jogador.vencedor
+.nome-jogador {
+    transform:
+        scale(1.035);
+}
+
+.jogador.esquerda.vencedor
+.nome-jogador {
+    box-shadow:
+        0 0 18px
+        rgba(22,140,255,0.75);
+}
+
+.jogador.direita.vencedor
+.nome-jogador {
+    box-shadow:
+        0 0 18px
+        rgba(173,36,255,0.75);
+}
+
+
+/* ==================================================
+   X CENTRAL
+================================================== */
+
+#versus {
+    position: absolute;
+
+    left: 50%;
+    top: 46%;
+
+    transform:
+        translate(-50%, -50%);
+
+    font-size: 82px;
+    font-weight: 900;
+
+    z-index: 30;
+
+    text-shadow:
+        -4px 0 #168cff,
+         4px 0 #ad24ff;
+}
+
+
+/* ==================================================
+   NOMES
+================================================== */
+
+.nome-jogador {
+    position: absolute;
+
+    bottom: 35px;
+
+    width: 310px;
+    height: 65px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(5,5,12,0.96);
+
+    font-size: 25px;
+    font-weight: 900;
+
+    border-radius: 8px;
+
+    text-align: center;
+
+    padding: 8px;
+
+    z-index: 5;
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.esquerda .nome-jogador {
+    border: 2px solid #168cff;
+}
+
+.direita .nome-jogador {
+    border: 2px solid #ad24ff;
+}
+
+
+/* ==================================================
+   PLACAR NORMAL
+================================================== */
+
+#placar {
+    position: absolute;
+
+    left: 50%;
+    bottom: 25px;
+
+    transform:
+        translateX(-50%);
+
+    display: flex;
+    align-items: center;
+
+    gap: 28px;
+
+    font-size: 30px;
+    font-weight: 900;
+
+    white-space: nowrap;
+}
+
+.numero {
+    font-size: 42px;
+}
+
+.vs-placar {
+    color: #9b6cff;
+}
+
+
+/* ==================================================
+   11 IDEAL PEQUENO
+================================================== */
+
+#campo-container {
+    position: absolute;
+
+    right: 40px;
+    top: 145px;
+
+    width: 515px;
+    height: 760px;
+
+    border: 3px solid #2ecf72;
+    border-radius: 22px;
+
+    background:
+        rgba(5,25,18,0.93);
+
+    box-shadow:
+        0 0 30px
+        rgba(25,210,105,0.30);
+
+    overflow: hidden;
+}
+
+#campo-titulo {
+    position: absolute;
+
+    top: 18px;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    font-size: 28px;
+    font-weight: 900;
+
+    white-space: nowrap;
+
+    z-index: 20;
+}
+
+#campo {
+    position: absolute;
+
+    left: 25px;
+    top: 75px;
+
+    width: 459px;
+    height: 650px;
+
+    border:
+        3px solid
+        rgba(255,255,255,0.78);
+
+    border-radius: 12px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(20,115,60,0.95),
+            rgba(12,80,45,0.95)
+        );
+}
+
+#campo::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 100%;
+    height: 2px;
+
+    background:
+        rgba(255,255,255,0.70);
+}
+
+#campo::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 110px;
+    height: 110px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border:
+        2px solid
+        rgba(255,255,255,0.70);
+
+    border-radius: 50%;
+}
+
+
+/* ==================================================
+   JOGADORES DO CAMPO PEQUENO
+================================================== */
+
+.jogador-campo {
+    position: absolute;
+
+    transform:
+        translate(-50%, -50%);
+
+    width: 130px;
+
+    text-align: center;
+
+    z-index: 10;
+}
+
+.foto-campo {
+    width: 74px;
+    height: 74px;
+
+    display: block;
+
+    margin:
+        0 auto 4px auto;
+
+    object-fit: cover;
+    object-position: center top;
+
+    border-radius: 50%;
+
+    background:
+        rgba(8,8,15,0.95);
+
+    border: 3px solid white;
+
+    box-shadow:
+        0 4px 12px
+        rgba(0,0,0,0.65);
+}
+
+.jogador-campo.lado1
+.foto-campo {
+    border-color: #168cff;
+}
+
+.jogador-campo.lado2
+.foto-campo {
+    border-color: #ad24ff;
+}
+
+.nome-campo {
+    width: 125px;
+    min-height: 25px;
+
+    margin: 0 auto;
+
+    padding: 3px 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background:
+        rgba(5,6,12,0.94);
+
+    border-radius: 6px;
+
+    font-size: 11px;
+    line-height: 12px;
+    font-weight: 900;
+
+    text-align: center;
+
+    overflow-wrap: anywhere;
+
+    box-shadow:
+        0 2px 7px
+        rgba(0,0,0,0.55);
+}
+
+.jogador-campo.lado1
+.nome-campo {
+    border-bottom:
+        2px solid #168cff;
+}
+
+.jogador-campo.lado2
+.nome-campo {
+    border-bottom:
+        2px solid #ad24ff;
+}
+
+
+/* ==================================================
+   POSIÇÕES DO CAMPO PEQUENO
+================================================== */
+
+.pos-0 {
+    left: 50%;
+    top: 92%;
+}
+
+.pos-1 {
+    left: 89%;
+    top: 69%;
+}
+
+.pos-2 {
+    left: 64%;
+    top: 74%;
+}
+
+.pos-3 {
+    left: 36%;
+    top: 74%;
+}
+
+.pos-4 {
+    left: 11%;
+    top: 69%;
+}
+
+.pos-1 .nome-campo,
+.pos-2 .nome-campo,
+.pos-3 .nome-campo,
+.pos-4 .nome-campo {
+    font-size: 10px;
+    line-height: 11px;
+}
+
+.pos-5 {
+    left: 50%;
+    top: 57%;
+}
+
+.pos-6 {
+    left: 72%;
+    top: 43%;
+}
+
+.pos-7 {
+    left: 28%;
+    top: 43%;
+}
+
+.pos-8 {
+    left: 84%;
+    top: 21%;
+}
+
+.pos-9 {
+    left: 50%;
+    top: 13%;
+}
+
+.pos-10 {
+    left: 16%;
+    top: 21%;
+}
+
+
+/* ==================================================
+   TELA FINAL
+================================================== */
+
+#telaFinal {
+    position: absolute;
+
+    left: 500px;
+    top: 55px;
+
+    width: 1375px;
+    height: 970px;
+
+    display: none;
+
+    z-index: 100;
+}
+
+
+/* ==================================================
+   TÍTULO FINAL
+================================================== */
+
+#tituloFinal {
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    transform:
+        translateX(-50%);
+
+    font-size: 38px;
+    font-weight: 900;
+
+    letter-spacing: 5px;
+
+    white-space: nowrap;
+
+    text-shadow:
+        0 0 18px
+        rgba(99,60,255,0.65);
+}
+
+
+/* ==================================================
+   CAMPO GRANDE FINAL
+================================================== */
+
+#campoFinal {
+    position: absolute;
+
+    left: 50%;
+    top: 65px;
+
+    transform:
+        translateX(-50%);
+
+    width: 1050px;
+    height: 780px;
+
+    border:
+        4px solid
+        rgba(255,255,255,0.82);
+
+    border-radius: 22px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(22,125,66,0.97),
+            rgba(10,75,42,0.97)
+        );
+
+    box-shadow:
+        0 0 35px
+        rgba(25,210,105,0.28);
+
+    overflow: hidden;
+}
+
+#campoFinal::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 50%;
+
+    width: 100%;
+    height: 3px;
+
+    background:
+        rgba(255,255,255,0.72);
+}
+
+#campoFinal::after {
+    content: "";
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    width: 175px;
+    height: 175px;
+
+    transform:
+        translate(-50%, -50%);
+
+    border:
+        3px solid
+        rgba(255,255,255,0.72);
+
+    border-radius: 50%;
+}
+
+
+/* ==================================================
+   JOGADORES DO CAMPO FINAL
+================================================== */
+
+.jogador-final {
+    position: absolute;
+
+    transform:
+        translate(-50%, -50%);
+
+    width: 190px;
+
+    text-align: center;
+
+    z-index: 10;
+}
+
+.foto-final {
+    width: 105px;
+    height: 105px;
+
+    display: block;
+
+    margin:
+        0 auto 7px auto;
+
+    object-fit: cover;
+    object-position: center top;
+
+    border-radius: 50%;
+
+    background:
+        rgba(8,8,15,0.95);
+
+    border: 4px solid white;
+
+    box-shadow:
+        0 5px 16px
+        rgba(0,0,0,0.65);
+}
+
+.jogador-final.lado1
+.foto-final {
+    border-color: #168cff;
+}
+
+.jogador-final.lado2
+.foto-final {
+    border-color: #ad24ff;
+}
+
+.nome-final {
+    min-width: 130px;
+    max-width: 190px;
+
+    display: inline-block;
+
+    padding: 6px 10px;
+
+    background:
+        rgba(5,6,12,0.94);
+
+    border-radius: 7px;
+
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: 900;
+
+    text-align: center;
+
+    box-shadow:
+        0 3px 10px
+        rgba(0,0,0,0.60);
+}
+
+.jogador-final.lado1
+.nome-final {
+    border-bottom:
+        3px solid #168cff;
+}
+
+.jogador-final.lado2
+.nome-final {
+    border-bottom:
+        3px solid #ad24ff;
+}
+
+
+/* ==================================================
+   FORMAÇÃO FINAL 4-3-3
+================================================== */
+
+.final-pos-0 {
+    left: 50%;
+    top: 91%;
+}
+
+.final-pos-1 {
+    left: 87%;
+    top: 71%;
+}
+
+.final-pos-2 {
+    left: 63%;
+    top: 76%;
+}
+
+.final-pos-3 {
+    left: 37%;
+    top: 76%;
+}
+
+.final-pos-4 {
+    left: 13%;
+    top: 71%;
+}
+
+.final-pos-5 {
+    left: 50%;
+    top: 57%;
+}
+
+.final-pos-6 {
+    left: 70%;
+    top: 43%;
+}
+
+.final-pos-7 {
+    left: 30%;
+    top: 43%;
+}
+
+.final-pos-8 {
+    left: 82%;
+    top: 21%;
+}
+
+.final-pos-9 {
+    left: 50%;
+    top: 14%;
+}
+
+.final-pos-10 {
+    left: 18%;
+    top: 21%;
+}
+
+
+/* ==================================================
+   PLACAR FINAL EMBAIXO
+================================================== */
+
+#placarFinal {
+    position: absolute;
+
+    left: 50%;
+    bottom: 5px;
+
+    transform:
+        translateX(-50%);
+
+    min-width: 720px;
+    height: 95px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 34px;
+
+    padding:
+        0 40px;
+
+    background:
+        rgba(7,8,18,0.96);
+
+    border:
+        3px solid #633cff;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 0 25px
+        rgba(99,60,255,0.45);
+
+    white-space: nowrap;
+}
+
+.time-final {
+    font-size: 30px;
+    font-weight: 900;
+}
+
+.numero-final {
+    font-size: 55px;
+    font-weight: 900;
+}
+
+.x-final {
+    color: #9b6cff;
+
+    font-size: 35px;
+    font-weight: 900;
+}
+
+
+/* ==================================================
+   RODAPÉ
+================================================== */
+
+#rodape {
+    position: absolute;
+
+    left: 510px;
+    bottom: 65px;
+
+    width: 810px;
+
+    text-align: center;
+
+    font-size: 19px;
+
+    color:
+        rgba(255,255,255,0.50);
+
+    letter-spacing: 3px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div id="layout">
+
+
+    <!-- CÂMERAS -->
+
+    <div
+        id="camera1"
+        class="camera">
+    </div>
+
+    <div
+        id="camera2"
+        class="camera">
+    </div>
+
+
+    <!-- LAYOUT NORMAL -->
+
+    <div id="comparacao">
+
+        <div id="posicao">
+            GOLEIRO
+        </div>
+
+
+        <div id="jogadores">
+
+
+            <!-- JOGADOR 1 -->
+
+            <div
+                class="jogador esquerda"
+                id="ladoJogador1">
+
+                <div class="selo-escolhido">
+                    ✓ ESCOLHIDO
+                </div>
+
+                <img
+                    id="fotoJogador1"
+                    class="foto-jogador"
+                    src="/imagens/verbruggen.png"
+                    alt="Jogador 1"
+                >
+
+                <div
+                    class="nome-jogador"
+                    id="nomeJogador1">
+
+                    BART VERBRUGGEN
+
+                </div>
+
+            </div>
+
+
+            <!-- JOGADOR 2 -->
+
+            <div
+                class="jogador direita"
+                id="ladoJogador2">
+
+                <div class="selo-escolhido">
+                    ✓ ESCOLHIDO
+                </div>
+
+                <img
+                    id="fotoJogador2"
+                    class="foto-jogador"
+                    src="/imagens/ter-stegen.png"
+                    alt="Jogador 2"
+                >
+
+                <div
+                    class="nome-jogador"
+                    id="nomeJogador2">
+
+                    MARC-ANDRÉ TER STEGEN
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div id="versus">
+            X
+        </div>
+
+
+        <div id="placar">
+
+            <span id="nomeTime1">
+                HOLANDA
+            </span>
+
+            <span
+                class="numero"
+                id="placar1">
+                0
+            </span>
+
+            <span class="vs-placar">
+                ×
+            </span>
+
+            <span
+                class="numero"
+                id="placar2">
+                0
+            </span>
+
+            <span id="nomeTime2">
+                ALEMANHA
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- 11 IDEAL PEQUENO -->
+
+    <div id="campo-container">
+
+        <div id="campo-titulo">
+            11 IDEAL
+        </div>
+
+        <div id="campo">
+        </div>
+
+    </div>
+
+
+    <!-- RESULTADO FINAL -->
+
+    <div id="telaFinal">
+
+
+        <div id="tituloFinal">
+            11 IDEAL
+        </div>
+
+
+        <div id="campoFinal">
+        </div>
+
+
+        <div id="placarFinal">
+
+            <span
+                class="time-final"
+                id="timeFinal1">
+
+                HOLANDA
+
+            </span>
+
+
+            <span
+                class="numero-final"
+                id="numeroFinal1">
+
+                0
+
+            </span>
+
+
+            <span class="x-final">
+                ×
+            </span>
+
+
+            <span
+                class="numero-final"
+                id="numeroFinal2">
+
+                0
+
+            </span>
+
+
+            <span
+                class="time-final"
+                id="timeFinal2">
+
+                ALEMANHA
+
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- RODAPÉ -->
+
+    <div id="rodape">
+        ESCOLHA POSIÇÃO POR POSIÇÃO
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* ==================================================
+   ATUALIZAR FOTO
+================================================== */
+
+function atualizarFoto(
+    elemento,
+    nomeArquivo
+) {
+
+    if (
+        !nomeArquivo ||
+        nomeArquivo.trim() === ""
+    ) {
+
+        elemento.style.display =
+            "none";
+
+        elemento.removeAttribute(
+            "src"
+        );
+
+        elemento.dataset.foto =
+            "";
+
+        return;
+
+    }
+
+
+    elemento.style.display =
+        "block";
+
+
+    if (
+        elemento.dataset.foto !==
+        nomeArquivo
+    ) {
+
+        elemento.src =
+            "/imagens/" +
+            nomeArquivo;
+
+        elemento.dataset.foto =
+            nomeArquivo;
+
+    }
+
+}
+
+
+/* ==================================================
+   PARTE 11 - DESTAQUE DO VENCEDOR
+================================================== */
+
+function atualizarVencedor(
+    estado
+) {
+
+    const jogador1 =
+        document.getElementById(
+            "ladoJogador1"
+        );
+
+
+    const jogador2 =
+        document.getElementById(
+            "ladoJogador2"
+        );
+
+
+    /*
+       PRIMEIRO LIMPA QUALQUER
+       DESTAQUE ANTERIOR
+    */
+
+    jogador1.classList.remove(
+        "vencedor",
+        "perdedor"
+    );
+
+
+    jogador2.classList.remove(
+        "vencedor",
+        "perdedor"
+    );
+
+
+    /*
+       NENHUM ESCOLHIDO
+    */
+
+    if (
+        estado.ladoVencedor !== 1 &&
+        estado.ladoVencedor !== 2
+    ) {
+
+        return;
+
+    }
+
+
+    /*
+       JOGADOR 1 ESCOLHIDO
+    */
+
+    if (
+        estado.ladoVencedor === 1
+    ) {
+
+        jogador1.classList.add(
+            "vencedor"
+        );
+
+
+        jogador2.classList.add(
+            "perdedor"
+        );
+
+    }
+
+
+    /*
+       JOGADOR 2 ESCOLHIDO
+    */
+
+    if (
+        estado.ladoVencedor === 2
+    ) {
+
+        jogador2.classList.add(
+            "vencedor"
+        );
+
+
+        jogador1.classList.add(
+            "perdedor"
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   MODO NORMAL / FINAL
+================================================== */
+
+function atualizarModo(
+    estado
+) {
+
+    const comparacao =
+        document.getElementById(
+            "comparacao"
+        );
+
+
+    const campoPequeno =
+        document.getElementById(
+            "campo-container"
+        );
+
+
+    const telaFinal =
+        document.getElementById(
+            "telaFinal"
+        );
+
+
+    const rodape =
+        document.getElementById(
+            "rodape"
+        );
+
+
+    if (
+        estado.modoFinal === true
+    ) {
+
+        comparacao.style.display =
+            "none";
+
+
+        campoPequeno.style.display =
+            "none";
+
+
+        rodape.style.display =
+            "none";
+
+
+        telaFinal.style.display =
+            "block";
+
+
+        document.getElementById(
+            "timeFinal1"
+        ).innerText =
+
+            (
+                estado.time1 ||
+                "TIME 1"
+            ).toUpperCase();
+
+
+        document.getElementById(
+            "timeFinal2"
+        ).innerText =
+
+            (
+                estado.time2 ||
+                "TIME 2"
+            ).toUpperCase();
+
+
+        document.getElementById(
+            "numeroFinal1"
+        ).innerText =
+
+            estado.placar1 || 0;
+
+
+        document.getElementById(
+            "numeroFinal2"
+        ).innerText =
+
+            estado.placar2 || 0;
+
+    }
+
+    else {
+
+        comparacao.style.display =
+            "block";
+
+
+        campoPequeno.style.display =
+            "block";
+
+
+        rodape.style.display =
+            "block";
+
+
+        telaFinal.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* ==================================================
+   ATUALIZAR OVERLAY
+================================================== */
+
+async function atualizarOverlay() {
+
+    try {
+
+        const resposta =
+            await fetch(
+
+                "/api/estado?tempo=" +
+                Date.now()
+
+            );
+
+
+        const estado =
+            await resposta.json();
+
+
+        /* MODO */
+
+        atualizarModo(
+            estado
+        );
+
+
+        /* DESTAQUE DO ESCOLHIDO */
+
+        atualizarVencedor(
+            estado
+        );
+
+
+        /* POSIÇÃO */
+
+        document.getElementById(
+            "posicao"
+        ).innerText =
+
+            estado.posicao ||
+            "GOLEIRO";
+
+
+        /* NOMES */
+
+        document.getElementById(
+            "nomeJogador1"
+        ).innerText =
+
+            (
+                estado.jogador1 ||
+                "JOGADOR 1"
+            ).toUpperCase();
+
+
+        document.getElementById(
+            "nomeJogador2"
+        ).innerText =
+
+            (
+                estado.jogador2 ||
+                "JOGADOR 2"
+            ).toUpperCase();
+
+
+        /* FOTOS */
+
+        atualizarFoto(
+
+            document.getElementById(
+                "fotoJogador1"
+            ),
+
+            estado.foto1
+
+        );
+
+
+        atualizarFoto(
+
+            document.getElementById(
+                "fotoJogador2"
+            ),
+
+            estado.foto2
+
+        );
+
+
+        /* TIMES */
+
+        document.getElementById(
+            "nomeTime1"
+        ).innerText =
+
+            (
+                estado.time1 ||
+                "TIME 1"
+            ).toUpperCase();
+
+
+        document.getElementById(
+            "nomeTime2"
+        ).innerText =
+
+            (
+                estado.time2 ||
+                "TIME 2"
+            ).toUpperCase();
+
+
+        /* PLACAR */
+
+        document.getElementById(
+            "placar1"
+        ).innerText =
+
+            estado.placar1 || 0;
+
+
+        document.getElementById(
+            "placar2"
+        ).innerText =
+
+            estado.placar2 || 0;
+
+
+        /* CAMPOS */
+
+        atualizarTimeIdeal(
+            estado.timeIdeal || []
+        );
+
+
+        atualizarTimeIdealFinal(
+            estado.timeIdeal || []
+        );
+
+    }
+
+    catch (erro) {
+
+        console.log(
+            "Aguardando servidor..."
+        );
+
+    }
+
+}
+
+
+/* ==================================================
+   CAMPO PEQUENO
+================================================== */
+
+function atualizarTimeIdeal(
+    timeIdeal
+) {
+
+    const campo =
+        document.getElementById(
+            "campo"
+        );
+
+
+    campo
+        .querySelectorAll(
+            ".jogador-campo"
+        )
+        .forEach(
+
+            jogador =>
+                jogador.remove()
+
+        );
+
+
+    timeIdeal.forEach(
+
+        (item, ordem) => {
+
+
+            const jogador =
+                document.createElement(
+                    "div"
+                );
+
+
+            const posicaoCampo =
+
+                item.indice !== undefined
+
+                    ? item.indice
+
+                    : ordem;
+
+
+            jogador.className =
+
+                "jogador-campo " +
+
+                "pos-" +
+                posicaoCampo +
+
+                " " +
+
+                (
+                    item.lado === 1
+
+                        ? "lado1"
+
+                        : "lado2"
+                );
+
+
+            if (
+                item.foto &&
+                item.foto.trim() !== ""
+            ) {
+
+                const foto =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                foto.src =
+                    "/imagens/" +
+                    item.foto;
+
+
+                foto.className =
+                    "foto-campo";
+
+
+                foto.onerror =
+                    function() {
+
+                        this.style.display =
+                            "none";
+
+                    };
+
+
+                jogador.appendChild(
+                    foto
+                );
+
+            }
+
+
+            const nome =
+                document.createElement(
+                    "div"
+                );
+
+
+            nome.className =
+                "nome-campo";
+
+
+            nome.innerText =
+
+                (
+                    item.nome ||
+                    "JOGADOR"
+                ).toUpperCase();
+
+
+            jogador.appendChild(
+                nome
+            );
+
+
+            campo.appendChild(
+                jogador
+            );
+
+        }
+
+    );
+
+}
+
+
+/* ==================================================
+   CAMPO GRANDE FINAL
+================================================== */
+
+function atualizarTimeIdealFinal(
+    timeIdeal
+) {
+
+    const campo =
+        document.getElementById(
+            "campoFinal"
+        );
+
+
+    campo
+        .querySelectorAll(
+            ".jogador-final"
+        )
+        .forEach(
+
+            jogador =>
+                jogador.remove()
+
+        );
+
+
+    timeIdeal.forEach(
+
+        (item, ordem) => {
+
+
+            const jogador =
+                document.createElement(
+                    "div"
+                );
+
+
+            const posicaoCampo =
+
+                item.indice !== undefined
+
+                    ? item.indice
+
+                    : ordem;
+
+
+            jogador.className =
+
+                "jogador-final " +
+
+                "final-pos-" +
+                posicaoCampo +
+
+                " " +
+
+                (
+                    item.lado === 1
+
+                        ? "lado1"
+
+                        : "lado2"
+                );
+
+
+            if (
+                item.foto &&
+                item.foto.trim() !== ""
+            ) {
+
+                const foto =
+                    document.createElement(
+                        "img"
+                    );
+
+
+                foto.src =
+                    "/imagens/" +
+                    item.foto;
+
+
+                foto.className =
+                    "foto-final";
+
+
+                foto.onerror =
+                    function() {
+
+                        this.style.display =
+                            "none";
+
+                    };
+
+
+                jogador.appendChild(
+                    foto
+                );
+
+            }
+
+
+            const nome =
+                document.createElement(
+                    "div"
+                );
+
+
+            nome.className =
+                "nome-final";
+
+
+            nome.innerText =
+
+                (
+                    item.nome ||
+                    "JOGADOR"
+                ).toUpperCase();
+
+
+            jogador.appendChild(
+                nome
+            );
+
+
+            campo.appendChild(
+                jogador
+            );
+
+        }
+
+    );
+
+}
+
+
+/* ==================================================
+   INICIAR
+================================================== */
+
+atualizarOverlay();
+
+
+setInterval(
+
+    atualizarOverlay,
+
+    250
+
+);
+
+</script>
+
+</body>
+
+</html>
