@@ -3,154 +3,144 @@
     {
       "posicao": "GOLEIRO",
       "jogador1": {
-        "nome": "Verbruggen",
+        "nome": "Bart Verbruggen",
         "time": "Holanda",
         "foto": "verbruggen.png"
       },
       "jogador2": {
-        "nome": "Ter Stegen",
+        "nome": "Marc-André ter Stegen",
         "time": "Alemanha",
         "foto": "ter-stegen.png"
       }
     },
-
     {
       "posicao": "LATERAL DIREITO",
       "jogador1": {
-        "nome": "Jogador 1 LD",
+        "nome": "Denzel Dumfries",
         "time": "Holanda",
-        "foto": ""
+        "foto": "dumfries.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 LD",
+        "nome": "Joshua Kimmich",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "kimmich.png"
       }
     },
-
     {
       "posicao": "ZAGUEIRO 1",
       "jogador1": {
-        "nome": "Jogador 1 ZAG",
+        "nome": "Jan Paul van Hecke",
         "time": "Holanda",
-        "foto": ""
+        "foto": "van-hecke.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 ZAG",
+        "nome": "Nico Schlotterbeck",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "schlotterbeck.png"
       }
     },
-
     {
       "posicao": "ZAGUEIRO 2",
       "jogador1": {
-        "nome": "Jogador 1 ZAG",
+        "nome": "Virgil van Dijk",
         "time": "Holanda",
-        "foto": ""
+        "foto": "van-dijk.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 ZAG",
+        "nome": "Jonathan Tah",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "tah.png"
       }
     },
-
     {
       "posicao": "LATERAL ESQUERDO",
       "jogador1": {
-        "nome": "Jogador 1 LE",
+        "nome": "Micky van de Ven",
         "time": "Holanda",
-        "foto": ""
+        "foto": "van-de-ven.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 LE",
+        "nome": "David Raum",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "raum.png"
       }
     },
-
     {
       "posicao": "VOLANTE",
       "jogador1": {
-        "nome": "Jogador 1 VOL",
+        "nome": "Ryan Gravenberch",
         "time": "Holanda",
-        "foto": ""
+        "foto": "gravenberch.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 VOL",
+        "nome": "Pascal Groß",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "gross.png"
       }
     },
-
     {
       "posicao": "MEIA 1",
       "jogador1": {
-        "nome": "Jogador 1 MEI",
+        "nome": "Tijjani Reijnders",
         "time": "Holanda",
-        "foto": ""
+        "foto": "reijnders.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 MEI",
+        "nome": "Robert Andrich",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "andrich.png"
       }
     },
-
     {
       "posicao": "MEIA 2",
       "jogador1": {
-        "nome": "Jogador 1 MEI",
+        "nome": "Teun Koopmeiners",
         "time": "Holanda",
-        "foto": ""
+        "foto": "koopmeiners.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 MEI",
+        "nome": "Jamal Musiala",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "musiala.png"
       }
     },
-
     {
       "posicao": "PONTA DIREITA",
       "jogador1": {
-        "nome": "Jogador 1 PD",
+        "nome": "Donyell Malen",
         "time": "Holanda",
-        "foto": ""
+        "foto": "malen.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 PD",
+        "nome": "Serge Gnabry",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "gnabry.png"
       }
     },
-
     {
       "posicao": "CENTROAVANTE",
       "jogador1": {
-        "nome": "Jogador 1 CA",
+        "nome": "Cody Gakpo",
         "time": "Holanda",
-        "foto": ""
+        "foto": "gakpo.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 CA",
+        "nome": "Kai Havertz",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "havertz.png"
       }
     },
-
     {
       "posicao": "PONTA ESQUERDA",
       "jogador1": {
-        "nome": "Jogador 1 PE",
+        "nome": "Crysencio Summerville",
         "time": "Holanda",
-        "foto": ""
+        "foto": "summerville.png"
       },
       "jogador2": {
-        "nome": "Jogador 2 PE",
+        "nome": "Deniz Undav",
         "time": "Alemanha",
-        "foto": ""
+        "foto": "undav.png"
       }
     }
   ]
